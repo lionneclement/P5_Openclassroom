@@ -1,0 +1,14 @@
+{
+    "name": "clement/code",
+    "description": "Créez votre premier blog en PHP",
+    "authors": [
+        {
+            "name": "lionneclement",
+            "email": "lionneclement@gmail.com"
+        }
+    ],
+    "require": {
+        "twbs/bootstrap": "^4.4",
+        "twig/twig": "^3.0"
+    }
+}
