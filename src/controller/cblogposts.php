@@ -1,9 +1,6 @@
 <?php
 namespace App\controller;
 
-require '../../src/twig/twigenvi.php';
-require '../../src/model/mblogposts.php';
-
 use App\twig\twigenvi;
 use App\controller\mblogposts;
 

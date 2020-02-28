@@ -1,20 +1,29 @@
 <?php
 
 require '../../vendor/autoload.php';
-require '../../src/controller/cblogposts.php';
+require '../../src/twig/twigenvi.php';
+require '../controller/cblogposts.php';
+require '../model/mblogposts.php';
+require '../controller/chome.php';
+require '../mail/form.php';
 
 use App\controller\cblogposts;
+use App\controller\home;
+use App\mail\email;
 
- $request = $_SERVER['REQUEST_URI'];
-var_dump($request);
  $router = new AltoRouter();
 
  $router->map('GET', '/', function() {
-	echo 'hey';
+	$page = new home;
+    $page->accueil();
 });
  $router->map('GET', '/posts', function() {
-    $home = new cblogposts;
-    $home->page();
+    $page = new cblogposts;
+    $page->page();
+});
+ $router->map('POST','/mail',function() {
+    $page = new email($_POST);
+    $page->send();
 });
   
 $match = $router->match();
