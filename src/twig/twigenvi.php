@@ -8,7 +8,7 @@ class twigenvi
 {
   public function __construct()
   {
-    $loader = new FilesystemLoader('../../src/view/templates');
+    $loader = new FilesystemLoader('../../src/view');
     $this->twigenvi = new Environment($loader);
   }
 }

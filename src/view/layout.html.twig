@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    {% block head %}
+        <title>Blog de Clément</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="\dist\css\bootstrap.min.css" rel="stylesheet">
+    {% endblock %}
+  </head>
+
+  <body>
+
+    <!-- Menu --> 
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#">Le blog d'un junior</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarText"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav nav ml-auto nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="#accueil">Accueil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#programme">Articles</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    {% block content %}
+    
+    {% endblock %}
+    
+    <!-- Footer -->
+    <footer>
+      <div class="footer-copyright text-center py-3">
+        Copyright © 2020 | Propulsé par
+        <a
+          href="https://www.linkedin.com/in/lionne-cl%C3%A9ment/"
+          target="_blank"
+          >Lionne Clément</a
+        >
+      </div>
+    </footer>
+    
+    <script src="\dist\js\bootstrap.min.js"></script>
+  </body>
+
+</html>

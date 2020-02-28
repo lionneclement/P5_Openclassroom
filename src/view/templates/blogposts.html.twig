@@ -1,19 +1,18 @@
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    {% block head %}
-        <title>Blog de Clément</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="vendor\twbs\bootstrap\dist\css\bootstrap.min.css" rel="stylesheet">
-    {% endblock %}
-  </head>
+{% extends 'layout.html.twig' %}
 
-  <body>
-
-    <p>Hey</p>
-    
-    <script src="vendor\twbs\bootstrap\dist\js\bootstrap.min.js"></script>
-  </body>
-
-</html>
+{% block content %}
+    <div class='container text-center pt-5'>
+      <div class='row'>
+        {% for n in nom %}
+          <div class='col-6'>
+            <h1>{{n.id}}</h1>
+            <p>{{n.nom}}</p>
+            <p>{{n.prenom}}</p>
+            <p>{{n.email}}</p>
+            <p>{{n.mdp}}</p>
+            <p>{{n.role_id}}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}

@@ -1,17 +1,19 @@
 <?php
 
 require '../../vendor/autoload.php';
-require '../controller/blogposts.php';
+require '../../src/controller/cblogposts.php';
 
-use App\controller\blogposts;
+use App\controller\cblogposts;
 
  $request = $_SERVER['REQUEST_URI'];
-
+var_dump($request);
  $router = new AltoRouter();
 
- // map homepage
  $router->map('GET', '/', function() {
-    $home = new blogposts;
+	echo 'hey';
+});
+ $router->map('GET', '/posts', function() {
+    $home = new cblogposts;
     $home->page();
 });
   
@@ -20,6 +22,5 @@ $match = $router->match();
 if( is_array($match) && is_callable( $match['target'] ) ) {
 	call_user_func_array( $match['target'], $match['params'] ); 
 } else {
-	// no route was matched
 	header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
 }
