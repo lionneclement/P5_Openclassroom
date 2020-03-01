@@ -4,7 +4,7 @@
     <div class='container text-center pt-5'>
       <div class='row'>
         {% for n in nom %}
-          <div class='col-6'>
+          <div class='col-12'>
             <h1>{{n.id}}</h1>
             <p>{{n.titre}}</p>
             <p>{{n.chapo}}</p>
@@ -12,7 +12,6 @@
             <p>{{n.categorie}}</p>
             <p>{{n.date}}</p>
             <p>{{n.user_id}}</p>
-            <a href="post/{{n.id}}">Voir plus</a>
           </div>
         {% endfor %}
       </div>

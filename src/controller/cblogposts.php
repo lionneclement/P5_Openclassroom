@@ -2,14 +2,14 @@
 namespace App\controller;
 
 use App\twig\twigenvi;
-use App\controller\mblogposts;
+use App\controller\mpost;
 
 class cblogposts extends twigenvi
 {
   public function page()
   {
-    $connect = new mblogposts;
-    $con = $connect->connect();
+    $posts = new mpost;
+    $con = $posts->posts();
     $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
     echo $this->twigenvi->render('/templates/blogposts.html.twig',['nom'=>$donnes]);
   }
