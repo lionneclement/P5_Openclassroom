@@ -21,4 +21,10 @@ class mpost
   {
     return $this->bdd->query('SELECT * FROM article WHERE id='.$id.'');
   }
+  public function add($post)
+  {
+    $sql = 'INSERT INTO article (`id`, `titre`, `chapo`, `contenu`, `categorie`, `date`, `user_id`) 
+    VALUES (NULL,:titre,:chapo,:contenu,:categorie, CURRENT_TIMESTAMP,:user_id)';
+    $this->bdd->prepare($sql)->execute($post);
+  }
 }
