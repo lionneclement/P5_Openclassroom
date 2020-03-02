@@ -2,20 +2,12 @@
 
 require '../../vendor/autoload.php';
 require '../../src/twig/twigenvi.php';
-require '../controller/cblogposts.php';
-require '../controller/conepost.php';
-require '../controller/caddpost.php';
 require '../model/mpost.php';
 require '../controller/chome.php';
 require '../mail/form.php';
-require '../controller/cupdatepost.php';
-require '../controller/cremovepost.php';
+require '../controller/postController.php';
 
-use App\controller\removepost;
-use App\controller\updatepost;
-use App\controller\addpost;
-use App\controller\cblogposts;
-use App\controller\conepost;
+use App\controller\post;
 use App\controller\home;
 use App\mail\email;
 
@@ -26,31 +18,31 @@ use App\mail\email;
     $page->accueil();
 });
  $router->map('GET', '/posts', function() {
-    $page = new cblogposts;
-    $page->page();
+    $page = new post;
+    $page->allposts();
 });
 $router->map('GET', '/post/[i:id]', function($id) {
-    $page = new conepost;
-    $page->post($id);
+    $page = new post;
+    $page->onepost($id);
 });
 $router->map('GET', '/addpost', function() {
-    $page = new addpost;
-    $page->contact();
+    $page = new post;
+    $page->addform();
 });
 $router->map('POST', '/add', function() {
-    $page = new addpost;
-    $page->add($_POST);
+    $page = new post;
+    $page->addpost($_POST);
 });
 $router->map('GET', '/updatepost/[i:id]', function($id) {
-    $page = new updatepost;
-    $page->contact($id);
+    $page = new post;
+    $page->updateform($id);
 });
 $router->map('POST', '/update/[i:id]', function($id) {
-    $page = new updatepost;
-    $page->update($id,$_POST);
+    $page = new post;
+    $page->updatepost($id,$_POST);
 });
 $router->map('GET', '/removepost/[i:id]', function($id) {
-    $page = new removepost;
+    $page = new post;
     $page->remove($id);
 });
  $router->map('POST','/mail',function() {
