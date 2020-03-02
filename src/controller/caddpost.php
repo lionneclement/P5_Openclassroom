@@ -3,7 +3,6 @@ namespace App\controller;
 
 use App\twig\twigenvi;
 use App\controller\mpost;
-use App\controller\cblogposts;
 
 class addpost extends twigenvi
 {

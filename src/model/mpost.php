@@ -23,8 +23,15 @@ class mpost
   }
   public function add($post)
   {
-    $sql = 'INSERT INTO article (`id`, `titre`, `chapo`, `contenu`, `categorie`, `date`, `user_id`) 
-    VALUES (NULL,:titre,:chapo,:contenu,:categorie, CURRENT_TIMESTAMP,:user_id)';
+    $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id) 
+    VALUES (NULL,:titre,:chapo,:contenu, CURRENT_TIMESTAMP,:user_id)';
+    $this->bdd->prepare($sql)->execute($post);
+  }
+  public function update($id,$post)
+  {
+    $post['id']=$id;
+    var_dump($post);
+    $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, user_id=:user_id WHERE id=:id';
     $this->bdd->prepare($sql)->execute($post);
   }
 }

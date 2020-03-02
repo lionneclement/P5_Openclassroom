@@ -8,7 +8,9 @@ require '../controller/caddpost.php';
 require '../model/mpost.php';
 require '../controller/chome.php';
 require '../mail/form.php';
+require '../controller/cupdatepost.php';
 
+use App\controller\updatepost;
 use App\controller\addpost;
 use App\controller\cblogposts;
 use App\controller\conepost;
@@ -37,10 +39,19 @@ $router->map('POST', '/add', function() {
     $page = new addpost;
     $page->add($_POST);
 });
+$router->map('GET', '/updatepost/[i:id]', function($id) {
+    $page = new updatepost;
+    $page->contact($id);
+});
+$router->map('POST', '/update/[i:id]', function($id) {
+    $page = new updatepost;
+    $page->update($id,$_POST);
+});
  $router->map('POST','/mail',function() {
     $page = new email($_POST);
     $page->send();
 });
+
   
 $match = $router->match();
 
