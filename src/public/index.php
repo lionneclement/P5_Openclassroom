@@ -9,7 +9,9 @@ require '../model/mpost.php';
 require '../controller/chome.php';
 require '../mail/form.php';
 require '../controller/cupdatepost.php';
+require '../controller/cremovepost.php';
 
+use App\controller\removepost;
 use App\controller\updatepost;
 use App\controller\addpost;
 use App\controller\cblogposts;
@@ -46,6 +48,10 @@ $router->map('GET', '/updatepost/[i:id]', function($id) {
 $router->map('POST', '/update/[i:id]', function($id) {
     $page = new updatepost;
     $page->update($id,$_POST);
+});
+$router->map('GET', '/removepost/[i:id]', function($id) {
+    $page = new removepost;
+    $page->remove($id);
 });
  $router->map('POST','/mail',function() {
     $page = new email($_POST);

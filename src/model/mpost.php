@@ -34,4 +34,10 @@ class mpost
     $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, user_id=:user_id WHERE id=:id';
     $this->bdd->prepare($sql)->execute($post);
   }
+  public function remove($id)
+  {
+    $array['id']=$id;
+    $sql = 'DELETE FROM article WHERE id=:id';
+    $this->bdd->prepare($sql)->execute($array);
+  }
 }
