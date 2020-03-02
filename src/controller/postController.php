@@ -13,11 +13,25 @@ class post extends twigenvi
     parent::__construct();
     $this->modelpost = new mpost;
   }
-  public function updateform($id)
+  public function update($id,$post)
   {
-    $con = $this->modelpost->post($id);
-    $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-    echo $this->twigenvi->render('/templates/post/updatepost.html.twig',['id'=>$id,'donnes'=>$donnes]);
+    if(empty($post)){
+      $con = $this->modelpost->post($id);
+      $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+      echo $this->twigenvi->render('/templates/post/updatepost.html.twig',['id'=>$id,'donnes'=>$donnes]);
+    }else {
+      $this->modelpost->update($id,$post);
+      return header("LOCATION:/posts");
+    }
+  }
+  public function add($post)
+  {
+    if(empty($post)){
+      echo $this->twigenvi->render('/templates/post/addpost.html.twig');
+    }else{
+      $this->modelpost->add($post);
+      return header("LOCATION:/posts");
+    } 
   }
   public function onepost($id)
   {
@@ -31,23 +45,10 @@ class post extends twigenvi
     $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
     echo $this->twigenvi->render('/templates/post/blogposts.html.twig',['nom'=>$donnes]);
   }
-  public function updatepost($id,$post)
-  {
-    $this->modelpost->update($id,$post);
-    return header("LOCATION:/posts");
-  }
+  
   public function remove($id)
   {
     $this->modelpost->remove($id);
-    return header("LOCATION:/posts");
-  }
-  public function addform()
-  {
-    echo $this->twigenvi->render('/templates/post/addpost.html.twig');
-  }
-  public function addpost($post)
-  {
-    $this->modelpost->add($post);
     return header("LOCATION:/posts");
   }
 }

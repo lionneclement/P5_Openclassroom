@@ -25,21 +25,13 @@ $router->map('GET', '/post/[i:id]', function($id) {
     $page = new post;
     $page->onepost($id);
 });
-$router->map('GET', '/addpost', function() {
+$router->map('GET|POST', '/addpost', function() {
     $page = new post;
-    $page->addform();
+    $page->add($_POST);
 });
-$router->map('POST', '/add', function() {
+$router->map('GET|POST', '/updatepost/[i:id]', function($id) {
     $page = new post;
-    $page->addpost($_POST);
-});
-$router->map('GET', '/updatepost/[i:id]', function($id) {
-    $page = new post;
-    $page->updateform($id);
-});
-$router->map('POST', '/update/[i:id]', function($id) {
-    $page = new post;
-    $page->updatepost($id,$_POST);
+    $page->update($id,$_POST); 
 });
 $router->map('GET', '/removepost/[i:id]', function($id) {
     $page = new post;
