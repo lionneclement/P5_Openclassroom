@@ -2,17 +2,9 @@
 
 namespace App\controller;
 
-class mpost
+use App\model\connect;
+class mpost extends connect
 {
-  private $bdd ='';
-  public function __construct()
-  {
-    try {
-      $this->bdd = new \PDO('mysql:host=localhost;dbname=p5', 'root', '');
-     } catch (\PDOException $e) {
-      throw new \PDOException($e->getMessage(), (int)$e->getCode());
-    }
-  }
   public function posts()
   {
     return $this->bdd->query('SELECT * FROM article');
@@ -30,7 +22,6 @@ class mpost
   public function update($id,$post)
   {
     $post['id']=$id;
-    var_dump($post);
     $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, date=CURRENT_TIMESTAMP, user_id=:user_id WHERE id=:id';
     $this->bdd->prepare($sql)->execute($post);
   }

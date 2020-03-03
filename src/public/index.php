@@ -2,11 +2,16 @@
 
 require '../../vendor/autoload.php';
 require '../../src/twig/twigenvi.php';
-require '../model/mpost.php';
 require '../controller/chome.php';
-require '../mail/form.php';
 require '../controller/postController.php';
+require '../controller/userController.php';
+require '../model/mconnect.php';
+require '../model/muser.php';
+require '../model/mpost.php';
 
+require '../mail/form.php';
+
+use App\controller\user;
 use App\controller\post;
 use App\controller\home;
 use App\mail\email;
@@ -40,6 +45,14 @@ $router->map('GET', '/removepost/[i:id]', function($id) {
  $router->map('POST','/mail',function() {
     $page = new email($_POST);
     $page->send();
+});
+$router->map('GET|POST','/register',function() {
+    $page = new user;
+    $page->register($_POST);
+});
+$router->map('GET|POST','/login',function() {
+    $page = new user;
+    $page->login($_POST);
 });
 
   
