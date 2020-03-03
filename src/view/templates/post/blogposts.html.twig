@@ -2,20 +2,19 @@
 
 {% block content %}
     <div class='container text-center pt-5'>
-      <div class='row'>
+      <div class="row">
         {% for n in nom %}
-          <div class='col-6'>
-            <h1>{{n.id}}</h1>
-            <p>{{n.titre}}</p>
-            <p>{{n.chapo}}</p>
-            <p>{{n.contenu}}</p>
-            <p>{{n.date}}</p>
-            <p>{{n.user_id}}</p>
-            <a href="post/{{n.id}}">Voir plus</a>
-            </br>
-            <a href="updatepost/{{n.id}}">modifier</a>
-            </br>
-            <a href="removepost/{{n.id}}">Supprimer</a>
+          <div class="col-sm-6 pt-5">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{n.titre}}</h5>
+                <p class="card-text">{{n.chapo}}</p>
+                <p class="card-text">Dernière modification: {{n.date}}</p>
+                <a href="post/{{n.id}}" class="btn btn-primary">Voir plus</a>
+                <a href="updatepost/{{n.id}}" class="btn btn-primary">Modifier</a>
+                <a href="removepost/{{n.id}}" class="btn btn-primary">Supprimer</a>
+              </div>
+            </div>
           </div>
         {% endfor %}
       </div>
