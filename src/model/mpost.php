@@ -1,6 +1,6 @@
 <?php
 
-namespace App\controller;
+namespace App\model;
 
 class mpost
 {

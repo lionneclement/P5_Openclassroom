@@ -2,7 +2,7 @@
 namespace App\controller;
 
 use App\twig\twigenvi;
-use App\controller\mpost;
+use App\model\mpost;
 
 class post extends twigenvi
 {
