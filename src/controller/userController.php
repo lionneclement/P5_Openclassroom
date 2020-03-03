@@ -17,9 +17,10 @@ class user extends twigenvi
     if(empty($post)){
       echo $this->twigenvi->render('/templates/user/register.html.twig');
     }else{
-      $con = $this->modelpost->checkregister($post);
+      $con = $this->modelpost->check($post);
       $donnes = $con->fetchAll();
       if(empty($donnes)){
+        $post['mdp'] = password_hash($post['mdp'], PASSWORD_DEFAULT);
         $this->modelpost->register($post);
         echo 'user create';
       }else{
@@ -32,9 +33,9 @@ class user extends twigenvi
     if(empty($post)){
       echo $this->twigenvi->render('/templates/user/login.html.twig');
     }else{
-      $con = $this->modelpost->checklogin($post);
-      $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-      if(!empty($donnes)){
+      $con = $this->modelpost->check($post['email']);
+      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+      if(!empty($donnes) && password_verify($post['mdp'],$donnes['mdp'])){
         echo 'user connect';
       }else{
         echo 'user no exist';

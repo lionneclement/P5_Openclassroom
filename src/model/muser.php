@@ -6,13 +6,9 @@ use App\model\connect;
 
 class muser extends connect
 {
-  public function checkregister($post)
+  public function check($email)
   {
-    return $this->bdd->query("SELECT * FROM user WHERE email='".$post['email']."'"); 
-  }
-  public function checklogin($post)
-  {
-    return $this->bdd->query("SELECT * FROM user WHERE email='".$post['email']."' AND mdp='".$post['mdp']."' "); 
+    return $this->bdd->query("SELECT * FROM user WHERE email='".$email."'"); 
   }
   public function register($post)
   {
