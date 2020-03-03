@@ -12,6 +12,14 @@
             <p>{{n.date}}</p>
             <p>{{n.user_id}}</p>
           </div>
+          {% if access and access >= 2 %}
+            <div class='container text-center'>
+              <a href="/updatepost/{{n.id}}" class="btn btn-primary">Modifier</a>
+              {% if access == 3 %}  
+                <a href="/removepost/{{n.id}}" class="btn btn-primary">Supprimer</a>
+              {% endif %}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
     </div>

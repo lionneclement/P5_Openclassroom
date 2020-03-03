@@ -54,6 +54,10 @@ $router->map('GET|POST','/login',function() {
     $page = new user;
     $page->login($_POST);
 });
+$router->map('GET','/logout',function(){
+    $page = new user;
+    $page->logout();
+});
 
   
 $match = $router->match();

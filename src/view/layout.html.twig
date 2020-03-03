@@ -31,9 +31,24 @@
             <li class="nav-item">
               <a class="nav-link" href="/posts">Articles</a>
             </li>
+            {% if not access %}
             <li class="nav-item">
-              <a class="nav-link" href="/addpost">Ajouter</a>
+              <a class="nav-link" href="/login">Se connecter</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">S'inscrire</a>
+            </li>
+            {% endif %}
+            {% if access %}
+              {% if access == 3 %}
+                <li class="nav-item">
+                <a class="nav-link" href="/addpost">Ajouter un article</a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+              <a class="nav-link" href="/logout">Se deconnecter</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>
