@@ -25,4 +25,17 @@ class muser extends connect
     $sql = 'UPDATE user SET role_id=:role_id WHERE id=:id';
     $this->bdd->prepare($sql)->execute($post);
   }
+  public function allcomment()
+  {
+    return $this->bdd->query('SELECT * FROM commentaire');
+  }
+  public function updatecomment($post)
+  {
+    $sql = 'UPDATE commentaire SET statut=:statut WHERE id=:id';
+    $this->bdd->prepare($sql)->execute($post);
+  }
+  public function invalidecomment()
+  {
+    return $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
+  }
 }

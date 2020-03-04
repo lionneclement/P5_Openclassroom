@@ -90,4 +90,34 @@ class user extends twigenvi
       return header("LOCATION:/");
     }
   }
+  public function comment($post)
+  {
+    if($this->usercookie['role'] == 3){
+      if(empty($post)){
+        $con = $this->modelpost->allcomment();
+        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+        echo $this->twigenvi->render('/templates/user/comment.html.twig',['comment'=>$donnes,'access'=>$this->usercookie['role']]);
+      }else{
+        $this->modelpost->updatecomment($_POST);
+        return header("LOCATION:/admin/comment");
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function commentinvalide($post)
+  {
+    if($this->usercookie['role'] == 3){
+      if(empty($post)){
+        $con = $this->modelpost->invalidecomment();
+        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+        echo $this->twigenvi->render('/templates/user/commentinvalide.html.twig',['comment'=>$donnes,'access'=>$this->usercookie['role']]);
+      }else{
+        $this->modelpost->updatecomment($_POST);
+        return header("LOCATION:/admin/commentinvalide");
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
 }

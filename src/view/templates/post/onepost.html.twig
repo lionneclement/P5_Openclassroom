@@ -23,4 +23,41 @@
         {% endfor %}
       </div>
     </div>
+    <div class="container text-center">
+      <h2>Commentaire</h2>
+      {% for c in comment %}
+        <div class="media">
+          <div class="media-body">
+            <h5 class="mt-0">id : {{c.id}}</h5>
+            <h5 class="mt-0">user_id : {{c.user_id}}</h5>
+            <p>Date : {{c.date}}</p>
+            <p>Message : {{c.message}}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% if access >= 1 %}
+    <div class="container text-center">
+      <h1 class="text-center">Contact</h1>
+      <form method="post" action="/comment">
+        <div class="row">
+        <div class="col-12">
+          <label for="FormControlInput3">Votre message</label>
+          <textarea class="form-control" type="text" name="contenu" id="FormControlInput3"></textarea>
+          {% for c in nom %}
+          <input type="hidden" name="id" value="{{c.id}}">
+          {% endfor %}
+        </div>
+        <div class="col text-center mt-4">
+        <button type="submit" class="btn btn-primary">Confirm identity</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  {% else %}
+  <div class="container text-center">
+    <h3>Connecter vous pour pourvoir commenter</h3>
+    <a href="/login">Se connecter</a>
+  </div>
+  {% endif %}
 {% endblock %}

@@ -41,7 +41,7 @@ class post extends twigenvi
       }else{
         $this->modelpost->add($post);
         return header("LOCATION:/posts");
-      } 
+      }
     }
     else{
       return header("LOCATION:/");
@@ -51,7 +51,9 @@ class post extends twigenvi
   {
     $con = $this->modelpost->post($id);
     $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-    echo $this->twigenvi->render('/templates/post/onepost.html.twig',['nom'=>$donnes,'access'=>$this->usercookie['role']]);
+    $con1 = $this->modelpost->allcomment($id);
+    $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
+    echo $this->twigenvi->render('/templates/post/onepost.html.twig',['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->usercookie['role']]);
   }
   public function allposts()
   {
@@ -59,12 +61,27 @@ class post extends twigenvi
     $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
     echo $this->twigenvi->render('/templates/post/blogposts.html.twig',['nom'=>$donnes,'access'=>$this->usercookie['role']]);
   }
-  
   public function remove($id)
   {
     if(isset($this->usercookie) && $this->usercookie['role'] == 3){
       $this->modelpost->remove($id);
       return header("LOCATION:/posts");
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function comment($post)
+  {
+    if(isset($this->usercookie)){
+      $con = $this->modelpost->post($post['id']);
+      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+      $array= [
+        'message'=>$post['contenu'],
+        'user_id'=>$this->usercookie['id'],
+        'article_id'=>$donnes['id']
+      ];
+      $this->modelpost->addcomment($array);
+      return header('LOCATION:/post/'.$post['id'].'');
     }else{
       return header("LOCATION:/");
     }

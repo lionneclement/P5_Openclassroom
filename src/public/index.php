@@ -66,6 +66,18 @@ $router->map('GET','/admin',function(){
     $page = new user;
     $page->admin();
 });
+$router->map('POST','/comment',function(){
+    $page = new post;
+    $page->comment($_POST);
+});
+$router->map('GET|POST','/admin/comment',function(){
+    $page = new user;
+    $page->comment($_POST);
+});
+$router->map('GET|POST','/admin/commentinvalide',function(){
+    $page = new user;
+    $page->commentinvalide($_POST);
+});
 
   
 $match = $router->match();
