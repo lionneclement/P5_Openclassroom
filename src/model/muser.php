@@ -16,4 +16,13 @@ class muser extends connect
     VALUES (NULL,:nom,:prenom,:email,:mdp,1)';
     $this->bdd->prepare($sql)->execute($post);
   }
+  public function roles($id)
+  {
+    return $this->bdd->query('SELECT * FROM user WHERE NOT id='.$id.''); 
+  }
+  public function updaterole($post)
+  {
+    $sql = 'UPDATE user SET role_id=:role_id WHERE id=:id';
+    $this->bdd->prepare($sql)->execute($post);
+  }
 }

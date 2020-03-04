@@ -12,13 +12,16 @@ class user extends twigenvi
   {
     parent::__construct();
     $this->modelpost = new muser;
-    $this->usercookie = isset($_COOKIE['id']);
+    if (isset($_COOKIE['id'])){
+      $this->usercookie['id'] = $_COOKIE['id'];
+      $this->usercookie['role'] = $_COOKIE['role'];
+    }
   }
   public function register($post)
   {
-    if(!$this->usercookie){
+    if(!isset($this->usercookie)){
       if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/register.html.twig',['access'=>$this->usercookie]);
+        echo $this->twigenvi->render('/templates/user/register.html.twig');
       }else{
         $con = $this->modelpost->check($post['email']);
         $donnes = $con->fetchAll();
@@ -36,9 +39,9 @@ class user extends twigenvi
   }
   public function login($post)
   {
-    if(!$this->usercookie){
+    if(!isset($this->usercookie)){
       if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/login.html.twig',['access'=>$this->usercookie]);
+        echo $this->twigenvi->render('/templates/user/login.html.twig');
       }else{
         $con = $this->modelpost->check($post['email']);
         $donnes = $con->fetch(\PDO::FETCH_ASSOC);
@@ -63,5 +66,28 @@ class user extends twigenvi
   {
     setcookie('id',$user['id'],time()+(60*60*24*30),'/');
     setcookie('role',$user['role_id'],time()+(60*60*24*30),'/');
+  }
+  public function roles($post)
+  {
+    if($this->usercookie['role'] == 3){
+      if(empty($post)){
+        $con = $this->modelpost->roles($this->usercookie['id']);
+        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+        echo $this->twigenvi->render('/templates/user/user.html.twig',['user'=>$donnes,'access'=>$this->usercookie['role']]);
+      }else{
+        $this->modelpost->updaterole($post);
+        return header("LOCATION:/admin/roles");
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function admin()
+  {
+    if($this->usercookie['role'] == 3){
+        echo $this->twigenvi->render('/templates/user/admin.html.twig',['access'=>$this->usercookie['role']]);
+    }else{
+      return header("LOCATION:/");
+    }
   }
 }

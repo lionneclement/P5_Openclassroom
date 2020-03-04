@@ -30,7 +30,7 @@ $router->map('GET', '/post/[i:id]', function($id) {
     $page = new post;
     $page->onepost($id);
 });
-$router->map('GET|POST', '/addpost', function() {
+$router->map('GET|POST', '/admin/addpost', function() {
     $page = new post;
     $page->add($_POST);
 });
@@ -57,6 +57,14 @@ $router->map('GET|POST','/login',function() {
 $router->map('GET','/logout',function(){
     $page = new user;
     $page->logout();
+});
+$router->map('GET|POST','/admin/roles',function(){
+    $page = new user;
+    $page->roles($_POST);
+});
+$router->map('GET','/admin',function(){
+    $page = new user;
+    $page->admin();
 });
 
   
