@@ -2,11 +2,11 @@
 
 require '../../vendor/autoload.php';
 require '../../src/twig/twigenvi.php';
-require '../controller/publicController.php';
+require '../controller/postController.php';
 require '../controller/adminController.php';
 require '../model/connectmodel.php';
 require '../model/adminmodel.php';
-require '../model/publicmodel.php';
+require '../model/postmodel.php';
 
 use App\controller\admincontroller;
 use App\controller\publiccontroller;

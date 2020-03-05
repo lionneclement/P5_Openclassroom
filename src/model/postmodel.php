@@ -4,7 +4,7 @@ namespace App\model;
 
 use App\model\connectmodel;
 
-class publicmodel extends connectmodel
+class postmodel extends connectmodel
 {
   public function posts()
   {

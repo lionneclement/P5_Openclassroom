@@ -2,7 +2,7 @@
 namespace App\controller;
 
 use App\twig\twigenvi;
-use App\model\publicmodel;
+use App\model\postmodel;
 
 class publiccontroller extends twigenvi
 {
@@ -12,7 +12,7 @@ class publiccontroller extends twigenvi
   public function __construct()
   {
     parent::__construct();
-    $this->modelpost = new publicmodel;
+    $this->modelpost = new postmodel;
     if (isset($_COOKIE['id'])){
       $this->usercookie['id'] = $_COOKIE['id'];
       $this->usercookie['role'] = $_COOKIE['role'];
