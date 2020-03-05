@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section> 
+  <div class="container">
+    <h1 class="text-center">Contact</h1>
+    {% for n in donnes %}
+    <form method="post" action="/updatepost/{{id}}">
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">titre</label>
+        <input type="nom" name="titre" class="form-control" id="FormControlInput1" value='{{n.titre}}'>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">chapo</label>
+        <input type="prenom" name="chapo" class="form-control" id="FormControlInput2" value='{{n.chapo}}'>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput3">contenu</label>
+        <textarea class="form-control" type="contenu" name="contenu" id="FormControlInput3">{{n.contenu}}</textarea>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput5">user_id</label>
+        <input type="number" name="user_id" class="form-control" id="FormControlInput5" value='{{n.user_id}}'>
+      </div>
+      <div class="col text-center mt-4">
+      <button type="submit" class="btn btn-primary">Confirm identity</button>
+      </div>
+    </div>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
