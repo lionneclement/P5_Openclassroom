@@ -105,4 +105,13 @@ class admincontroller extends twigenvi
       return header("LOCATION:/");
     }
   }
+  public function deletecomment($id,$url)
+  {
+    if($this->usercookie['role'] == 3 && !empty($id)){
+      $this->modelpost->deletecomment($id);
+      return header("LOCATION:/admin/$url");
+    }else{
+      return header("LOCATION:/");
+    }
+  }
 }

@@ -4,7 +4,7 @@ namespace App\controller;
 use App\twig\twigenvi;
 use App\model\postmodel;
 
-class publiccontroller extends twigenvi
+class postcontroller extends twigenvi
 {
   private $modelpost;
   private $usercookie;
@@ -32,7 +32,7 @@ class publiccontroller extends twigenvi
       if(empty($post)){
         $con = $this->modelpost->post($id);
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/post/AddUpdatepost.html.twig',['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->usercookie['role']]);
       }else {
         $this->modelpost->update($id,$post);
         return header("LOCATION:/posts");
@@ -45,7 +45,7 @@ class publiccontroller extends twigenvi
   {
     if(isset($this->usercookie) && $this->usercookie['role'] == 3){
       if(empty($post)){
-        echo $this->twigenvi->render('/templates/post/AddUpdatepost.html.twig',['url'=>'addpost','access'=>$this->usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'addpost','access'=>$this->usercookie['role']]);
       }else{
         $this->modelpost->add($post);
         return header("LOCATION:/posts");

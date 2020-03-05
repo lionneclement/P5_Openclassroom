@@ -38,4 +38,8 @@ class adminmodel extends connectmodel
   {
     return $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
   }
+  public function deletecomment($id)
+  {
+    $this->bdd->query('DELETE FROM commentaire WHERE id='.$id.'');
+  }
 }

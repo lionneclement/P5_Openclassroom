@@ -28,9 +28,7 @@ class postmodel extends connectmodel
   }
   public function remove($id)
   {
-    $array['id']=$id;
-    $sql = 'DELETE FROM article WHERE id=:id';
-    $this->bdd->prepare($sql)->execute($array);
+    $this->bdd->query('DELETE FROM article WHERE id='.$id.'');
   }
   public function allcomment($id)
   {

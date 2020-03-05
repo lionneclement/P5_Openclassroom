@@ -9,36 +9,36 @@ require '../model/adminmodel.php';
 require '../model/postmodel.php';
 
 use App\controller\admincontroller;
-use App\controller\publiccontroller;
+use App\controller\postcontroller;
 
  $router = new AltoRouter();
 
  $router->map('GET', '/', function() {
-	$page = new publiccontroller;
+	$page = new postcontroller;
     $page->home();
 });
  $router->map('GET', '/posts', function() {
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->allposts();
 });
 $router->map('GET', '/post/[i:id]', function($id) {
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->onepost($id);
 });
 $router->map('GET|POST', '/admin/addpost', function() {
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->add($_POST);
 });
 $router->map('GET|POST', '/updatepost/[i:id]', function($id) {
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->update($id,$_POST); 
 });
 $router->map('GET', '/removepost/[i:id]', function($id) {
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->remove($id);
 });
  $router->map('POST','/mail',function() {
-    $page = new publiccontroller();
+    $page = new postcontroller();
     $page->sendmail($_POST);
 });
 $router->map('GET|POST','/register',function() {
@@ -62,16 +62,16 @@ $router->map('GET','/admin',function(){
     $page->admin();
 });
 $router->map('POST','/comment',function(){
-    $page = new publiccontroller;
+    $page = new postcontroller;
     $page->comment($_POST);
 });
-$router->map('GET|POST','/admin/allcomment',function(){
+$router->map('GET|POST','/admin/[a:action]',function($action){
     $page = new admincontroller;
-    $page->comment($_POST,'allcomment');
+    $page->comment($_POST,$action);
 });
-$router->map('GET|POST','/admin/invalidecomment',function(){
+$router->map('GET','/admin/deletecomment/[i:id]/[a:action]',function($id,$action){
     $page = new admincontroller;
-    $page->comment($_POST,'invalidecomment');
+    $page->deletecomment($id,$action);
 });
 
   
