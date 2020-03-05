@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section> 
+  <div class="container">
+    <h1 class="text-center">Contact</h1>
+    {% set titre = '' %}
+    {% set chapo = '' %}
+    {% set contenu = '' %}
+    {% set user_id = '' %}
+    {% for n in donnes %}
+      {% set titre = n.titre %}
+      {% set chapo = n.chapo %}
+      {% set contenu = n.contenu %}
+      {% set user_id = n.user_id %}
+    {% endfor %}
+    <form method="post" action="{{url}}">
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">titre</label>
+        <input type="nom" name="titre" class="form-control" id="FormControlInput1" value='{{titre}}'>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">chapo</label>
+        <input type="prenom" name="chapo" class="form-control" id="FormControlInput2" value='{{chapo}}'>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput3">contenu</label>
+        <textarea class="form-control" type="contenu" name="contenu" id="FormControlInput3">{{contenu}}</textarea>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput4">user_id</label>
+        <input type="number" name="user_id" class="form-control" id="FormControlInput4" value='{{user_id}}'>
+      </div>
+      <div class="col text-center mt-4">
+      <button type="submit" class="btn btn-primary">Confirm identity</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
