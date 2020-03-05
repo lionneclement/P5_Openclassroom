@@ -3,6 +3,7 @@ namespace App\controller;
 
 use App\twig\twigenvi;
 use App\model\postmodel;
+use App\model\entity;
 
 class postcontroller extends twigenvi
 {
@@ -24,17 +25,19 @@ class postcontroller extends twigenvi
   }
   public function sendmail($post)
   {
-    mail($post['email'],$post['prenom'].$post['nom'] ,$post['message']);
+    $obj =  new entity($post);
+    mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
   }
   public function update($id,$post)
   {
     if(isset($this->usercookie) && $this->usercookie['role'] >= 2){
       if(empty($post)){
-        $con = $this->modelpost->post($id);
+        $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
         echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->usercookie['role']]);
       }else {
-        $this->modelpost->update($id,$post);
+        $post['id']=$id;
+        $this->modelpost->update(new entity($post));
         return header("LOCATION:/posts");
       }
     }else{
@@ -47,7 +50,7 @@ class postcontroller extends twigenvi
       if(empty($post)){
         echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'addpost','access'=>$this->usercookie['role']]);
       }else{
-        $this->modelpost->add($post);
+        $this->modelpost->add(new entity($post));
         return header("LOCATION:/posts");
       }
     }
@@ -57,9 +60,9 @@ class postcontroller extends twigenvi
   }
   public function onepost($id)
   {
-    $con = $this->modelpost->post($id);
+    $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
     $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-    $con1 = $this->modelpost->allcomment($id);
+    $con1 = $this->modelpost->allcomment(new entity(array('article_id'=>$id)));
     $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
     echo $this->twigenvi->render('/templates/post/onepost.html.twig',['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->usercookie['role']]);
   }
@@ -72,7 +75,7 @@ class postcontroller extends twigenvi
   public function remove($id)
   {
     if(isset($this->usercookie) && $this->usercookie['role'] == 3){
-      $this->modelpost->remove($id);
+      $this->modelpost->remove(new entity(array('article_id'=>$id)));
       return header("LOCATION:/posts");
     }else{
       return header("LOCATION:/");
@@ -81,14 +84,9 @@ class postcontroller extends twigenvi
   public function comment($post)
   {
     if(isset($this->usercookie)){
-      $con = $this->modelpost->post($post['id']);
+      $con = $this->modelpost->post(new entity(array('article_id'=>$post['id'])));
       $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-      $array= [
-        'message'=>$post['contenu'],
-        'user_id'=>$this->usercookie['id'],
-        'article_id'=>$donnes['id']
-      ];
-      $this->modelpost->addcomment($array);
+      $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$donnes['id'])));
       return header('LOCATION:/post/'.$post['id'].'');
     }else{
       return header("LOCATION:/");
