@@ -2,9 +2,9 @@
 
 namespace App\model;
 
-use App\model\connect;
+use App\model\connectmodel;
 
-class muser extends connect
+class adminmodel extends connectmodel
 {
   public function check($email)
   {

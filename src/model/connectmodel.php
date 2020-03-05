@@ -2,7 +2,7 @@
 
 namespace App\model;
 
-class connect 
+class connectmodel 
 {
   protected $bdd;
   public function __construct()

@@ -2,9 +2,9 @@
 namespace App\controller;
 
 use App\twig\twigenvi;
-use App\controller\mpost;
+use App\model\publicmodel;
 
-class post extends twigenvi
+class publiccontroller extends twigenvi
 {
   private $modelpost;
   private $usercookie;
@@ -12,11 +12,19 @@ class post extends twigenvi
   public function __construct()
   {
     parent::__construct();
-    $this->modelpost = new mpost;
+    $this->modelpost = new publicmodel;
     if (isset($_COOKIE['id'])){
       $this->usercookie['id'] = $_COOKIE['id'];
       $this->usercookie['role'] = $_COOKIE['role'];
     }
+  }
+  public function home()
+  {
+    echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
+  }
+  public function sendmail($post)
+  {
+    mail($post['email'],$post['prenom'].$post['nom'] ,$post['message']);
   }
   public function update($id,$post)
   {

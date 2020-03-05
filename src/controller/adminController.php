@@ -2,16 +2,16 @@
 namespace App\controller;
 
 use App\twig\twigenvi;
-use App\model\muser;
+use App\model\adminmodel;
 
-class user extends twigenvi
+class admincontroller extends twigenvi
 {
   private $modelpost;
   private $usercookie;
   public function __construct()
   {
     parent::__construct();
-    $this->modelpost = new muser;
+    $this->modelpost = new adminmodel;
     if (isset($_COOKIE['id'])){
       $this->usercookie['id'] = $_COOKIE['id'];
       $this->usercookie['role'] = $_COOKIE['role'];

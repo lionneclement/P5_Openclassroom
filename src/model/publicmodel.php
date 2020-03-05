@@ -1,9 +1,10 @@
 <?php
 
-namespace App\controller;
+namespace App\model;
 
-use App\model\connect;
-class mpost extends connect
+use App\model\connectmodel;
+
+class publicmodel extends connectmodel
 {
   public function posts()
   {
