@@ -65,13 +65,13 @@ $router->map('POST','/comment',function(){
     $page = new publiccontroller;
     $page->comment($_POST);
 });
-$router->map('GET|POST','/admin/comment',function(){
+$router->map('GET|POST','/admin/allcomment',function(){
     $page = new admincontroller;
-    $page->comment($_POST);
+    $page->comment($_POST,'allcomment');
 });
-$router->map('GET|POST','/admin/commentinvalide',function(){
+$router->map('GET|POST','/admin/invalidecomment',function(){
     $page = new admincontroller;
-    $page->commentinvalide($_POST);
+    $page->comment($_POST,'invalidecomment');
 });
 
   

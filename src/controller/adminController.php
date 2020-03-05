@@ -90,31 +90,16 @@ class admincontroller extends twigenvi
       return header("LOCATION:/");
     }
   }
-  public function comment($post)
+  public function comment($post,$type)
   {
     if($this->usercookie['role'] == 3){
       if(empty($post)){
-        $con = $this->modelpost->allcomment();
+        $con = $this->modelpost->$type();
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/user/comment.html.twig',['comment'=>$donnes,'access'=>$this->usercookie['role']]);
+        echo $this->twigenvi->render('/templates/user/comment.html.twig',['return'=>$type,'comment'=>$donnes,'access'=>$this->usercookie['role']]);
       }else{
         $this->modelpost->updatecomment($_POST);
-        return header("LOCATION:/admin/comment");
-      }
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function commentinvalide($post)
-  {
-    if($this->usercookie['role'] == 3){
-      if(empty($post)){
-        $con = $this->modelpost->invalidecomment();
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/user/commentinvalide.html.twig',['comment'=>$donnes,'access'=>$this->usercookie['role']]);
-      }else{
-        $this->modelpost->updatecomment($_POST);
-        return header("LOCATION:/admin/commentinvalide");
+        return header("LOCATION:/admin/$type");
       }
     }else{
       return header("LOCATION:/");

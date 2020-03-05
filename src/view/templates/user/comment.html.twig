@@ -10,7 +10,7 @@
                 <h5 class="card-title">Message: {{n.message}}</h5>
                 <p class="card-text">Date: {{n.date}}</p>
                 <p class="card-text">Article_id: {{n.article_id}}</p>
-                <form method="post" action="/admin/comment">
+                <form method="post" action="/admin/{{return}}">
                   <label for="FormControlInput1">Statut :</label>
                   <input type="number" name="statut" class="form-control" id="FormControlInput1" value='{{n.statut}}' min=0 max=1>
                   <input type="hidden" name="id" value="{{n.id}}">
