@@ -19,14 +19,15 @@ class postcontroller extends twigenvi
       $this->usercookie['role'] = $_COOKIE['role'];
     }
   }
-  public function home()
+  public function home($post)
   {
-    echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
-  }
-  public function sendmail($post)
-  {
-    $obj =  new entity($post);
-    mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
+    if(empty($post)){
+      echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
+    }else{
+      $obj =  new entity($post);
+      mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
+      echo '<script language="javascript">alert("Votre message viens d\'être envoyer !");window.location.replace("/")</script>';
+    } 
   }
   public function update($id,$post)
   {

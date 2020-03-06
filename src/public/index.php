@@ -14,9 +14,9 @@ use App\controller\postcontroller;
 
  $router = new AltoRouter();
 
- $router->map('GET', '/', function() {
+ $router->map('GET|POST', '/', function() {
 	$page = new postcontroller;
-    $page->home();
+    $page->home($_POST);
 });
  $router->map('GET', '/posts', function() {
     $page = new postcontroller;
@@ -37,10 +37,6 @@ $router->map('GET|POST', '/updatepost/[i:id]', function($id) {
 $router->map('GET', '/removepost/[i:id]', function($id) {
     $page = new postcontroller;
     $page->remove($id);
-});
- $router->map('POST','/mail',function() {
-    $page = new postcontroller();
-    $page->sendmail($_POST);
 });
 $router->map('GET|POST','/register',function() {
     $page = new admincontroller;
