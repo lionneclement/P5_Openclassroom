@@ -11,8 +11,12 @@
                 <p class="card-text">{{n.chapo}}</p>
                 <p class="card-text">Dernière modification: {{n.date}}</p>
                 <a href="post/{{n.id}}" class="btn btn-primary">Voir plus</a>
-                <a href="updatepost/{{n.id}}" class="btn btn-primary">Modifier</a>
-                <a href="removepost/{{n.id}}" class="btn btn-primary">Supprimer</a>
+                {% if access and access >= 2 %}
+                  <a href="updatepost/{{n.id}}" class="btn btn-primary">Modifier</a>
+                  {% if access == 3 %}
+                  <a href="removepost/{{n.id}}" class="btn btn-primary">Supprimer</a>
+                  {% endif %}
+                {% endif %}
               </div>
             </div>
           </div>
