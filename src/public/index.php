@@ -74,6 +74,10 @@ $router->map('GET','/admin/deletecomment/[i:id]/[a:action]',function($id,$action
     $page = new admincontroller;
     $page->deletecomment($id,$action);
 });
+$router->map('GET','/admin/deleteuser/[i:id]',function($id){
+    $page = new admincontroller;
+    $page->deleteuser($id);
+});
 
   
 $match = $router->match();

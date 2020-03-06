@@ -3,6 +3,7 @@ namespace App\controller;
 
 use App\twig\twigenvi;
 use App\model\adminmodel;
+use App\model\postmodel;
 use App\model\entity;
 
 class admincontroller extends twigenvi
@@ -27,7 +28,7 @@ class admincontroller extends twigenvi
         $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
         $donnes = $con->fetchAll();
         if(empty($donnes)){
-          $this->modelpost->register(new entity(array('mdp'=>$post['mdp'])));
+          $this->modelpost->register(new entity($post));
           echo 'user create';
         }else{
           echo 'already exits';
@@ -110,6 +111,21 @@ class admincontroller extends twigenvi
     if($this->usercookie['role'] == 3 && !empty($id)){
       $this->modelpost->deletecomment(new entity(array('id'=>$id)));
       return header("LOCATION:/admin/$url");
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function deleteuser($id)
+  {
+    if($this->usercookie['role'] == 3 && !empty($id)){
+      $con = $this->modelpost->getpost(new entity(array('user_id'=>$id)));
+      $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+      foreach($donnes as $val){
+        $postmodel = new postmodel;
+        $postmodel->remove(new entity(array('article_id'=>$val['id'])));
+      }
+      $this->modelpost->deleteuser(new entity(array('id'=>$id)));
+      return header("LOCATION:/admin/roles");
     }else{
       return header("LOCATION:/");
     }

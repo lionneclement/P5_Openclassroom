@@ -42,4 +42,12 @@ class adminmodel extends connectmodel
   {
     $this->bdd->query('DELETE FROM commentaire WHERE id='.$post->getid().'');
   }
+  public function getpost(entity $post)
+  {
+   return $this->bdd->query('SELECT * FROM article WHERE user_id='.$post->getuser_id().'');
+  }
+  public function deleteuser(entity $post)
+  {
+    $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
+  }
 }
