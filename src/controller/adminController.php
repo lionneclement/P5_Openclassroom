@@ -29,9 +29,9 @@ class admincontroller extends twigenvi
         $donnes = $con->fetchAll();
         if(empty($donnes)){
           $this->modelpost->register(new entity($post));
-          echo 'user create';
+          echo '<script language="javascript">alert("Votre compte vient d\'être créé, vous pouvez vous connecter !");window.location.replace("/login")</script>';
         }else{
-          echo 'already exits';
+          echo '<script language="javascript">alert("Votre compte existe déjà connecter vous !");window.location.replace("/login")</script>';
         }
       }
     }else{
@@ -48,9 +48,9 @@ class admincontroller extends twigenvi
         $donnes = $con->fetch(\PDO::FETCH_ASSOC);
         if(!empty($donnes) && password_verify($post['mdp'],$donnes['mdp'])){
           $this->confcookie($donnes);
-          echo 'user connect';
+          echo '<script language="javascript">alert("Vous êtes connecter !");window.location.replace("/")</script>';
         }else{
-          echo 'user no exist';
+          echo '<script language="javascript">alert("L\'email ou le mot de passe est incorrect !");window.location.replace("/login")</script>';
         }
       }
     }else{
