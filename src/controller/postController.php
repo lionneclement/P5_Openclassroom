@@ -84,9 +84,7 @@ class postcontroller extends twigenvi
   public function comment($post)
   {
     if(isset($this->usercookie)){
-      $con = $this->modelpost->post(new entity(array('article_id'=>$post['id'])));
-      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-      $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$donnes['id'])));
+      $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$post['id'])));
       return header('LOCATION:/post/'.$post['id'].'');
     }else{
       return header("LOCATION:/");
