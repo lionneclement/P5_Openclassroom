@@ -10,6 +10,7 @@
     "require": {
         "twbs/bootstrap": "^4.4",
         "twig/twig": "^3.0",
-        "altorouter/altorouter": "^2.0"
+        "altorouter/altorouter": "^2.0",
+        "google/recaptcha": "^1.2"
     }
 }
