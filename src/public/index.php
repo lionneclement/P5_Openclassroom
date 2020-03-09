@@ -82,6 +82,10 @@ $router->map('GET','/resetlink',function(){
     $page = new admincontroller;
     $page->resetlink();
 });
+$router->map('GET|POST','/updateuser',function(){
+    $page = new admincontroller;
+    $page->updateuser($_POST);
+});
 
   
 $match = $router->match();

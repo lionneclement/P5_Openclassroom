@@ -130,7 +130,8 @@ class admincontroller extends twigenvi
       return header("LOCATION:/");
     }
   }
-  public function resetpassword($post){
+  public function resetpassword($post)
+  {
     if(empty($post)){
       echo $this->twigenvi->render('/templates/user/reset.html.twig');
     }else{
@@ -145,7 +146,8 @@ class admincontroller extends twigenvi
       }
     }
   }
-  public function resetlink(){
+  public function resetlink()
+  {
     if(isset($_COOKIE['reset'])){
       $regex="/@[a-zA-Z.]*/";
       $new = preg_replace($regex,'',$_COOKIE['reset']);
@@ -154,6 +156,21 @@ class admincontroller extends twigenvi
       mail($_COOKIE['reset'],'Changement de mot de passe','Voici votre nouveau mot de passe: \''.$new.'\'. N\'oublier pas de le changer');
       setcookie('reset','',-1,'/');
       echo '<script language="javascript">alert("Vous allez recevoir un nouvelle email avec votre nouveau mot de passe.");window.location.replace("/login")</script>';
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function updateuser($post)
+  {
+    if(isset($this->usercookie['id'])){
+      if(empty($post)){
+        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
+        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+        echo $this->twigenvi->render('/templates/user/updateuser.html.twig',['user'=>$donnes,'access'=>$this->usercookie['role']]);
+      }else{
+        $this->modelpost->updateuser(new entity(array('nom'=>$post['nom'],'prenom'=>$post['prenom'],'email'=>$post['email'],'id'=>$this->usercookie['id'])));
+        return header("LOCATION:/updateuser");
+      }
     }else{
       return header("LOCATION:/");
     }
