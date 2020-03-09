@@ -78,9 +78,9 @@ $router->map('GET|POST','/resetpassword',function(){
     $page = new admincontroller;
     $page->resetpassword($_POST);
 });
-$router->map('GET','/resetlink',function(){
+$router->map('GET|POST','/resetlink/[i:id]/[a:action]',function($id,$action){
     $page = new admincontroller;
-    $page->resetlink();
+    $page->resetlink($id,$action,$_POST);
 });
 $router->map('GET|POST','/updateuser',function(){
     $page = new admincontroller;

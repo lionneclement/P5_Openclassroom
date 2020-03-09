@@ -136,26 +136,32 @@ class admincontroller extends twigenvi
       echo $this->twigenvi->render('/templates/user/reset.html.twig');
     }else{
       $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
-      $donnes = $con->fetch();
+      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
       if(empty($donnes)){
         echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';
       }else{
-        setcookie('reset',$post['email'],time()+(60*60*24*30),'/');
-        mail($post['email'],'Changement de mot de passe','Voici le lien pour changer de mot de passe: http://localhost/resetlink');
+        $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        shuffle($seed);
+        $rand = '';
+        foreach (array_rand($seed, 10) as $k) $rand .= $seed[$k];
+        $obj = password_hash($rand, PASSWORD_DEFAULT);
+        setcookie('reset',$obj,time()+(60*60),'/');
+        mail($post['email'],'Changement de mot de passe','Voici le lien pour changer de mot de passe: http://localhost/resetlink/'.$donnes['id'].'/'.$rand);
         echo '<script language="javascript">alert("Vous allez recevoir un email.");window.location.replace("/resetpassword")</script>';
       }
     }
   }
-  public function resetlink()
+  public function resetlink($id,$url,$post)
   {
-    if(isset($_COOKIE['reset'])){
-      $regex="/@[a-zA-Z.]*/";
-      $new = preg_replace($regex,'',$_COOKIE['reset']);
-      $password = new entity(array('mdp'=>$new));
-      $this->modelpost->resetpassword($password,$_COOKIE['reset']);
-      mail($_COOKIE['reset'],'Changement de mot de passe','Voici votre nouveau mot de passe: \''.$new.'\'. N\'oublier pas de le changer');
-      setcookie('reset','',-1,'/');
-      echo '<script language="javascript">alert("Vous allez recevoir un nouvelle email avec votre nouveau mot de passe.");window.location.replace("/login")</script>';
+    if(isset($_COOKIE['reset']) && password_verify($url,$_COOKIE['reset'])){
+      if(empty($post)){
+        echo $this->twigenvi->render('/templates/user/resetpassword.html.twig',['url'=>$url,'id'=>$id,'access'=>$this->usercookie['role']]);
+      }else{
+        $password = new entity(array('mdp'=>$post['newpassword']));
+        $this->modelpost->resetpasswordwithid($password,$id);
+        setcookie('reset','',-1,'/');
+        return header("LOCATION:/login");
+      }
     }else{
       return header("LOCATION:/");
     }
