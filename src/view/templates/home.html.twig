@@ -2,11 +2,13 @@
 
 {% block content %}
 
-<header>
+<header class="mt-4">
   <div class="jumbotron jumbotron-fluid">
     <div class="container text-center">
       <h1 class="display-4">Lionne Clément</h1>
-      <p class="lead">Un développeur PHP/Symfony mais aussi ...</p>
+      <p class="lead">Un développeur PHP/Symfony à retrouver sur</p>
+      <a href="https://www.linkedin.com/in/lionne-cl%C3%A9ment/" target="_blank"><i class="fa fa-linkedin-square" style="font-size:40px"></i></a>
+      <a href="https://github.com/lionneclement" target="_blank"><i class="fa fa-github" style="font-size:40px"></i></a>
     </div>
   </div>
 </header>
@@ -14,50 +16,62 @@
 <section>
   <div class="container">
     <div class="row text-center">
-      <div class="col-6">
-        <img src="images/me.jpg" class="rounded" alt="...">
+      <div class="col-md-6">
+        <img src="images/me.jpg" class="rounded img-fluid" alt="moi">
       </div>
-      <div class="col-6">
+      <div class="col-md-6">
         <h1>Beaucoup de blabla</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <a href="images/cv.pdf" target="_blank" class="btn btn-secondary">Curriculum Vitae</a>
       </div>
     </div>
   </div>
 </section>
-  </br>
-  </br>
-  </br>
 <section> 
-  <div class="container">
+  <div class="container py-5">
     <h1 class="text-center">Contact</h1>
-    <form method="post" action="/mail">
+    <form method="post" class="needs-validation" novalidate action="/">
       <div class="row">
-      <div class="col-6">
+      <div class="col-6 form-group">
         <label for="FormControlInput1">Nom</label>
-        <input type="nom" name="nom" class="form-control" id="FormControlInput1" placeholder="name@example.com">
+        <input type="text" name="nom" class="form-control" id="FormControlInput1" placeholder="Pierre" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
-      <div class="col-6">
+      <div class="col-6 form-group">
         <label for="FormControlInput2">Prénom</label>
-        <input type="prenom" name="prenom" class="form-control" id="FormControlInput2" placeholder="name@example.com">
+        <input type="text" name="prenom" class="form-control" id="FormControlInput2" placeholder="Dubois" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
-      <div class="col-6">
+      <div class="col-6 form-group">
         <label for="FormControlInput3">Email address</label>
-        <input type="email" name="email" class="form-control" id="FormControlInput3" placeholder="name@example.com">
+        <input type="email" name="email" class="form-control" id="FormControlInput3" placeholder="pierre.dubois@gmail.com" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
-      <div class="col-6">
-        <label for="FormControlInput4">message</label>
-        <textarea class="form-control" type="message" name="message" id="FormControlInput4"></textarea>
+      <div class="col-6 form-group">
+        <label for="FormControlInput4">Message</label>
+        <textarea name="message" class="form-control" id="FormControlInput4" required></textarea>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
-      <div class="col text-center mt-4">
-      <button type="submit" class="btn btn-primary">Confirm identity</button>
+      <div class=" col-12 text-center">
+        <div class="g-recaptcha" style="display: inline-block;" data-sitekey="6Lcchd8UAAAAAGGYJk2Va2WRULZIRGdYMc3rclaL"></div>
+      </div>
+      <div class="col text-center mt-4" >
+      <button type="submit" class="btn btn-secondary btn-lg">Confirm identity</button>
       </div>
     </div>
     </form>
   </div>
 </section>
-
 {% endblock %}

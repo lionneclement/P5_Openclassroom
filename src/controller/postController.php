@@ -19,14 +19,23 @@ class postcontroller extends twigenvi
       $this->usercookie['role'] = $_COOKIE['role'];
     }
   }
-  public function home()
+  public function home($post)
   {
-    echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
-  }
-  public function sendmail($post)
-  {
-    $obj =  new entity($post);
-    mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
+    if(empty($post)){
+      echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
+    }else{
+      $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
+      $resp = $recaptcha->setExpectedHostname('localhost')
+                        ->verify($post['g-recaptcha-response'],$_SERVER['REMOTE_ADDR']);
+      if ($resp->isSuccess()) {
+        $obj =  new entity($post);
+        mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
+        echo '<script language="javascript">alert("Votre message viens d\'être envoyer !");window.location.replace("/")</script>';
+      }else {
+        echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/")</script>';
+        $error = $resp->getErrorCodes();
+      }
+    } 
   }
   public function update($id,$post)
   {

@@ -1,55 +1,60 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class='container text-center pt-5'>
+    <div class='container text-center mt-5 py-5'>
       <div class='row'>
         {% for n in nom %}
           <div class='col-12'>
-            <h1>{{n.id}}</h1>
-            <p>{{n.titre}}</p>
-            <p>{{n.chapo}}</p>
-            <p>{{n.contenu}}</p>
-            <p>{{n.date}}</p>
-            <p>{{n.user_id}}</p>
-          </div>
-          {% if access and access >= 2 %}
-            <div class='container text-center'>
-              <a href="/updatepost/{{n.id}}" class="btn btn-primary">Modifier</a>
-              {% if access == 3 %}  
-                <a href="/removepost/{{n.id}}" class="btn btn-primary">Supprimer</a>
-              {% endif %}
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">{{n.titre}}</h5>
+                <p class="card-text"><i>{{n.chapo}}</i></p>
+                <p class="card-text">{{n.contenu}}</p>
+                {% if access and access >= 2 %}
+                  <a href="/updatepost/{{n.id}}" class="btn btn-secondary">Modifier</a>
+                  {% if access == 3 %}  
+                    <a href="/removepost/{{n.id}}" class="btn btn-secondary">Supprimer</a>
+                  {% endif %}
+                {% endif %}
+              </div>
+              <div class="card-footer text-muted">Dernière modification: {{n.date}}</div>
             </div>
-          {% endif %}
+          </div>
         {% endfor %}
       </div>
     </div>
-    <div class="container text-center">
+    {% if comment %}
+    <div class="container text-center py-5">
       <h2>Commentaire</h2>
       {% for c in comment %}
-        <div class="media">
-          <div class="media-body">
-            <h5 class="mt-0">id : {{c.id}}</h5>
-            <h5 class="mt-0">user_id : {{c.user_id}}</h5>
-            <p>Date : {{c.date}}</p>
-            <p>Message : {{c.message}}</p>
+        <div class="card text-center">
+          <div class="card-header">
+            Auteur: {{c.user_id}}
           </div>
+          <div class="card-body">
+            <p class="card-text">{{c.message}}</p>
+          </div>
+          <div class="card-footer text-muted">Dernière modification: {{c.date}}</div>
         </div>
       {% endfor %}
     </div>
+    {% endif %}
   {% if access >= 1 %}
-    <div class="container text-center">
-      <h1 class="text-center">Contact</h1>
-      <form method="post" action="/comment">
+    <div class="container text-center py-5">
+      <h2>Ajouter un commentaire</h2>
+      <form method="post" class="needs-validation" novalidate action="/comment">
         <div class="row">
         <div class="col-12">
-          <label for="FormControlInput3">Votre message</label>
-          <textarea class="form-control" type="text" name="contenu" id="FormControlInput3"></textarea>
+          <textarea class="form-control" type="text" name="contenu" id="FormControlInput3" required></textarea>
+          <div class="invalid-feedback">
+            Ce champ est obligatoire.
+          </div>
           {% for c in nom %}
           <input type="hidden" name="id" value="{{c.id}}">
           {% endfor %}
         </div>
         <div class="col text-center mt-4">
-        <button type="submit" class="btn btn-primary">Confirm identity</button>
+        <button type="submit" class="btn btn-secondary">Confirm identity</button>
         </div>
       </div>
       </form>
@@ -57,7 +62,7 @@
   {% else %}
   <div class="container text-center">
     <h3>Connecter vous pour pourvoir commenter</h3>
-    <a href="/login">Se connecter</a>
+    <a class="btn btn-secondary" href="/login">Se connecter</a>
   </div>
   {% endif %}
 {% endblock %}

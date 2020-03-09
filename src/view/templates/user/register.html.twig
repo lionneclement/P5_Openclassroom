@@ -1,34 +1,45 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-<section class='pt-5'> 
+<section class='pt-5 mt-5'> 
   <div class="container">
     <h1 class="text-center">Register</h1>
-    <form method="post" action="/register">
+    <form method="post" action="/register" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Nom</label>
-        <input type="name" name="nom" class="form-control" id="FormControlInput1">
+        <input type="name" name="nom" class="form-control" id="FormControlInput1" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput2">Prénom</label>
-        <input type="name" name="prenom" class="form-control" id="FormControlInput2">
+        <input type="name" name="prenom" class="form-control" id="FormControlInput2" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput3">Email</label>
-        <input class="form-control" type="email" name="email" id="FormControlInput3"></input>
+        <input class="form-control" type="email" name="email" id="FormControlInput3" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput4">Mot de passe</label>
-        <input type="password" name="mdp" class="form-control" id="FormControlInput4">
+        <input type="password" name="mdp" class="form-control" id="FormControlInput4" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
       </div>
       
       <div class="col text-center mt-4">
-      <button type="submit" class="btn btn-primary">Confirme</button>
+      <button type="submit" class="btn btn-secondary">Confirme</button>
       </div>
     </div>
     </form>
   </div>
 </section>
-
 {% endblock %}
