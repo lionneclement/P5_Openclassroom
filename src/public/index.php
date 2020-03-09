@@ -11,8 +11,11 @@ require '../model/entity.php';
 
 use App\controller\admincontroller;
 use App\controller\postcontroller;
+use Dotenv\Dotenv;
 
- $router = new AltoRouter();
+$dotenv = Dotenv::createImmutable('../../');
+$dotenv->load();
+$router = new AltoRouter();
 
  $router->map('GET|POST', '/', function() {
 	$page = new postcontroller;
