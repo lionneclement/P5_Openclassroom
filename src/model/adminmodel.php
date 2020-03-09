@@ -64,4 +64,9 @@ class adminmodel extends connectmodel
     $sql = 'UPDATE user SET nom=:nom, prenom=:prenom, email=:email  WHERE id=:id';
     $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()));
   }
+  public function updatepassword($post)
+  {
+    $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
+    $this->bdd->prepare($sql)->execute(array('mdp'=>$post->getmdp(),'id'=>$post->getid()));
+  }
 }

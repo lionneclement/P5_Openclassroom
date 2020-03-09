@@ -175,4 +175,24 @@ class admincontroller extends twigenvi
       return header("LOCATION:/");
     }
   }
+  public function updatepassword($post)
+  {
+    if(isset($this->usercookie['id'])){
+      if(empty($post)){
+        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig',['access'=>$this->usercookie['role']]);
+      }else{
+        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
+        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+        if(password_verify($post['oldpassword'],$donnes['mdp'])){
+          var_dump(array('mdp'=>$post['oldpassword'],'id'=>$this->usercookie['id']));
+          $this->modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$this->usercookie['id'])));
+          echo '<script language="javascript">alert("Votre mot de passe à bien été modifier");window.location.replace("/updateuser")</script>';
+        }else{
+          echo '<script language="javascript">alert("Erreur dans le mot de passe");window.location.replace("/updateuser")</script>';
+        }
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
 }

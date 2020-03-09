@@ -86,6 +86,10 @@ $router->map('GET|POST','/updateuser',function(){
     $page = new admincontroller;
     $page->updateuser($_POST);
 });
+$router->map('GET|POST','/updatepassword',function(){
+    $page = new admincontroller;
+    $page->updatepassword($_POST);
+});
 
   
 $match = $router->match();
