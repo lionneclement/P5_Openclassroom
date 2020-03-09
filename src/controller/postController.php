@@ -34,6 +34,7 @@ class postcontroller extends twigenvi
       }else {
         echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/")</script>';
         $error = $resp->getErrorCodes();
+        throw new \Exception($error);
       }
     } 
   }
@@ -93,8 +94,17 @@ class postcontroller extends twigenvi
   public function comment($post)
   {
     if(isset($this->usercookie)){
-      $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$post['id'])));
-      return header('LOCATION:/post/'.$post['id'].'');
+      $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
+      $resp = $recaptcha->setExpectedHostname('localhost')
+                        ->verify($post['g-recaptcha-response'],$_SERVER['REMOTE_ADDR']);
+      if ($resp->isSuccess()) {
+        $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$post['id'])));
+        echo '<script language="javascript">alert("Votre message viens d\'être envoyer et doit être valider pas les administrateurs!");window.location.replace("/post/'.$post['id'].'")</script>';
+      }else {
+        echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/post/'.$post['id'].'")</script>';
+        $error = $resp->getErrorCodes();
+        throw new \Exception($error);
+      }
     }else{
       return header("LOCATION:/");
     }
