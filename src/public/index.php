@@ -74,6 +74,14 @@ $router->map('GET','/admin/deleteuser/[i:id]',function($id){
     $page = new admincontroller;
     $page->deleteuser($id);
 });
+$router->map('GET|POST','/resetpassword',function(){
+    $page = new admincontroller;
+    $page->resetpassword($_POST);
+});
+$router->map('GET','/resetlink',function(){
+    $page = new admincontroller;
+    $page->resetlink();
+});
 
   
 $match = $router->match();

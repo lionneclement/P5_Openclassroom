@@ -130,4 +130,32 @@ class admincontroller extends twigenvi
       return header("LOCATION:/");
     }
   }
+  public function resetpassword($post){
+    if(empty($post)){
+      echo $this->twigenvi->render('/templates/user/reset.html.twig');
+    }else{
+      $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
+      $donnes = $con->fetch();
+      if(empty($donnes)){
+        echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';
+      }else{
+        setcookie('reset',$post['email'],time()+(60*60*24*30),'/');
+        mail($post['email'],'Changement de mot de passe','Voici le lien pour changer de mot de passe: http://localhost/resetlink');
+        echo '<script language="javascript">alert("Vous allez recevoir un email.");window.location.replace("/resetpassword")</script>';
+      }
+    }
+  }
+  public function resetlink(){
+    if(isset($_COOKIE['reset'])){
+      $regex="/@[a-zA-Z.]*/";
+      $new = preg_replace($regex,'',$_COOKIE['reset']);
+      $password = new entity(array('mdp'=>$new));
+      $this->modelpost->resetpassword($password,$_COOKIE['reset']);
+      mail($_COOKIE['reset'],'Changement de mot de passe','Voici votre nouveau mot de passe: \''.$new.'\'. N\'oublier pas de le changer');
+      setcookie('reset','',-1,'/');
+      echo '<script language="javascript">alert("Vous allez recevoir un nouvelle email avec votre nouveau mot de passe.");window.location.replace("/login")</script>';
+    }else{
+      return header("LOCATION:/");
+    }
+  }
 }

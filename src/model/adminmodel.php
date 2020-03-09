@@ -50,4 +50,9 @@ class adminmodel extends connectmodel
   {
     $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
   }
+  public function resetpassword($password,$email)
+  {
+    $sql = 'UPDATE user SET mdp=:mdp WHERE email=:email';
+    $this->bdd->prepare($sql)->execute(array('mdp'=>$password->getmdp(),'email'=>$email));
+  }
 }

@@ -28,8 +28,7 @@ class postcontroller extends twigenvi
       $resp = $recaptcha->setExpectedHostname('localhost')
                         ->verify($post['g-recaptcha-response'],$_SERVER['REMOTE_ADDR']);
       if ($resp->isSuccess()) {
-        $obj =  new entity($post);
-        mail($obj->getemail(),$obj->getprenom().$obj->getnom(),$obj->getmessage());
+        mail('nobody@gmail.com',$post['prenom'].$post['nom'],$post['message'],'From:'.$post['email']);
         echo '<script language="javascript">alert("Votre message viens d\'être envoyer !");window.location.replace("/")</script>';
       }else {
         echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/")</script>';
