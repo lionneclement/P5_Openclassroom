@@ -17,6 +17,7 @@ use App\model\adminmodel;
 use App\model\postmodel;
 use App\model\entity;
 use App\entity\user;
+use App\entity\commentaire;
 /**
  * Class for managing connected users
  * 
@@ -142,11 +143,11 @@ class Admincontroller extends twigenvi
     {
         if ($this->_usercookie['role'] == 3) {
             if (empty($post)) {
-                $con = $this->_modelpost->roles(new entity(array('user_id'=>$this->_usercookie['id'])));
+                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usercookie['id'])));
                 $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
                 echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
-                $this->_modelpost->updaterole(new entity($post));
+                $this->_modelpost->updaterole(new user($post));
                 return header("LOCATION:/admin/roles");
             }
         } else {
@@ -182,7 +183,7 @@ class Admincontroller extends twigenvi
                 $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
                 echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
-                $this->_modelpost->updatecomment(new entity($post));
+                $this->_modelpost->updatecomment(new commentaire($post));
                 return header("LOCATION:/admin/$type");
             }
         } else {
@@ -200,7 +201,7 @@ class Admincontroller extends twigenvi
     public function deletecomment($id,$url)
     {
         if ($this->_usercookie['role'] == 3 && !empty($id)) {
-            $this->_modelpost->deletecomment(new entity(array('id'=>$id)));
+            $this->_modelpost->deletecomment(new commentaire(array('id'=>$id)));
             return header("LOCATION:/admin/$url");
         } else {
             return header("LOCATION:/");
@@ -216,13 +217,9 @@ class Admincontroller extends twigenvi
     public function deleteuser($id)
     {
         if ($this->_usercookie['role'] == 3 && !empty($id)) {
-            $con = $this->_modelpost->getpost(new entity(array('user_id'=>$id)));
-            $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-            foreach ($donnes as $val) {
-                $postmodel = new postmodel;
-                $postmodel->remove(new entity(array('article_id'=>$val['id'])));
-            }
-            $this->_modelpost->deleteuser(new entity(array('id'=>$id)));
+            $postmodel = new postmodel;
+            $postmodel->remove(new user(array('id'=>$id)));
+            $this->_modelpost->deleteuser(new user(array('id'=>$id)));
             return header("LOCATION:/admin/roles");
         } else {
             return header("LOCATION:/");

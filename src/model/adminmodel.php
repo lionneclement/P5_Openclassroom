@@ -14,6 +14,8 @@ namespace App\model;
 
 use App\model\connectmodel;
 use App\entity\User;
+use App\entity\Commentaire;
+use App\entity\Article;
 /**
  * Class for retrieve admin information from the database
  * 
@@ -56,9 +58,9 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function roles(entity $post)
+    public function roles(User $post)
     {
-        return $this->bdd->query('SELECT * FROM user WHERE NOT id='.$post->getuser_id().''); 
+        return $this->bdd->query('SELECT * FROM user WHERE NOT id='.$post->getid().''); 
     }
     /**
      * Update role
@@ -67,10 +69,10 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function updaterole(entity $post)
+    public function updaterole(User $post)
     {
         $sql = 'UPDATE user SET role_id=:role_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('role_id'=>$post->getrole_id(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(array('role_id'=>$post->getroleId(),'id'=>$post->getid()));
     }
     /**
      * Get all comment
@@ -88,7 +90,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function updatecomment(entity $post)
+    public function updatecomment(Commentaire $post)
     {
         $sql = 'UPDATE commentaire SET statut=:statut WHERE id=:id';
         $this->bdd->prepare($sql)->execute(array('statut'=>$post->getstatut(),'id'=>$post->getid()));
@@ -109,7 +111,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function deletecomment(entity $post)
+    public function deletecomment(Commentaire $post)
     {
         $this->bdd->query('DELETE FROM commentaire WHERE id='.$post->getid().'');
     }
@@ -120,9 +122,9 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function getpost(entity $post)
+    public function getpost(Article $post)
     {
-        return $this->bdd->query('SELECT * FROM article WHERE user_id='.$post->getuser_id().'');
+        return $this->bdd->query('SELECT * FROM article WHERE user_id='.$post->getuserId().'');
     }
     /**
      * Delete user
@@ -131,7 +133,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function deleteuser(entity $post)
+    public function deleteuser(User $post)
     {
         $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
     }

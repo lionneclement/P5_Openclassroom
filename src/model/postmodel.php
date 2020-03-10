@@ -13,6 +13,7 @@
 namespace App\model;
 
 use App\model\connectmodel;
+use App\entity\User;
 /** 
  * The file is for retrieve post information from the database
  * 
@@ -78,10 +79,10 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function remove(entity $post)
+    public function remove(User $post)
     {
-        $this->bdd->query('DELETE FROM commentaire WHERE article_id='.$post->getarticle_id().'');
-        $this->bdd->query('DELETE FROM article WHERE id='.$post->getarticle_id().'');
+        $this->bdd->query('DELETE FROM commentaire WHERE user_id='.$post->getid().'');
+        $this->bdd->query('DELETE FROM article WHERE user_id='.$post->getid().'');
     }
     /**
      * Get all comment
