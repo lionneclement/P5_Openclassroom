@@ -258,8 +258,7 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/resetpassword.html.twig', ['url'=>$url,'id'=>$id,'access'=>$this->_usercookie['role']]);
             } else {
-                $password = new entity(array('mdp'=>$post['newpassword']));
-                $this->_modelpost->resetpasswordwithid($password, $id);
+                $this->_modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$id)));
                 setcookie('reset', '', -1, '/');
                 return header("LOCATION:/login");
             }
