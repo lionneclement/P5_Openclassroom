@@ -4,6 +4,26 @@
 <section> 
   <div class="container py-5 mt-5">
     <h1 class="text-center">Modifier votre profil</h1>
+    {% if alert %}
+      <div class="alert alert-success" role="alert">
+        Votre profil à été mis à jour.
+      </div>
+    {% endif %}
+    {% if checking.nom %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un nom valide
+      </div>
+    {% endif %}
+    {% if checking.prenom %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un prenom valide
+      </div>
+    {% endif %}
+    {% if checking.email %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un email valide
+      </div>
+    {% endif %}
     <form method="post" action="/updateuser" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">

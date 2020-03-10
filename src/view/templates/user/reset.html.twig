@@ -3,6 +3,16 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
+    {% if alert == 'false' %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un email valide
+      </div>
+    {% endif %}
+    {% if alert == 'true' %}
+      <div class="alert alert-success" role="alert">
+        Vous allez recevoir un email
+      </div>
+    {% endif %}
     <h1 class="text-center">Mot de passe oublier</h1>
     <form method="post" action="/resetpassword" class="needs-validation" novalidate>
       <div class="row">

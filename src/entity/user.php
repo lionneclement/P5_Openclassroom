@@ -175,7 +175,7 @@ class User extends valide
      */
     public function setMdp($mdp)
     {
-        if (is_string($mdp)) {
+        if (is_string($mdp) && strlen($mdp)>=13) {
               $this->_mdp = password_hash($mdp, PASSWORD_DEFAULT);
         }
     }

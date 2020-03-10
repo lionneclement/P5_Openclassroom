@@ -15,7 +15,6 @@ namespace App\controller;
 use App\twig\twigenvi;
 use App\model\adminmodel;
 use App\model\postmodel;
-use App\model\entity;
 use App\entity\user;
 use App\entity\commentaire;
 /**
@@ -240,7 +239,7 @@ class Admincontroller extends twigenvi
             $con = $this->_modelpost->check(new user(array('email'=>$post['email'])));
             $donnes = $con->fetch(\PDO::FETCH_ASSOC);
             if (empty($donnes)) {
-                echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';
+                echo $this->twigenvi->render('/templates/user/reset.html.twig', ['alert'=>'false']);
             } else {
                 $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
                 shuffle($seed);
@@ -251,7 +250,7 @@ class Admincontroller extends twigenvi
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 setcookie('reset', $obj, time()+(60*60), '/');
                 mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/resetlink/'.$donnes['id'].'/'.$rand);
-                echo '<script language="javascript">alert("Vous allez recevoir un email.");window.location.replace("/resetpassword")</script>';
+                echo $this->twigenvi->render('/templates/user/reset.html.twig', ['alert'=>'true']);
             }
         }
     }
@@ -270,9 +269,15 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/resetpassword.html.twig', ['url'=>$url,'id'=>$id,'access'=>$this->_usercookie['role']]);
             } else {
-                $this->_modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$id)));
-                setcookie('reset', '', -1, '/');
-                return header("LOCATION:/login");
+                $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$id));
+                $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$id));
+                if (empty($checking)) {
+                    $this->_modelpost->updatepassword($entitypost);
+                    setcookie('reset', '', -1, '/');
+                    return header("LOCATION:/login");
+                } else {
+                    echo $this->twigenvi->render('/templates/user/resetpassword.html.twig', ['alert'=>'false','url'=>$url,'id'=>$id,'access'=>$this->_usercookie['role']]);
+                }
             }
         } else {
             return header("LOCATION:/");
@@ -288,13 +293,22 @@ class Admincontroller extends twigenvi
     public function updateuser($post)
     {
         if (isset($this->_usercookie['id'])) {
+            $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
+            $donnes = $con->fetch(\PDO::FETCH_ASSOC);
             if (empty($post)) {
-                $con = $this->_modelpost->getuser(new entity(array('id'=>$this->_usercookie['id'])));
-                $donnes = $con->fetch(\PDO::FETCH_ASSOC);
                 echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
-                $this->_modelpost->updateuser(new entity(array('nom'=>$post['nom'],'prenom'=>$post['prenom'],'email'=>$post['email'],'id'=>$this->_usercookie['id'])));
-                return header("LOCATION:/updateuser");
+                $entitypost=new user($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    $post['id']=$this->_usercookie['id'];
+                    $this->_modelpost->updateuser(new user(($post)));
+                    $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
+                    $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+                    echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['alert'=>true,'user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                } else {
+                    echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['checking'=>$checking,'user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                }
             }
         } else {
             return header("LOCATION:/");
@@ -313,14 +327,19 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['access'=>$this->_usercookie['role']]);
             } else {
-                $con = $this->_modelpost->getuser(new entity(array('id'=>$this->_usercookie['id'])));
+                $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
                 $donnes = $con->fetch(\PDO::FETCH_ASSOC);
                 if (password_verify($post['oldpassword'], $donnes['mdp'])) {
-                    var_dump(array('mdp'=>$post['oldpassword'],'id'=>$this->_usercookie['id']));
-                    $this->_modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$this->_usercookie['id'])));
-                    echo '<script language="javascript">alert("Votre mot de passe à bien été modifier");window.location.replace("/updateuser")</script>';
+                    $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$this->_usercookie['id']));
+                    $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$this->_usercookie['id']));
+                    if (empty($checking)) {
+                        $this->_modelpost->updatepassword($entitypost);
+                        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['alert'=>'true','access'=>$this->_usercookie['role']]);
+                    } else {
+                        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['checking'=>$checking,'access'=>$this->_usercookie['role']]);
+                    }
                 } else {
-                    echo '<script language="javascript">alert("Erreur dans le mot de passe");window.location.replace("/updateuser")</script>';
+                    echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['alert'=>'false','access'=>$this->_usercookie['role']]);
                 }
             }
         } else {

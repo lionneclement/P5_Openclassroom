@@ -138,26 +138,13 @@ class Adminmodel extends connectmodel
         $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
     }
     /**
-     * Update password
-     * 
-     * @param string $password it's new password
-     * @param string $email    it's email
-     * 
-     * @return data
-     */
-    public function resetpassword($password,$email)
-    {
-        $sql = 'UPDATE user SET mdp=:mdp WHERE email=:email';
-        $this->bdd->prepare($sql)->execute(array('mdp'=>$password->getmdp(),'email'=>$email));
-    }
-    /**
      * Get one user
      * 
      * @param array $post it's user data
      * 
      * @return data
      */
-    public function getuser(entity $post)
+    public function getuser(User $post)
     {
         return $this->bdd->query('SELECT * FROM user WHERE id='.$post->getid().''); 
     }
@@ -168,7 +155,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function updateuser(entity $post)
+    public function updateuser(User $post)
     {
         $sql = 'UPDATE user SET nom=:nom, prenom=:prenom, email=:email  WHERE id=:id';
         $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()));
@@ -180,7 +167,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function updatepassword($post)
+    public function updatepassword(User $post)
     {
         $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
         $this->bdd->prepare($sql)->execute(array('mdp'=>$post->getmdp(),'id'=>$post->getid()));
