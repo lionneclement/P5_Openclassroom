@@ -3,6 +3,37 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
+    <div class='text-center'>
+      {% if alert == 'success' %}
+      <div class="alert alert-success" role="alert">
+        Votre compte viens d'être crée vous pouvez vous connecter.
+      </div
+      {% elseif alert == 'already' %}
+        <div class="alert alert-danger" role="alert">
+          Ce compte exite déjà.
+        </div>
+      {% endif %}
+      {% if checking.email %}
+        <div class="alert alert-danger" role="alert">
+          Rentré un email valide
+        </div>
+      {% endif %}
+      {% if checking.mdp %}
+        <div class="alert alert-danger" role="alert">
+          Rentré un mot de passe valide
+        </div>
+      {% endif %}
+      {% if checking.nom %}
+        <div class="alert alert-danger" role="alert">
+          Rentré un nom valide
+        </div>
+      {% endif %}
+      {% if checking.prenom %}
+        <div class="alert alert-danger" role="alert">
+          Rentré un prénom valide
+        </div>
+      {% endif %}
+    </div>
     <h1 class="text-center">Register</h1>
     <form method="post" action="/register" class="needs-validation" novalidate>
       <div class="row">

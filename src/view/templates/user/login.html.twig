@@ -3,12 +3,32 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
+    {% if checking.email %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un email valide
+      </div>
+    {% endif %}
+    {% if checking.mdp %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un mot de passe valide
+      </div>
+    {% endif %}
+    {% if alert == 'mdp' %}
+      <div class="alert alert-danger" role="alert">
+        Vous avez fais une faute dans votre mot de passe
+      </div>
+    {% endif %}
+    {% if alert == 'email' %}
+      <div class="alert alert-danger" role="alert">
+        Ce compte n'existe pas
+      </div>
+    {% endif %}
     <h1 class="text-center">Login</h1>
     <form method="post" action="/login" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Email</label>
-        <input class="form-control" type="email" name="email" id="FormControlInput1" required>
+        <input class="form-control" type="text" name="email" id="FormControlInput1" required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>

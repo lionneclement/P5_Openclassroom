@@ -16,6 +16,7 @@ use App\twig\twigenvi;
 use App\model\adminmodel;
 use App\model\postmodel;
 use App\model\entity;
+use App\entity\user;
 /**
  * Class for managing connected users
  * 
@@ -54,13 +55,19 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/register.html.twig');
             } else {
-                $con = $this->_modelpost->check(new entity(array('email'=>$post['email'])));
-                $donnes = $con->fetchAll();
-                if (empty($donnes)) {
-                    $this->_modelpost->register(new entity($post));
-                    echo '<script language="javascript">alert("Votre compte vient d\'être créé, vous pouvez vous connecter !");window.location.replace("/login")</script>';
+                $entitypost=new user($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    $con = $this->_modelpost->check($entitypost);
+                    $donnes = $con->fetchAll();
+                    if (empty($donnes)) {
+                        $this->_modelpost->register($entitypost);
+                        echo $this->twigenvi->render('/templates/user/register.html.twig', ['alert'=>'success']);
+                    } else {
+                        echo $this->twigenvi->render('/templates/user/register.html.twig', ['alert'=>'already']);
+                    }
                 } else {
-                    echo '<script language="javascript">alert("Votre compte existe déjà connecter vous !");window.location.replace("/login")</script>';
+                    echo $this->twigenvi->render('/templates/user/register.html.twig', ['checking'=>$checking]);
                 }
             }
         } else {
@@ -80,13 +87,21 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/login.html.twig');
             } else {
-                $con = $this->_modelpost->check(new entity(array('email'=>$post['email'])));
-                $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-                if (!empty($donnes) && password_verify($post['mdp'], $donnes['mdp'])) {
-                    $this->confcookie($donnes);
-                    echo '<script language="javascript">alert("Vous êtes connecter !");window.location.replace("/")</script>';
+                $entitypost=new user($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    $con = $this->_modelpost->check($entitypost);
+                    $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+                    if (password_verify($post['mdp'], $donnes['mdp'])) {
+                        $this->confcookie($donnes);
+                        return header("LOCATION:/");
+                    } elseif (!empty($donnes)) {
+                        echo $this->twigenvi->render('/templates/user/login.html.twig', ['alert'=>'mdp']);
+                    } else {
+                        echo $this->twigenvi->render('/templates/user/login.html.twig', ['alert'=>'email']);
+                    }
                 } else {
-                    echo '<script language="javascript">alert("L\'email ou le mot de passe est incorrect !");window.location.replace("/login")</script>';
+                    echo $this->twigenvi->render('/templates/user/login.html.twig', ['checking'=>$checking]);
                 }
             }
         } else {
@@ -225,7 +240,7 @@ class Admincontroller extends twigenvi
         if (empty($post)) {
             echo $this->twigenvi->render('/templates/user/reset.html.twig');
         } else {
-            $con = $this->_modelpost->check(new entity(array('email'=>$post['email'])));
+            $con = $this->_modelpost->check(new user(array('email'=>$post['email'])));
             $donnes = $con->fetch(\PDO::FETCH_ASSOC);
             if (empty($donnes)) {
                 echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';

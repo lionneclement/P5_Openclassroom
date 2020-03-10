@@ -13,6 +13,7 @@
 namespace App\model;
 
 use App\model\connectmodel;
+use App\entity\User;
 /**
  * Class for retrieve admin information from the database
  * 
@@ -31,7 +32,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function check(entity $post)
+    public function check(User $post)
     {
         return $this->bdd->query("SELECT * FROM user WHERE email='".$post->getemail()."'"); 
     }
@@ -42,7 +43,7 @@ class Adminmodel extends connectmodel
      * 
      * @return data
      */
-    public function register(entity $post)
+    public function register(User $post)
     {
         $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
     VALUES (NULL,:nom,:prenom,:email,:mdp,1)';

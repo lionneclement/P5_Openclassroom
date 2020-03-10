@@ -18,6 +18,10 @@ require '../model/connectmodel.php';
 require '../model/adminmodel.php';
 require '../model/postmodel.php';
 require '../model/entity.php';
+require '../entity/valide.php';
+require '../entity/article.php';
+require '../entity/commentaire.php';
+require '../entity/user.php';
 
 use App\controller\Admincontroller;
 use App\controller\Postcontroller;
