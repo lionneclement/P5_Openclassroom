@@ -29,9 +29,9 @@ class admincontroller extends twigenvi
         $donnes = $con->fetchAll();
         if(empty($donnes)){
           $this->modelpost->register(new entity($post));
-          echo 'user create';
+          echo '<script language="javascript">alert("Votre compte vient d\'être créé, vous pouvez vous connecter !");window.location.replace("/login")</script>';
         }else{
-          echo 'already exits';
+          echo '<script language="javascript">alert("Votre compte existe déjà connecter vous !");window.location.replace("/login")</script>';
         }
       }
     }else{
@@ -48,9 +48,9 @@ class admincontroller extends twigenvi
         $donnes = $con->fetch(\PDO::FETCH_ASSOC);
         if(!empty($donnes) && password_verify($post['mdp'],$donnes['mdp'])){
           $this->confcookie($donnes);
-          echo 'user connect';
+          echo '<script language="javascript">alert("Vous êtes connecter !");window.location.replace("/")</script>';
         }else{
-          echo 'user no exist';
+          echo '<script language="javascript">alert("L\'email ou le mot de passe est incorrect !");window.location.replace("/login")</script>';
         }
       }
     }else{
@@ -126,6 +126,77 @@ class admincontroller extends twigenvi
       }
       $this->modelpost->deleteuser(new entity(array('id'=>$id)));
       return header("LOCATION:/admin/roles");
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function resetpassword($post)
+  {
+    if(empty($post)){
+      echo $this->twigenvi->render('/templates/user/reset.html.twig');
+    }else{
+      $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
+      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+      if(empty($donnes)){
+        echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';
+      }else{
+        $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        shuffle($seed);
+        $rand = '';
+        foreach (array_rand($seed, 10) as $k) $rand .= $seed[$k];
+        $obj = password_hash($rand, PASSWORD_DEFAULT);
+        setcookie('reset',$obj,time()+(60*60),'/');
+        mail($post['email'],'Changement de mot de passe','Voici le lien pour changer de mot de passe: http://localhost/resetlink/'.$donnes['id'].'/'.$rand);
+        echo '<script language="javascript">alert("Vous allez recevoir un email.");window.location.replace("/resetpassword")</script>';
+      }
+    }
+  }
+  public function resetlink($id,$url,$post)
+  {
+    if(isset($_COOKIE['reset']) && password_verify($url,$_COOKIE['reset'])){
+      if(empty($post)){
+        echo $this->twigenvi->render('/templates/user/resetpassword.html.twig',['url'=>$url,'id'=>$id,'access'=>$this->usercookie['role']]);
+      }else{
+        $password = new entity(array('mdp'=>$post['newpassword']));
+        $this->modelpost->resetpasswordwithid($password,$id);
+        setcookie('reset','',-1,'/');
+        return header("LOCATION:/login");
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function updateuser($post)
+  {
+    if(isset($this->usercookie['id'])){
+      if(empty($post)){
+        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
+        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+        echo $this->twigenvi->render('/templates/user/updateuser.html.twig',['user'=>$donnes,'access'=>$this->usercookie['role']]);
+      }else{
+        $this->modelpost->updateuser(new entity(array('nom'=>$post['nom'],'prenom'=>$post['prenom'],'email'=>$post['email'],'id'=>$this->usercookie['id'])));
+        return header("LOCATION:/updateuser");
+      }
+    }else{
+      return header("LOCATION:/");
+    }
+  }
+  public function updatepassword($post)
+  {
+    if(isset($this->usercookie['id'])){
+      if(empty($post)){
+        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig',['access'=>$this->usercookie['role']]);
+      }else{
+        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
+        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+        if(password_verify($post['oldpassword'],$donnes['mdp'])){
+          var_dump(array('mdp'=>$post['oldpassword'],'id'=>$this->usercookie['id']));
+          $this->modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$this->usercookie['id'])));
+          echo '<script language="javascript">alert("Votre mot de passe à bien été modifier");window.location.replace("/updateuser")</script>';
+        }else{
+          echo '<script language="javascript">alert("Erreur dans le mot de passe");window.location.replace("/updateuser")</script>';
+        }
+      }
     }else{
       return header("LOCATION:/");
     }

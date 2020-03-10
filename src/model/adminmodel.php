@@ -50,4 +50,28 @@ class adminmodel extends connectmodel
   {
     $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
   }
+  public function resetpassword($password,$email)
+  {
+    $sql = 'UPDATE user SET mdp=:mdp WHERE email=:email';
+    $this->bdd->prepare($sql)->execute(array('mdp'=>$password->getmdp(),'email'=>$email));
+  }
+  public function getuser(entity $post)
+  {
+    return $this->bdd->query('SELECT * FROM user WHERE id='.$post->getid().''); 
+  }
+  public function updateuser(entity $post)
+  {
+    $sql = 'UPDATE user SET nom=:nom, prenom=:prenom, email=:email  WHERE id=:id';
+    $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()));
+  }
+  public function updatepassword($post)
+  {
+    $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
+    $this->bdd->prepare($sql)->execute(array('mdp'=>$post->getmdp(),'id'=>$post->getid()));
+  }
+  public function resetpasswordwithid($password,$id)
+  {
+    $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
+    $this->bdd->prepare($sql)->execute(array('mdp'=>$password->getmdp(),'id'=>$id));
+  }
 }

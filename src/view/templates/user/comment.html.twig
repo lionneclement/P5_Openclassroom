@@ -2,6 +2,12 @@
 
 {% block content %}
     <div class='container text-center pt-5'>
+      {% if comment is empty %}
+          <div class="alert alert-danger pt-5 mt-3" role="alert">
+            <h4 class="alert-heading">Aucun commentaire !</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+        {% endif %}
       <div class="row">
         {% for n in comment %}
           <div class="col-sm-6 pt-5">
@@ -14,8 +20,9 @@
                   <label for="FormControlInput1">Statut :</label>
                   <input type="number" name="statut" class="form-control" id="FormControlInput1" value='{{n.statut}}' min=0 max=1>
                   <input type="hidden" name="id" value="{{n.id}}">
-                  <button type="submit" class='btn btn-primary'>Modifier</button>
-                  <a href="/admin/deletecomment/{{n.id}}/{{return}}"class='btn btn-primary'>Supprimer</a>
+                  <br>
+                  <button type="submit" class='btn btn-secondary'>Modifier</button>
+                  <a href="/admin/deletecomment/{{n.id}}/{{return}}"class='btn btn-secondary'>Supprimer</a>
                 </form>
               </div>
             </div>

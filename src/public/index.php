@@ -11,12 +11,15 @@ require '../model/entity.php';
 
 use App\controller\admincontroller;
 use App\controller\postcontroller;
+use Dotenv\Dotenv;
 
- $router = new AltoRouter();
+$dotenv = Dotenv::createImmutable('../../');
+$dotenv->load();
+$router = new AltoRouter();
 
- $router->map('GET', '/', function() {
+ $router->map('GET|POST', '/', function() {
 	$page = new postcontroller;
-    $page->home();
+    $page->home($_POST);
 });
  $router->map('GET', '/posts', function() {
     $page = new postcontroller;
@@ -37,10 +40,6 @@ $router->map('GET|POST', '/updatepost/[i:id]', function($id) {
 $router->map('GET', '/removepost/[i:id]', function($id) {
     $page = new postcontroller;
     $page->remove($id);
-});
- $router->map('POST','/mail',function() {
-    $page = new postcontroller();
-    $page->sendmail($_POST);
 });
 $router->map('GET|POST','/register',function() {
     $page = new admincontroller;
@@ -77,6 +76,22 @@ $router->map('GET','/admin/deletecomment/[i:id]/[a:action]',function($id,$action
 $router->map('GET','/admin/deleteuser/[i:id]',function($id){
     $page = new admincontroller;
     $page->deleteuser($id);
+});
+$router->map('GET|POST','/resetpassword',function(){
+    $page = new admincontroller;
+    $page->resetpassword($_POST);
+});
+$router->map('GET|POST','/resetlink/[i:id]/[a:action]',function($id,$action){
+    $page = new admincontroller;
+    $page->resetlink($id,$action,$_POST);
+});
+$router->map('GET|POST','/updateuser',function(){
+    $page = new admincontroller;
+    $page->updateuser($_POST);
+});
+$router->map('GET|POST','/updatepassword',function(){
+    $page = new admincontroller;
+    $page->updatepassword($_POST);
 });
 
   
