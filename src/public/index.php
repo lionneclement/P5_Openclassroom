@@ -22,6 +22,7 @@ require '../entity/valide.php';
 require '../entity/article.php';
 require '../entity/commentaire.php';
 require '../entity/user.php';
+require '../entity/contact.php';
 
 use App\controller\Admincontroller;
 use App\controller\Postcontroller;

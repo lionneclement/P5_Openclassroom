@@ -15,6 +15,8 @@ namespace App\controller;
 use App\twig\twigenvi;
 use App\model\postmodel;
 use App\model\entity;
+use App\entity\user;
+use App\entity\contact;
 
 /**
  * Class for managing post
@@ -35,7 +37,7 @@ class Postcontroller extends twigenvi
     public function __construct()
     {
         parent::__construct();
-        $this->modelpost = new postmodel;
+        $this->_modelpost = new postmodel;
         if (isset($_COOKIE['id'])) {
             $this->_usercookie['id'] = $_COOKIE['id'];
             $this->_usercookie['role'] = $_COOKIE['role'];
@@ -57,12 +59,17 @@ class Postcontroller extends twigenvi
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             if ($resp->isSuccess()) {
-                mail('nobody@gmail.com', $post['prenom'].$post['nom'], $post['message'], 'From:'.$post['email']);
-                echo '<script language="javascript">alert("Votre message viens d\'être envoyer !");window.location.replace("/")</script>';
+                unset($post['g-recaptcha-response']);
+                $entitypost=new contact($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    mail('nobody@gmail.com', $post['prenom'].$post['nom'], $post['message'], 'From:'.$post['email']);
+                    echo $this->twigenvi->render('/templates/home.html.twig', ['alert'=>'success','access'=>$this->_usercookie['role']]);
+                } else {
+                    echo $this->twigenvi->render('/templates/home.html.twig', ['alert'=>$checking,'access'=>$this->_usercookie['role']]);
+                }
             } else {
-                echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/")</script>';
-                $error = $resp->getErrorCodes();
-                throw new \Exception($error);
+                echo $this->twigenvi->render('/templates/home.html.twig', ['alert'=>'reCAPTCHA','access'=>$this->_usercookie['role']]);
             }
         } 
     }
@@ -78,12 +85,12 @@ class Postcontroller extends twigenvi
     {
         if (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
             if (empty($post)) {
-                $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
+                $con = $this->_modelpost->post(new entity(array('article_id'=>$id)));
                 $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
                 echo $this->twigenvi->render('/templates/post/postform.html.twig', ['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $post['id']=$id;
-                $this->modelpost->update(new entity($post));
+                $this->_modelpost->update(new entity($post));
                 return header("LOCATION:/posts");
             }
         } else {
@@ -103,7 +110,7 @@ class Postcontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/postform.html.twig', ['url'=>'addpost','access'=>$this->_usercookie['role']]);
             } else {
-                $this->modelpost->add(new entity($post));
+                $this->_modelpost->add(new entity($post));
                 return header("LOCATION:/posts");
             }
         } else {
@@ -119,9 +126,9 @@ class Postcontroller extends twigenvi
      */
     public function onepost($id)
     {
-        $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
+        $con = $this->_modelpost->post(new entity(array('article_id'=>$id)));
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        $con1 = $this->modelpost->allcomment(new entity(array('article_id'=>$id)));
+        $con1 = $this->_modelpost->allcomment(new entity(array('article_id'=>$id)));
         $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
         echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
@@ -132,7 +139,7 @@ class Postcontroller extends twigenvi
      */
     public function allposts()
     {
-        $con = $this->modelpost->posts();
+        $con = $this->_modelpost->posts();
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
         echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usercookie['role']]);
     }
@@ -146,7 +153,7 @@ class Postcontroller extends twigenvi
     public function remove($id)
     {
         if (isset($this->_usercookie) && $this->_usercookie['role'] == 3) {
-            $this->modelpost->remove(new entity(array('article_id'=>$id)));
+            $this->_modelpost->remove(new user(array('article_id'=>$id)));
             return header("LOCATION:/posts");
         } else {
             return header("LOCATION:/");
@@ -166,7 +173,7 @@ class Postcontroller extends twigenvi
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             if ($resp->isSuccess()) {
-                $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->_usercookie['id'],'article_id'=>$post['id'])));
+                $this->_modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->_usercookie['id'],'article_id'=>$post['id'])));
                 echo '<script language="javascript">alert("Votre message viens d\'être envoyer et doit être valider pas les administrateurs!");window.location.replace("/post/'.$post['id'].'")</script>';
             } else {
                 echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/post/'.$post['id'].'")</script>';
