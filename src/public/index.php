@@ -11,17 +11,17 @@
  * @link     http://localhost/
  */
 require '../../vendor/autoload.php';
-require '../../src/twig/twigenvi.php';
-require '../controller/postController.php';
-require '../controller/adminController.php';
-require '../model/connectmodel.php';
-require '../model/adminmodel.php';
-require '../model/postmodel.php';
-require '../entity/valide.php';
-require '../entity/article.php';
-require '../entity/commentaire.php';
-require '../entity/user.php';
-require '../entity/contact.php';
+require '../../src/twig/TwigEnvironment.php';
+require '../controller/PostController.php';
+require '../controller/AdminController.php';
+require '../model/ModelConnect.php';
+require '../model/ModelAdmin.php';
+require '../model/ModelPost.php';
+require '../manager/ManagerValide.php';
+require '../manager/ManagerArticle.php';
+require '../manager/ManagerCommentaire.php';
+require '../manager/ManagerUser.php';
+require '../manager/ManagerContact.php';
 
 use App\controller\Admincontroller;
 use App\controller\Postcontroller;
