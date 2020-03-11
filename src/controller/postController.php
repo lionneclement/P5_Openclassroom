@@ -148,7 +148,7 @@ class Postcontroller extends twigenvi
     {
         $con = $this->_modelpost->posts();
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>array_reverse($donnes),'access'=>$this->_usercookie['role']]);
     }
     /**
      * Remove one post
