@@ -24,7 +24,7 @@
       </div>
     {% endif %}
     <h1 class="text-center">Login</h1>
-    <form method="post" action="/login" class="needs-validation" novalidate>
+    <form method="post" action="/auth/login" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Email</label>
@@ -43,7 +43,7 @@
       
       <div class="col text-center mt-4">
       <button type="submit" class="btn btn-secondary">Confirme</button>
-      <a href="/resetpassword" class="btn btn-secondary">Oublie de mot de passe</a>
+      <a href="/auth/resetpassword" class="btn btn-secondary">Oublie de mot de passe</a>
       </div>
     </div>
     </form>

@@ -93,7 +93,7 @@ class Admincontroller extends twigenvi
                 echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
-                return header("LOCATION:/admin/$type");
+                return header("LOCATION:/admin/comment/$type");
             }
         } else {
             return header("LOCATION:/");
@@ -111,7 +111,7 @@ class Admincontroller extends twigenvi
     {
         if ($this->_usercookie['role'] == 3 && !empty($id)) {
             $this->_modelpost->deletecomment(new commentaire(array('id'=>$id)));
-            return header("LOCATION:/admin/$url");
+            return header("LOCATION:/admin/comment/$url");
         } else {
             return header("LOCATION:/");
         }

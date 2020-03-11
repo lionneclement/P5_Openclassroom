@@ -41,51 +41,69 @@ $router->map(
     }
 );
 $router->map(
-    'GET', '/posts', function () {
+    'GET', '/post/findAll', function () {
         $page = new Postcontroller;
         $page->allposts();
     }
 );
 $router->map(
-    'GET', '/post/[i:id]', function ($id) {
+    'GET', '/post/findOne/[i:id]', function ($id) {
         $page = new Postcontroller;
         $page->onepost($id);
     }
 );
 $router->map(
-    'GET|POST', '/admin/addpost', function () {
+    'GET|POST', '/post/addpost', function () {
         $page = new Postcontroller;
         $page->addUpdate($_POST);
     }
 );
 $router->map(
-    'GET|POST', '/updatepost/[i:id]', function ($id) {
+    'GET|POST', '/post/updatepost/[i:id]', function ($id) {
         $page = new Postcontroller;
         $page->addUpdate($_POST, $id); 
     }
 );
 $router->map(
-    'GET', '/removepost/[i:id]', function ($id) {
+    'POST', '/post/comment', function () {
+        $page = new Postcontroller;
+        $page->comment($_POST);
+    }
+);
+$router->map(
+    'GET', '/post/removepost/[i:id]', function ($id) {
         $page = new Postcontroller;
         $page->remove($id);
     }
 );
 $router->map(
-    'GET|POST', '/register', function () {
+    'GET|POST', '/auth/register', function () {
         $page = new AuthentificationController;
         $page->register($_POST);
     }
 );
 $router->map(
-    'GET|POST', '/login', function () {
+    'GET|POST', '/auth/login', function () {
         $page = new AuthentificationController;
         $page->login($_POST);
     }
 );
 $router->map(
-    'GET', '/logout', function () {
+    'GET', '/auth/logout', function () {
         $page = new AuthentificationController;
         $page->logout();
+    }
+);
+$router->map(
+    'GET|POST', '/auth/resetpassword', function () {
+        $page = new AuthentificationController;
+        $page->resetpassword($_POST);
+    }
+);
+$router->map(
+    'GET|POST', '/auth/resetlink/[i:id]/[a:action]', function ($id,$action) {
+        $page = new AuthentificationController;
+        $page->resetlink($id, $action, $_POST);
     }
 );
 $router->map(
@@ -101,13 +119,7 @@ $router->map(
     }
 );
 $router->map(
-    'POST', '/comment', function () {
-        $page = new Postcontroller;
-        $page->comment($_POST);
-    }
-);
-$router->map(
-    'GET|POST', '/admin/[a:action]', function ($action) {
+    'GET|POST', '/admin/comment/[a:action]', function ($action) {
         $page = new Admincontroller;
         $page->comment($_POST, $action);
     }
@@ -125,25 +137,13 @@ $router->map(
     }
 );
 $router->map(
-    'GET|POST', '/resetpassword', function () {
-        $page = new AuthentificationController;
-        $page->resetpassword($_POST);
-    }
-);
-$router->map(
-    'GET|POST', '/resetlink/[i:id]/[a:action]', function ($id,$action) {
-        $page = new AuthentificationController;
-        $page->resetlink($id, $action, $_POST);
-    }
-);
-$router->map(
-    'GET|POST', '/updateuser', function () {
+    'GET|POST', '/admin/updateuser', function () {
         $page = new Admincontroller;
         $page->updateuser($_POST);
     }
 );
 $router->map(
-    'GET|POST', '/updatepassword', function () {
+    'GET|POST', '/admin/updatepassword', function () {
         $page = new Admincontroller;
         $page->updatepassword($_POST);
     }

@@ -154,7 +154,7 @@ class AuthentificationController extends twigenvi
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 setcookie('reset', $obj, time()+(60*60), '/');
-                mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/resetlink/'.$donnes['id'].'/'.$rand);
+                mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes['id'].'/'.$rand);
                 echo $this->twigenvi->render('/templates/authentication/reset.html.twig', ['alert'=>'true']);
             }
         }
@@ -179,7 +179,7 @@ class AuthentificationController extends twigenvi
                 if (empty($checking)) {
                     $this->_modelpost->updatepassword($entitypost);
                     setcookie('reset', '', -1, '/');
-                    return header("LOCATION:/login");
+                    return header("LOCATION:/auth/login");
                 } else {
                     echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['alert'=>'false','url'=>$url,'id'=>$id,'access'=>$this->_usercookie['role']]);
                 }
