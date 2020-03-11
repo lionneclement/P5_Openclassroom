@@ -136,6 +136,11 @@ class Postcontroller extends twigenvi
         $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
         $con2 = $this->_modelpost->findUser($donnes['user_id']);
         $donnes2 = $con2->fetch(\PDO::FETCH_ASSOC);
+        foreach ($donnes1 as $key => $value) {
+            $con3 = $this->_modelpost->findUser($value['user_id']);
+            $donnes3 = $con3->fetch(\PDO::FETCH_ASSOC);
+            $donnes1[$key]['nom']=$donnes3['nom'];
+        }
         $donnes['user_id']=$donnes2['nom'];
         echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['alert'=>$error,'nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
