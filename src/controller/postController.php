@@ -129,9 +129,12 @@ class Postcontroller extends twigenvi
     public function onepost($id,$error=null)
     {
         $con = $this->_modelpost->post(new Article(array('id'=>$id)));
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
         $con1 = $this->_modelpost->allcomment(new Article(array('id'=>$id)));
         $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
+        $con2 = $this->_modelpost->findUser($donnes['user_id']);
+        $donnes2 = $con2->fetch(\PDO::FETCH_ASSOC);
+        $donnes['user_id']=$donnes2['nom'];
         echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['alert'=>$error,'nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
     /**

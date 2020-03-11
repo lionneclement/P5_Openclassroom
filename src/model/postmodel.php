@@ -97,6 +97,17 @@ class Postmodel extends connectmodel
         return $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
     }
     /**
+     * Get all comment
+     * 
+     * @param array $post it's user data
+     * 
+     * @return data
+     */
+    public function findUser($post)
+    {
+        return $this->bdd->query('SELECT * FROM user WHERE id='.$post.'');
+    }
+    /**
      * Add comment
      * 
      * @param array $post it's user data
