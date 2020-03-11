@@ -15,7 +15,6 @@ namespace App\model;
 use App\model\connectmodel;
 use App\entity\User;
 use App\entity\Commentaire;
-use App\entity\Article;
 /**
  * Class for retrieve admin information from the database
  * 
@@ -27,30 +26,6 @@ use App\entity\Article;
  */
 class Adminmodel extends connectmodel
 {
-    /**
-     * Check if the user exist
-     * 
-     * @param array $post it's user data
-     * 
-     * @return data
-     */
-    public function check(User $post)
-    {
-        return $this->bdd->query("SELECT * FROM user WHERE email='".$post->getemail()."'"); 
-    }
-    /**
-     * Register a user
-     * 
-     * @param array $post it's user data
-     * 
-     * @return data
-     */
-    public function register(User $post)
-    {
-        $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
-    VALUES (NULL,:nom,:prenom,:email,:mdp,1)';
-        $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'mdp'=>$post->getmdp()));
-    }
     /**
      * Get all user without us
      * 
@@ -114,17 +89,6 @@ class Adminmodel extends connectmodel
     public function deletecomment(Commentaire $post)
     {
         $this->bdd->query('DELETE FROM commentaire WHERE id='.$post->getid().'');
-    }
-    /**
-     * Get one post
-     * 
-     * @param array $post it's user data
-     * 
-     * @return data
-     */
-    public function getpost(Article $post)
-    {
-        return $this->bdd->query('SELECT * FROM article WHERE user_id='.$post->getuserId().'');
     }
     /**
      * Delete user
