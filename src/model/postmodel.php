@@ -12,8 +12,8 @@
  */
 namespace App\model;
 
+use App\entity\Article;
 use App\model\connectmodel;
-use App\entity\User;
 /** 
  * The file is for retrieve post information from the database
  * 
@@ -43,9 +43,9 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function post(entity $post)
+    public function post(Article $post)
     {
-        return $this->bdd->query('SELECT * FROM article WHERE id='.$post->getarticle_id().'');
+        return $this->bdd->query('SELECT * FROM article WHERE id='.$post->getid().'');
     }
     /**
      * Add post
@@ -54,11 +54,11 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function add(entity $post)
+    public function add(Article $post)
     {
         $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id) 
     VALUES (NULL,:titre,:chapo,:contenu, CURRENT_TIMESTAMP,:user_id)';
-        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuser_id()));
+        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId()));
     }
     /**
      * Update post
@@ -67,10 +67,10 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function update(entity $post)
+    public function update(Article $post)
     {
         $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, date=CURRENT_TIMESTAMP, user_id=:user_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuser_id(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId(),'id'=>$post->getid()));
     }
     /**
      * Remove post
@@ -79,10 +79,10 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function remove(User $post)
+    public function remove(Article $post)
     {
-        $this->bdd->query('DELETE FROM commentaire WHERE user_id='.$post->getid().'');
-        $this->bdd->query('DELETE FROM article WHERE user_id='.$post->getid().'');
+        $this->bdd->query('DELETE FROM commentaire WHERE article_id='.$post->getid().'');
+        $this->bdd->query('DELETE FROM article WHERE id='.$post->getid().'');
     }
     /**
      * Get all comment

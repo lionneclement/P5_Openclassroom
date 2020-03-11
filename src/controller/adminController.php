@@ -216,8 +216,6 @@ class Admincontroller extends twigenvi
     public function deleteuser($id)
     {
         if ($this->_usercookie['role'] == 3 && !empty($id)) {
-            $postmodel = new postmodel;
-            $postmodel->remove(new user(array('id'=>$id)));
             $this->_modelpost->deleteuser(new user(array('id'=>$id)));
             return header("LOCATION:/admin/roles");
         } else {

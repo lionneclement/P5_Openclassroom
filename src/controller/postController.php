@@ -15,8 +15,8 @@ namespace App\controller;
 use App\twig\twigenvi;
 use App\model\postmodel;
 use App\model\entity;
-use App\entity\user;
 use App\entity\contact;
+use App\entity\article;
 
 /**
  * Class for managing post
@@ -76,46 +76,47 @@ class Postcontroller extends twigenvi
     /**
      * Update post
      * 
-     * @param integer $id   it's id post
      * @param array   $post it's post data
+     * @param integer $id   it's id post
      * 
      * @return template
      */
-    public function update($id,$post)
-    {
-        if (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
+    public function addUpdate($post,$id=null)
+    {   
+        if (isset($this->_usercookie) && $this->_usercookie['role'] == 3 && $id==null) {
             if (empty($post)) {
-                $con = $this->_modelpost->post(new entity(array('article_id'=>$id)));
-                $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-                echo $this->twigenvi->render('/templates/post/postform.html.twig', ['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['url'=>'addpost','access'=>$this->_usercookie['role']]);
             } else {
-                $post['id']=$id;
-                $this->_modelpost->update(new entity($post));
-                return header("LOCATION:/posts");
+                $entitypost=new article($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    $this->_modelpost->add($entitypost);
+                    return header("LOCATION:/posts");
+                } else { 
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['addAlert'=>$checking,'url'=>'addpost','access'=>$this->_usercookie['role']]);
+                }
+            }
+        } elseif (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
+            $con = $this->_modelpost->post(new article(array('id'=>$id)));
+            $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+            if (empty($post)) {
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+            } else {
+                $entitypost=new article($post);
+                $checking = $entitypost->isValid($post);
+                if (empty($checking)) {
+                    $post['id']=$id;
+                    $this->_modelpost->update(new article($post));
+                    $con = $this->_modelpost->post(new article(array('id'=>$id)));
+                    $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['alert'=>'success','url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                } else { 
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['addAlert'=>$checking,'url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                }
             }
         } else {
             return header("LOCATION:/");
-        }
-    }
-    /**
-     * Add post
-     * 
-     * @param array $post it's post data
-     * 
-     * @return template
-     */
-    public function add($post)
-    {
-        if (isset($this->_usercookie) && $this->_usercookie['role'] == 3) {
-            if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/postform.html.twig', ['url'=>'addpost','access'=>$this->_usercookie['role']]);
-            } else {
-                $this->_modelpost->add(new entity($post));
-                return header("LOCATION:/posts");
-            }
-        } else {
-            return header("LOCATION:/");
-        }
+        } 
     }
     /**
      * Update post
@@ -126,7 +127,7 @@ class Postcontroller extends twigenvi
      */
     public function onepost($id)
     {
-        $con = $this->_modelpost->post(new entity(array('article_id'=>$id)));
+        $con = $this->_modelpost->post(new Article(array('id'=>$id)));
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
         $con1 = $this->_modelpost->allcomment(new entity(array('article_id'=>$id)));
         $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
@@ -144,7 +145,7 @@ class Postcontroller extends twigenvi
         echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usercookie['role']]);
     }
     /**
-     * Remove post
+     * Remove one post
      * 
      * @param integer $id it's id post
      * 
@@ -153,7 +154,7 @@ class Postcontroller extends twigenvi
     public function remove($id)
     {
         if (isset($this->_usercookie) && $this->_usercookie['role'] == 3) {
-            $this->_modelpost->remove(new user(array('article_id'=>$id)));
+            $this->_modelpost->remove(new article(array('id'=>$id)));
             return header("LOCATION:/posts");
         } else {
             return header("LOCATION:/");

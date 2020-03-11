@@ -14,6 +14,31 @@
       {% set contenu = n.contenu %}
       {% set user_id = n.user_id %}
     {% endfor %}
+    {% if alert == "success" %}
+      <div class="alert alert-success" role="alert">
+        La modification à été faite
+      </div>
+    {% endif %}
+    {% if addAlert.titre %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un titre valide
+      </div>
+    {% endif %}
+    {% if addAlert.chapo %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un chapo valide
+      </div>
+    {% endif %}
+    {% if addAlert.contenu %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un contenu valide
+      </div>
+    {% endif %}
+    {% if addAlert.userId %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un userid valide
+      </div>
+    {% endif %}
     <form method="post" action="{{url}}" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
@@ -39,7 +64,7 @@
       </div>
       <div class="col-6">
         <label for="FormControlInput4">User_id</label>
-        <input type="number" name="user_id" class="form-control" id="FormControlInput4" value='{{user_id}}' required>
+        <input type="number" name="userId" class="form-control" id="FormControlInput4" value='{{user_id}}' required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>

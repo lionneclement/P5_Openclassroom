@@ -53,13 +53,13 @@ $router->map(
 $router->map(
     'GET|POST', '/admin/addpost', function () {
         $page = new postcontroller;
-        $page->add($_POST);
+        $page->addUpdate($_POST);
     }
 );
 $router->map(
     'GET|POST', '/updatepost/[i:id]', function ($id) {
         $page = new postcontroller;
-        $page->update($id, $_POST); 
+        $page->addUpdate($_POST, $id); 
     }
 );
 $router->map(

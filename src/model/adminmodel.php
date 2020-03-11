@@ -135,6 +135,8 @@ class Adminmodel extends connectmodel
      */
     public function deleteuser(User $post)
     {
+        $this->bdd->query('DELETE FROM commentaire WHERE user_id='.$post->getid().'');
+        $this->bdd->query('DELETE FROM article WHERE user_id='.$post->getid().'');
         $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
     }
     /**
