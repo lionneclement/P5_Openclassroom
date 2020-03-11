@@ -138,13 +138,9 @@ class Commentaire extends valide
      */
     public function setStatut($statut)
     {
-        if (is_string($statut)) {
-            if ($statut == "Valide") {
-                $this->_statut = 1;
-            } 
-            if ($statut == "Invalide") {
-                $this->_statut = 0;
-            } 
+        $statut = (int) $statut;
+        if ($statut == 0 || $statut == 1) {
+            $this->_statut = $statut;
         }
     }
     /**
