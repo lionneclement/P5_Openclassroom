@@ -14,9 +14,9 @@ namespace App\controller;
 
 use App\twig\twigenvi;
 use App\model\postmodel;
-use App\model\entity;
 use App\entity\contact;
 use App\entity\article;
+use App\entity\Commentaire;
 
 /**
  * Class for managing post
@@ -74,7 +74,7 @@ class Postcontroller extends twigenvi
         } 
     }
     /**
-     * Update post
+     * Update and add  post
      * 
      * @param array   $post it's post data
      * @param integer $id   it's id post
@@ -121,17 +121,18 @@ class Postcontroller extends twigenvi
     /**
      * Update post
      * 
-     * @param integer $id it's id post
+     * @param integer $id    it's id post
+     * @param string  $error it's a string
      * 
      * @return template
      */
-    public function onepost($id)
+    public function onepost($id,$error=null)
     {
         $con = $this->_modelpost->post(new Article(array('id'=>$id)));
         $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        $con1 = $this->_modelpost->allcomment(new entity(array('article_id'=>$id)));
+        $con1 = $this->_modelpost->allcomment(new Article(array('id'=>$id)));
         $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['alert'=>$error,'nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
     /**
      * Find all post
@@ -174,12 +175,16 @@ class Postcontroller extends twigenvi
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             if ($resp->isSuccess()) {
-                $this->_modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->_usercookie['id'],'article_id'=>$post['id'])));
-                echo '<script language="javascript">alert("Votre message viens d\'être envoyer et doit être valider pas les administrateurs!");window.location.replace("/post/'.$post['id'].'")</script>';
+                $entitypost=new Commentaire(array('message'=>$post['contenu'],'userId'=>$this->_usercookie['id'],'articleId'=>$post['id']));
+                $checking = $entitypost->isValid(array('message'=>$post['contenu'],'userId'=>$this->_usercookie['id'],'articleId'=>$post['id']));
+                if (empty($checking)) {
+                    $this->_modelpost->addcomment($entitypost);
+                    $this->onepost($post['id'], 'success');
+                } else {
+                    $this->onepost($post['id'], 'commentaire');
+                }
             } else {
-                echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/post/'.$post['id'].'")</script>';
-                $error = $resp->getErrorCodes();
-                throw new \Exception($error);
+                $this->onepost($post['id'], 'recaptcha');
             }
         } else {
             return header("LOCATION:/");

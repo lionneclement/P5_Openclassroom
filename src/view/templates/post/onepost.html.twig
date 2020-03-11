@@ -2,6 +2,21 @@
 
 {% block content %}
     <div class='container text-center mt-5 py-5'>
+      {% if alert == 'success' %}
+        <div class="alert alert-success" role="alert">
+          Votre commentaire viens d'être envoyer et doit être valider pas les administrateurs!
+        </div>
+      {% endif %}
+      {% if alert == 'recaptcha' %}
+        <div class="alert alert-danger" role="alert">
+          Vous devez remplir le reCAPTCHA!
+        </div>
+      {% endif %}
+      {% if alert == 'commentaire' %}
+        <div class="alert alert-danger" role="alert">
+          Votre commentaire n'est pas valide
+        </div>
+      {% endif %}
       <div class='row'>
         {% for n in nom %}
           <div class='col-12'>

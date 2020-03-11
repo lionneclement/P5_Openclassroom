@@ -13,6 +13,7 @@
 namespace App\model;
 
 use App\entity\Article;
+use App\entity\Commentaire;
 use App\model\connectmodel;
 /** 
  * The file is for retrieve post information from the database
@@ -91,9 +92,9 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function allcomment(entity $post)
+    public function allcomment(Article $post)
     {
-        return $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getarticle_id().' AND statut=1');
+        return $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
     }
     /**
      * Add comment
@@ -102,10 +103,10 @@ class Postmodel extends connectmodel
      * 
      * @return data
      */
-    public function addcomment(entity $post)
+    public function addcomment(Commentaire $post)
     {
         $sql = 'INSERT INTO commentaire (id, message, statut, date, user_id, article_id) 
     VALUES (NULL,:message,0,CURRENT_TIMESTAMP,:user_id,:article_id)';
-        $this->bdd->prepare($sql)->execute(array('message'=>$post->getmessage(),'user_id'=>$post->getuser_id(),'article_id'=>$post->getarticle_id()));
+        $this->bdd->prepare($sql)->execute(array('message'=>$post->getmessage(),'user_id'=>$post->getuserId(),'article_id'=>$post->getarticleId()));
     }
 }
