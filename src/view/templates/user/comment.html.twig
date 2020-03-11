@@ -18,7 +18,10 @@
                 <p class="card-text">Article_id: {{n.article_id}}</p>
                 <form method="post" action="/admin/{{return}}">
                   <label for="FormControlInput1">Statut :</label>
-                  <input type="number" name="statut" class="form-control" id="FormControlInput1" value='{{n.statut}}' min=0 max=1>
+                  <select id="inputState"  name="statut" class="form-control">
+                    <option {% if n.statut == 1 %}selected{% endif %}>Valide</option>
+                    <option {% if n.statut == 0 %}selected{% endif %}>Invalide</option>
+                  </select>
                   <input type="hidden" name="id" value="{{n.id}}">
                   <br>
                   <button type="submit" class='btn btn-secondary'>Modifier</button>
