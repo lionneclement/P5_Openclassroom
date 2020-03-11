@@ -83,9 +83,11 @@ class Postcontroller extends twigenvi
      */
     public function addUpdate($post,$id=null)
     {   
+        $usersql = $this->_modelpost->findAlluser();
+        $donnesUser = $usersql->fetchAll(\PDO::FETCH_ASSOC);
         if (isset($this->_usercookie) && $this->_usercookie['role'] == 3 && $id==null) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['url'=>'addpost','access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usercookie['id'],'Auteur'=>$donnesUser,'url'=>'addpost','access'=>$this->_usercookie['role']]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -93,14 +95,14 @@ class Postcontroller extends twigenvi
                     $this->_modelpost->add($entitypost);
                     return header("LOCATION:/posts");
                 } else { 
-                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['addAlert'=>$checking,'url'=>'addpost','access'=>$this->_usercookie['role']]);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usercookie['id'],'Auteur'=>$donnesUser,'addAlert'=>$checking,'url'=>'addpost','access'=>$this->_usercookie['role']]);
                 }
             }
         } elseif (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
             $con = $this->_modelpost->post(new article(array('id'=>$id)));
-            $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+            $donnes = $con->fetch(\PDO::FETCH_ASSOC);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -108,15 +110,15 @@ class Postcontroller extends twigenvi
                     $post['id']=$id;
                     $this->_modelpost->update(new article($post));
                     $con = $this->_modelpost->post(new article(array('id'=>$id)));
-                    $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['alert'=>'success','url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'alert'=>'success','url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
                 } else { 
-                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['addAlert'=>$checking,'url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'addAlert'=>$checking,'url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
                 }
             }
         } else {
             return header("LOCATION:/");
-        } 
+        }
     }
     /**
      * Update post

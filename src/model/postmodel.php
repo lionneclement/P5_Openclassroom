@@ -97,7 +97,7 @@ class Postmodel extends connectmodel
         return $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
     }
     /**
-     * Get all comment
+     * Find one user
      * 
      * @param array $post it's user data
      * 
@@ -119,5 +119,14 @@ class Postmodel extends connectmodel
         $sql = 'INSERT INTO commentaire (id, message, statut, date, user_id, article_id) 
     VALUES (NULL,:message,0,CURRENT_TIMESTAMP,:user_id,:article_id)';
         $this->bdd->prepare($sql)->execute(array('message'=>$post->getmessage(),'user_id'=>$post->getuserId(),'article_id'=>$post->getarticleId()));
+    }
+    /**
+     * Find all user
+     * 
+     * @return data
+     */
+    public function findAlluser()
+    {
+        return $this->bdd->query('SELECT * FROM user');
     }
 }
