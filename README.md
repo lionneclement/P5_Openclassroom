@@ -9,7 +9,7 @@ Create your first blog in php
 3) Init composer with `composer init` 
 4) With the p5.sql file create your database in phpmyadmin
 
-   By default a user was created with email=admin@gmail.com and password=admin
+   By default a user was created with email=admin@gmail.com and password=azertyuiopqsd
 5) Add in the root of the project a new file .env with 
     ```
     DB_HOST="localhost"
