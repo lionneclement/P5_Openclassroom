@@ -4,27 +4,27 @@
 <section> 
   <div class="container py-5 mt-5">
     <h1 class="text-center">Article</h1>
-    {% if alert == "success" %}
+    {% if alert_success %}
       <div class="alert alert-success" role="alert">
         La modification à été faite
       </div>
     {% endif %}
-    {% if addAlert.titre %}
+    {% if alert_titre %}
       <div class="alert alert-danger" role="alert">
         Rentré un titre valide
       </div>
     {% endif %}
-    {% if addAlert.chapo %}
+    {% if alert_chapo %}
       <div class="alert alert-danger" role="alert">
         Rentré un chapo valide
       </div>
     {% endif %}
-    {% if addAlert.contenu %}
+    {% if alert_contenu %}
       <div class="alert alert-danger" role="alert">
         Rentré un contenu valide
       </div>
     {% endif %}
-    {% if addAlert.userId %}
+    {% if alert_userId %}
       <div class="alert alert-danger" role="alert">
         Rentré un userid valide
       </div>

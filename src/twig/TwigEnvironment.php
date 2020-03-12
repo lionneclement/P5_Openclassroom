@@ -14,6 +14,7 @@ namespace App\twig;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use App\flash\Flash;
 /** 
  * This it's for init twig
  * 
@@ -33,6 +34,13 @@ class Twigenvi
     public function __construct()
     {
         $loader = new FilesystemLoader('../../src/view');
+        $flash = new Flash();
         $this->twigenvi = new Environment($loader);
+        if (isset($_SESSION['alert'])) {
+            $alert = $flash->getFlash();
+            foreach ($alert as $key=>$value) {
+                $this->twigenvi->addGlobal('alert_'.$key, $value);
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@
  */
 require '../../vendor/autoload.php';
 require '../../src/twig/TwigEnvironment.php';
+require '../flash/Flash.php';
 require '../controller/PostController.php';
 require '../controller/AdminController.php';
 require '../controller/AuthenticationController.php';
@@ -29,6 +30,8 @@ use App\controller\Admincontroller;
 use App\controller\Postcontroller;
 use App\controller\AuthentificationController;
 use Dotenv\Dotenv;
+
+session_start();
 
 $dotenv = Dotenv::createImmutable('../../');
 $dotenv->load();

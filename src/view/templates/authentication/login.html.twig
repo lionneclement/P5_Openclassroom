@@ -3,22 +3,27 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
-    {% if checking.email %}
+    {% if alert_resetpassword %}
+      <div class="alert alert-success" role="alert">
+        Votre mot de passe à étais modifier
+      </div>
+    {% endif %}
+    {% if alert_email %}
       <div class="alert alert-danger" role="alert">
         Rentré un email valide
       </div>
     {% endif %}
-    {% if checking.mdp %}
+    {% if alert_mdp %}
       <div class="alert alert-danger" role="alert">
         Rentré un mot de passe de plus de 13 caractère
       </div>
     {% endif %}
-    {% if alert == 'mdp' %}
+    {% if alert_mdperror %}
       <div class="alert alert-danger" role="alert">
         Vous avez fais une faute dans votre mot de passe
       </div>
     {% endif %}
-    {% if alert == 'email' %}
+    {% if alert_emailerror %}
       <div class="alert alert-danger" role="alert">
         Ce compte n'existe pas
       </div>
@@ -28,7 +33,7 @@
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Email</label>
-        <input class="form-control" type="text" name="email" id="FormControlInput1" required>
+        <input class="form-control" type="email" name="email" id="FormControlInput1" required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>

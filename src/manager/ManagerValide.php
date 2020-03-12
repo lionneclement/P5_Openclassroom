@@ -11,6 +11,7 @@
  * @link     http://localhost/
  */
 namespace App\entity;
+use App\flash\Flash;
 /** 
  * Function valide
  * 
@@ -34,6 +35,7 @@ class Valide
      */
     public function isValid(array $donnees)
     {
+        $flash = new Flash();
         $this->checking=[];
         foreach ($donnees as $key => $value) {
             $method = 'get'.$key;
@@ -41,6 +43,7 @@ class Valide
                 $this->checking[$key]=$key;
             }
         }
+        $flash->setFlash($this->checking);
         return $this->checking;
     }
 }

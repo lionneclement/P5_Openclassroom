@@ -16,6 +16,7 @@ use App\twig\twigenvi;
 use App\model\adminmodel;
 use App\entity\user;
 use App\entity\commentaire;
+use App\flash\Flash;
 /**
  * Class for managing connected users
  * 
@@ -57,9 +58,9 @@ class Admincontroller extends twigenvi
                 echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $this->_modelpost->updaterole(new user($post));
-                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usercookie['id'])));
-                $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/user.html.twig', ['alert'=>'success','user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                $flash = new Flash();
+                $flash->setFlash(array());
+                return header("LOCATION:/admin/roles");
             }
         } else {
             return header("LOCATION:/");
@@ -95,9 +96,9 @@ class Admincontroller extends twigenvi
                 echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
-                $con = $this->_modelpost->$type();
-                $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['alert'=>'success','return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
+                $flash = new Flash();
+                $flash->setFlash(array());
+                return header("LOCATION:/admin/comment/$type");
             }
         } else {
             return header("LOCATION:/");
@@ -156,11 +157,11 @@ class Admincontroller extends twigenvi
                 if (empty($checking)) {
                     $post['id']=$this->_usercookie['id'];
                     $this->_modelpost->updateuser(new user(($post)));
-                    $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
-                    $donnes = $con->fetch(\PDO::FETCH_OBJ);
-                    echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['alert'=>true,'user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    $flash = new Flash();
+                    $flash->setFlash(array());
+                    return header("LOCATION:/admin/updateuser");
                 } else {
-                    echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['checking'=>$checking,'user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    return header("LOCATION:/admin/updateuser");
                 }
             }
         } else {
@@ -182,17 +183,20 @@ class Admincontroller extends twigenvi
             } else {
                 $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
                 $donnes = $con->fetch(\PDO::FETCH_OBJ);
+                $flash = new Flash();
                 if (password_verify($post['oldpassword'], $donnes->mdp)) {
-                    $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$this->_usercookie['id']));
-                    $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$this->_usercookie['id']));
+                    $entitypost=new user(array('mdp'=>$post['newpassword']));
+                    $checking = $entitypost->isValid(array('mdp'=>$post['newpassword']));
                     if (empty($checking)) {
                         $this->_modelpost->updatepassword($entitypost);
-                        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['alert'=>'true','access'=>$this->_usercookie['role']]);
+                        $flash->setFlash(array());
+                        return header("LOCATION:/admin/updatepassword");
                     } else {
-                        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['checking'=>$checking,'access'=>$this->_usercookie['role']]);
+                        return header("LOCATION:/admin/updatepassword");
                     }
                 } else {
-                    echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['alert'=>'false','access'=>$this->_usercookie['role']]);
+                    $flash->setFlash(array('danger'=>'danger'));
+                    return header("LOCATION:/admin/updatepassword");
                 }
             }
         } else {

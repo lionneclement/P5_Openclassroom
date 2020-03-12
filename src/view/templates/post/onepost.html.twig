@@ -2,21 +2,6 @@
 
 {% block content %}
     <div class='container text-center mt-5 py-5'>
-      {% if alert == 'success' %}
-        <div class="alert alert-success" role="alert">
-          Votre commentaire viens d'être envoyer et doit être valider pas les administrateurs!
-        </div>
-      {% endif %}
-      {% if alert == 'recaptcha' %}
-        <div class="alert alert-danger" role="alert">
-          Vous devez remplir le reCAPTCHA!
-        </div>
-      {% endif %}
-      {% if alert == 'commentaire' %}
-        <div class="alert alert-danger" role="alert">
-          Votre commentaire n'est pas valide
-        </div>
-      {% endif %}
       <div class='row'>
           <div class='col-12'>
             <div class="card text-center">
@@ -54,8 +39,23 @@
     </div>
     {% endif %}
   {% if access >= 1 %}
-    <div class="container text-center py-5">
+    <div class="container text-center py-5" id='addcomment'>
       <h2>Ajouter un commentaire</h2>
+      {% if alert_success %}
+        <div class="alert alert-success" role="alert">
+          Votre commentaire viens d'être envoyer et doit être valider pas les administrateurs!
+        </div>
+      {% endif %}
+      {% if alert_reCAPTCHA %}
+        <div class="alert alert-danger" role="alert">
+          Vous devez remplir le reCAPTCHA!
+        </div>
+      {% endif %}
+      {% if alert_message %}
+        <div class="alert alert-danger" role="alert">
+          Votre commentaire n'est pas valide
+        </div>
+      {% endif %}
       <form method="post" class="needs-validation" novalidate action="/post/comment">
         <div class="row">
         <div class="col-12">

@@ -3,12 +3,12 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
-    {% if alert == 'false' %}
+    {% if alert_emailfalse %}
       <div class="alert alert-danger" role="alert">
         Rentré un email valide
       </div>
     {% endif %}
-    {% if alert == 'true' %}
+    {% if alert_emailtrue %}
       <div class="alert alert-success" role="alert">
         Vous allez recevoir un email
       </div>
