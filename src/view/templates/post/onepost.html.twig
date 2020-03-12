@@ -24,7 +24,7 @@
                 <h5 class="card-title">{{nom.titre}}</h5>
                 <p class="card-text"><i>{{nom.chapo}}</i></p>
                 <p class="card-text">{{nom.contenu}}</p>
-                <p class="card-text">{{nom.user_id}}</p>
+                <p class="card-text">{{nom.nom}}</p>
                 {% if access and access >= 2 %}
                   <a href="/post/updatepost/{{nom.id}}" class="btn btn-secondary">Modifier</a>
                   {% if access == 3 %}  

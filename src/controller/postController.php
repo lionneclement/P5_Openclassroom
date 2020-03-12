@@ -141,7 +141,7 @@ class Postcontroller extends twigenvi
             $donnes3 = $con3->fetch(\PDO::FETCH_OBJ);
             $donnes1[$key]->nom=$donnes3->nom;
         }
-        $donnes->user_id=$donnes2->nom;
+        $donnes->nom=$donnes2->nom;
         echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['alert'=>$error,'nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
     /**
@@ -153,7 +153,7 @@ class Postcontroller extends twigenvi
     {
         $con = $this->_modelpost->posts();
         $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>array_reverse($donnes),'access'=>$this->_usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usercookie['role']]);
     }
     /**
      * Remove one post

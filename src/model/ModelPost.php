@@ -35,7 +35,7 @@ class Postmodel extends connectmodel
      */
     public function posts()
     {
-        return $this->bdd->query('SELECT * FROM article');
+        return $this->bdd->query('SELECT * FROM article ORDER BY date DESC');
     }
     /**
      * Get one post
