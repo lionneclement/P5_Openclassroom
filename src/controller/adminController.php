@@ -146,7 +146,7 @@ class Admincontroller extends twigenvi
      */
     public function updateuser($post)
     {
-        if (isset($this->_user_usersession['id'])) {
+        if (isset($this->_usersession['id'])) {
             $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
