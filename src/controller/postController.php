@@ -31,17 +31,17 @@ use App\flash\Flash;
 class Postcontroller extends twigenvi
 {
     private $_modelpost;
-    private $_usercookie;
+    private $_usersession;
     /**
-     * Init model and cookie
+     * Init model and session
      */
     public function __construct()
     {
         parent::__construct();
         $this->_modelpost = new postmodel;
-        if (isset($_COOKIE['id'])) {
-            $this->_usercookie['id'] = $_COOKIE['id'];
-            $this->_usercookie['role'] = $_COOKIE['role'];
+        if (isset($_SESSION['id'])) {
+            $this->_usersession['id'] = $_SESSION['id'];
+            $this->_usersession['role'] = $_SESSION['role'];
         }
     }
     /**
@@ -54,7 +54,7 @@ class Postcontroller extends twigenvi
     public function home($post)
     {
         if (empty($post)) {
-            echo $this->twigenvi->render('/templates/home.html.twig', ['access'=>$this->_usercookie['role']]);
+            echo $this->twigenvi->render('/templates/home.html.twig', ['access'=>$this->_usersession['role']]);
         } else {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
@@ -88,9 +88,9 @@ class Postcontroller extends twigenvi
     {   
         $usersql = $this->_modelpost->findAlluser();
         $donnesUser = $usersql->fetchAll(\PDO::FETCH_OBJ);
-        if (isset($this->_usercookie) && $this->_usercookie['role'] == 3 && $id==null) {
+        if (isset($this->_usersession) && $this->_usersession['role'] == 3 && $id==null) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usercookie['id'],'Auteur'=>$donnesUser,'url'=>'addpost','access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost','access'=>$this->_usersession['role']]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -101,11 +101,11 @@ class Postcontroller extends twigenvi
                     return header("LOCATION:/post/addpost");
                 }
             }
-        } elseif (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
+        } elseif (isset($this->_usersession) && $this->_usersession['role'] >= 2) {
             $con = $this->_modelpost->post(new article(array('id'=>$id)));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usersession['role']]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -143,7 +143,7 @@ class Postcontroller extends twigenvi
             $donnes1[$key]->nom=$donnes3->nom;
         }
         $donnes->nom=$donnes2->nom;
-        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usersession['role']]);
     }
     /**
      * Find all post
@@ -154,7 +154,7 @@ class Postcontroller extends twigenvi
     {
         $con = $this->_modelpost->posts();
         $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usercookie['role']]);
+        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usersession['role']]);
     }
     /**
      * Remove one post
@@ -165,7 +165,7 @@ class Postcontroller extends twigenvi
      */
     public function remove($id)
     {
-        if (isset($this->_usercookie) && $this->_usercookie['role'] == 3) {
+        if (isset($this->_usersession) && $this->_usersession['role'] == 3) {
             $this->_modelpost->remove(new article(array('id'=>$id)));
             return header("LOCATION:/post/findAll");
         } else {
@@ -181,14 +181,14 @@ class Postcontroller extends twigenvi
      */
     public function comment($post)
     {
-        if (isset($this->_usercookie)) {
+        if (isset($this->_usersession)) {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             $flash = new Flash();
             $flash->setFlash(array('reCAPTCHA'=>'reCAPTCHA'));
             if ($resp->isSuccess()) {
-                $entitypost=new Commentaire(array('message'=>$post['contenu'],'userId'=>$this->_usercookie['id'],'articleId'=>$post['id']));
+                $entitypost=new Commentaire(array('message'=>$post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$post['id']));
                 $checking = $entitypost->isValid(array('message'=>$post['contenu']));
                 if (empty($checking)) {
                     $this->_modelpost->addcomment($entitypost);

@@ -29,17 +29,17 @@ use App\flash\Flash;
 class Admincontroller extends twigenvi
 {
     private $_modelpost;
-    private $_usercookie;
+    private $_usersession;
     /**
-     * Init model and cookie
+     * Init model and session
      */
     public function __construct()
     {
         parent::__construct();
         $this->_modelpost = new adminmodel;
-        if (isset($_COOKIE['id'])) {
-            $this->_usercookie['id'] = $_COOKIE['id'];
-            $this->_usercookie['role'] = $_COOKIE['role'];
+        if (isset($_SESSION['id'])) {
+            $this->_usersession['id'] = $_SESSION['id'];
+            $this->_usersession['role'] = $_SESSION['role'];
         }
     }
     /**
@@ -51,11 +51,11 @@ class Admincontroller extends twigenvi
      */
     public function roles($post)
     {
-        if ($this->_usercookie['role'] == 3) {
+        if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usercookie['id'])));
+                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usersession['id'])));
                 $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usersession['role']]);
             } else {
                 $this->_modelpost->updaterole(new user($post));
                 $flash = new Flash();
@@ -73,8 +73,8 @@ class Admincontroller extends twigenvi
      */
     public function admin()
     {
-        if ($this->_usercookie['role'] == 3) {
-            echo $this->twigenvi->render('/templates/user/admin.html.twig', ['access'=>$this->_usercookie['role']]);
+        if ($this->_usersession['role'] == 3) {
+            echo $this->twigenvi->render('/templates/user/admin.html.twig', ['access'=>$this->_usersession['role']]);
         } else {
             return header("LOCATION:/");
         }
@@ -89,11 +89,11 @@ class Admincontroller extends twigenvi
      */
     public function comment($post,$type)
     {
-        if ($this->_usercookie['role'] == 3) {
+        if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
                 $con = $this->_modelpost->$type();
                 $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usersession['role']]);
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
                 $flash = new Flash();
@@ -114,7 +114,7 @@ class Admincontroller extends twigenvi
      */
     public function deletecomment($id,$url)
     {
-        if ($this->_usercookie['role'] == 3 && !empty($id)) {
+        if ($this->_usersession['role'] == 3 && !empty($id)) {
             $this->_modelpost->deletecomment(new commentaire(array('id'=>$id)));
             return header("LOCATION:/admin/comment/$url");
         } else {
@@ -130,7 +130,7 @@ class Admincontroller extends twigenvi
      */
     public function deleteuser($id)
     {
-        if ($this->_usercookie['role'] == 3 && !empty($id)) {
+        if ($this->_usersession['role'] == 3 && !empty($id)) {
             $this->_modelpost->deleteuser(new user(array('id'=>$id)));
             return header("LOCATION:/admin/roles");
         } else {
@@ -146,16 +146,16 @@ class Admincontroller extends twigenvi
      */
     public function updateuser($post)
     {
-        if (isset($this->_usercookie['id'])) {
-            $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
+        if (isset($this->_user_usersession['id'])) {
+            $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes,'access'=>$this->_usersession['role']]);
             } else {
                 $entitypost=new user($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $post['id']=$this->_usercookie['id'];
+                    $post['id']=$this->_usersession['id'];
                     $this->_modelpost->updateuser(new user(($post)));
                     $flash = new Flash();
                     $flash->setFlash(array());
@@ -177,11 +177,11 @@ class Admincontroller extends twigenvi
       */
     public function updatepassword($post)
     {
-        if (isset($this->_usercookie['id'])) {
+        if (isset($this->_usersession['id'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['access'=>$this->_usersession['role']]);
             } else {
-                $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usercookie['id'])));
+                $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
                 $donnes = $con->fetch(\PDO::FETCH_OBJ);
                 $flash = new Flash();
                 if (password_verify($post['oldpassword'], $donnes->mdp)) {

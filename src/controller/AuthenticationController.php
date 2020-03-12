@@ -28,17 +28,17 @@ use App\flash\Flash;
 class AuthentificationController extends twigenvi
 {
     private $_modelpost;
-    private $_usercookie;
+    private $_usersession;
     /**
-     * Init model and cookie
+     * Init model and session
      */
     public function __construct()
     {
         parent::__construct();
         $this->_modelpost = new AuthentificationModel;
-        if (isset($_COOKIE['id'])) {
-            $this->_usercookie['id'] = $_COOKIE['id'];
-            $this->_usercookie['role'] = $_COOKIE['role'];
+        if (isset($_SESSION['id'])) {
+            $this->_usersession['id'] = $_SESSION['id'];
+            $this->_usersession['role'] = $_SESSION['role'];
         }
     }
     /**
@@ -50,7 +50,7 @@ class AuthentificationController extends twigenvi
      */
     public function register($post)
     {
-        if (!isset($this->_usercookie)) {
+        if (!isset($this->_usersession)) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/register.html.twig');
             } else {
@@ -85,7 +85,7 @@ class AuthentificationController extends twigenvi
      */
     public function login($post)
     {
-        if (!isset($this->_usercookie)) {
+        if (!isset($this->_usersession)) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/login.html.twig');
             } else {
@@ -96,7 +96,7 @@ class AuthentificationController extends twigenvi
                     $donnes = $con->fetch(\PDO::FETCH_OBJ);
                     $flash = new Flash();
                     if (password_verify($post['mdp'], $donnes->mdp)) {
-                        $this->confcookie($donnes);
+                        $this->confsession($donnes);
                         return header("LOCATION:/");
                     } elseif (!empty($donnes)) {
                         $flash->setFlash(array('mdperror'=>'mdp'));
@@ -120,24 +120,23 @@ class AuthentificationController extends twigenvi
      */
     public function logout()
     {
-        setcookie('id', $_COOKIE['id'], time() - 3600, '/');
-        setcookie('role', $_COOKIE['role'], time() - 3600, '/');
+        session_unset();
         return header("LOCATION:/");
     }
     /**
-     * Create cookie
+     * Create session
      * 
      * @param array $user it's user id and user role
      * 
      * @return template
      */
-    public function confcookie($user)
+    public function confsession($user)
     {
-        setcookie('id', $user->id, time()+(60*60*24*30), '/');
-        setcookie('role', $user->role_id, time()+(60*60*24*30), '/');
+        $_SESSION['id']= $user->id;
+        $_SESSION['role']= $user->role_id;
     }
     /**
-     * Send an email to be sure the user has the email and create a cookie
+     * Send an email to be sure the user has the email and create a session
      * 
      * @param array $post it's user data
      * 
@@ -162,7 +161,7 @@ class AuthentificationController extends twigenvi
                     $rand .= $seed[$k];
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
-                setcookie('reset', $obj, time()+(60*60), '/');
+                $_SESSION['reset']=$obj;
                 mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
                 $flash->setFlash(array('emailtrue'=>'emailtrue'));
                 return header("LOCATION:/auth/resetpassword");
@@ -170,7 +169,7 @@ class AuthentificationController extends twigenvi
         }
     }
     /**
-     * Check if the cookie and the url match, if it's good reset password and delete cookie
+     * Check if the session and the url match, if it's good reset password and delete session
      * 
      * @param integer $id   it's user id
      * @param string  $url  it's the url
@@ -180,15 +179,15 @@ class AuthentificationController extends twigenvi
      */
     public function resetlink($id,$url,$post)
     {
-        if (isset($_COOKIE['reset']) && password_verify($url, $_COOKIE['reset'])) {
+        if (isset($_SESSION['reset']) && password_verify($url, $_SESSION['reset'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id,'access'=>$this->_usersession['role']]);
             } else {
                 $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$id));
                 $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$id));
                 if (empty($checking)) {
                     $this->_modelpost->updatepassword($entitypost);
-                    setcookie('reset', '', -1, '/');
+                    unset($_SESSION['reset']);
                     $flash = new Flash();
                     $flash->setFlash(array('resetpassword'=>'resetpassword'));
                     return header("LOCATION:/auth/login");

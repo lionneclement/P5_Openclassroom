@@ -30,7 +30,7 @@ use Closure;
 class Flash
 {
     /**
-     * Set cookie
+     * Set session
      * 
      * @param array $array it's array
      * 
@@ -45,7 +45,7 @@ class Flash
         }
     }
     /**
-     * Get and delete cookie
+     * Get and delete session
      * 
      * @param array $key all data
      * 
