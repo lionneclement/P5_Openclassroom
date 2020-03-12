@@ -181,7 +181,7 @@ class AuthentificationController extends twigenvi
     {
         if (isset($_SESSION['reset']) && password_verify($url, $_SESSION['reset'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id,'access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
                 $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$id));
                 $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$id));

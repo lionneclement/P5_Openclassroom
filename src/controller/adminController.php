@@ -55,7 +55,7 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 $con = $this->_modelpost->roles(new user(array('id'=>$this->_usersession['id'])));
                 $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes]);
             } else {
                 $this->_modelpost->updaterole(new user($post));
                 $flash = new Flash();
@@ -74,7 +74,7 @@ class Admincontroller extends twigenvi
     public function admin()
     {
         if ($this->_usersession['role'] == 3) {
-            echo $this->twigenvi->render('/templates/user/admin.html.twig', ['access'=>$this->_usersession['role']]);
+            echo $this->twigenvi->render('/templates/user/admin.html.twig');
         } else {
             return header("LOCATION:/");
         }
@@ -93,7 +93,7 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 $con = $this->_modelpost->$type();
                 $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
                 $flash = new Flash();
@@ -150,7 +150,7 @@ class Admincontroller extends twigenvi
             $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes,'access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
             } else {
                 $entitypost=new user($post);
                 $checking = $entitypost->isValid($post);
@@ -179,7 +179,7 @@ class Admincontroller extends twigenvi
     {
         if (isset($this->_usersession['id'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/user/updatepassword.html.twig', ['access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/user/updatepassword.html.twig');
             } else {
                 $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
                 $donnes = $con->fetch(\PDO::FETCH_OBJ);

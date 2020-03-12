@@ -42,5 +42,8 @@ class Twigenvi
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
         }
+        if (isset($_SESSION['role'])) {
+            $this->twigenvi->addGlobal('user_access', $_SESSION['role']);
+        }
     }
 }

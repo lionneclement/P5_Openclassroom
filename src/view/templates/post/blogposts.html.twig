@@ -16,9 +16,9 @@
                 <h5 class="card-title">{{n.titre}}</h5>
                 <p class="card-text">{{n.chapo}}</p>
                 <a href="/post/findOne/{{n.id}}" class="btn btn-secondary">Voir plus</a>
-                {% if access and access >= 2 %}
+                {% if user_access >= 2 %}
                   <a href="/post/updatepost/{{n.id}}" class="btn btn-secondary">Modifier</a>
-                  {% if access == 3 %}
+                  {% if user_access == 3 %}
                   <a href="/post/removepost/{{n.id}}" class="btn btn-secondary">Supprimer</a>
                   {% endif %}
                 {% endif %}

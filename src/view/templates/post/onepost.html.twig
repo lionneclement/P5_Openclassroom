@@ -10,9 +10,9 @@
                 <p class="card-text"><i>{{nom.chapo}}</i></p>
                 <p class="card-text">{{nom.contenu}}</p>
                 <p class="card-text">{{nom.nom}}</p>
-                {% if access and access >= 2 %}
+                {% if user_access >= 2 %}
                   <a href="/post/updatepost/{{nom.id}}" class="btn btn-secondary">Modifier</a>
-                  {% if access == 3 %}  
+                  {% if user_access == 3 %}  
                     <a href="/post/removepost/{{nom.id}}" class="btn btn-secondary">Supprimer</a>
                   {% endif %}
                 {% endif %}
@@ -38,7 +38,7 @@
       {% endfor %}
     </div>
     {% endif %}
-  {% if access >= 1 %}
+  {% if user_access >= 1 %}
     <div class="container text-center py-5" id='addcomment'>
       <h2>Ajouter un commentaire</h2>
       {% if alert_success %}

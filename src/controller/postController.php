@@ -54,7 +54,7 @@ class Postcontroller extends twigenvi
     public function home($post)
     {
         if (empty($post)) {
-            echo $this->twigenvi->render('/templates/home.html.twig', ['access'=>$this->_usersession['role']]);
+            echo $this->twigenvi->render('/templates/home.html.twig');
         } else {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
@@ -90,7 +90,7 @@ class Postcontroller extends twigenvi
         $donnesUser = $usersql->fetchAll(\PDO::FETCH_OBJ);
         if (isset($this->_usersession) && $this->_usersession['role'] == 3 && $id==null) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost','access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -105,7 +105,7 @@ class Postcontroller extends twigenvi
             $con = $this->_modelpost->post(new article(array('id'=>$id)));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usersession['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -143,7 +143,7 @@ class Postcontroller extends twigenvi
             $donnes1[$key]->nom=$donnes3->nom;
         }
         $donnes->nom=$donnes2->nom;
-        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usersession['role']]);
+        echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1]);
     }
     /**
      * Find all post
@@ -154,7 +154,7 @@ class Postcontroller extends twigenvi
     {
         $con = $this->_modelpost->posts();
         $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
-        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes,'access'=>$this->_usersession['role']]);
+        echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
     }
     /**
      * Remove one post
