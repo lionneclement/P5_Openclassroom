@@ -77,7 +77,7 @@ class Admincontroller extends twigenvi
         }
     }
     /**
-     * Show all comments and update comment
+     * Show comment valid and comment invalid
      * 
      * @param array  $post it's user data
      * @param string $type The param is to know if the comment is to be created or modified
@@ -93,7 +93,9 @@ class Admincontroller extends twigenvi
                 echo $this->twigenvi->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
-                return header("LOCATION:/admin/comment/$type");
+                $con = $this->_modelpost->$type();
+                $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+                echo $this->twigenvi->render('/templates/user/comment.html.twig', ['alert'=>'success','return'=>$type,'comment'=>$donnes,'access'=>$this->_usercookie['role']]);
             }
         } else {
             return header("LOCATION:/");
