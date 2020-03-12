@@ -89,8 +89,8 @@ class AuthentificationController extends twigenvi
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $con = $this->_modelpost->check($entitypost);
-                    $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-                    if (password_verify($post['mdp'], $donnes['mdp'])) {
+                    $donnes = $con->fetch(\PDO::FETCH_OBJ);
+                    if (password_verify($post['mdp'], $donnes->mdp)) {
                         $this->confcookie($donnes);
                         return header("LOCATION:/");
                     } elseif (!empty($donnes)) {
@@ -126,8 +126,8 @@ class AuthentificationController extends twigenvi
      */
     public function confcookie($user)
     {
-        setcookie('id', $user['id'], time()+(60*60*24*30), '/');
-        setcookie('role', $user['role_id'], time()+(60*60*24*30), '/');
+        setcookie('id', $user->id, time()+(60*60*24*30), '/');
+        setcookie('role', $user->role_id, time()+(60*60*24*30), '/');
     }
     /**
      * Send an email to be sure the user has the email and create a cookie
@@ -142,7 +142,7 @@ class AuthentificationController extends twigenvi
             echo $this->twigenvi->render('/templates/authentication/reset.html.twig');
         } else {
             $con = $this->_modelpost->check(new user(array('email'=>$post['email'])));
-            $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+            $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($donnes)) {
                 echo $this->twigenvi->render('/templates/authentication/reset.html.twig', ['alert'=>'false']);
             } else {
@@ -154,7 +154,7 @@ class AuthentificationController extends twigenvi
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 setcookie('reset', $obj, time()+(60*60), '/');
-                mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes['id'].'/'.$rand);
+                mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
                 echo $this->twigenvi->render('/templates/authentication/reset.html.twig', ['alert'=>'true']);
             }
         }

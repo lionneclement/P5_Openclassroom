@@ -84,7 +84,7 @@ class Postcontroller extends twigenvi
     public function addUpdate($post,$id=null)
     {   
         $usersql = $this->_modelpost->findAlluser();
-        $donnesUser = $usersql->fetchAll(\PDO::FETCH_ASSOC);
+        $donnesUser = $usersql->fetchAll(\PDO::FETCH_OBJ);
         if (isset($this->_usercookie) && $this->_usercookie['role'] == 3 && $id==null) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usercookie['id'],'Auteur'=>$donnesUser,'url'=>'addpost','access'=>$this->_usercookie['role']]);
@@ -100,9 +100,9 @@ class Postcontroller extends twigenvi
             }
         } elseif (isset($this->_usercookie) && $this->_usercookie['role'] >= 2) {
             $con = $this->_modelpost->post(new article(array('id'=>$id)));
-            $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+            $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $entitypost=new article($post);
                 $checking = $entitypost->isValid($post);
@@ -110,10 +110,10 @@ class Postcontroller extends twigenvi
                     $post['id']=$id;
                     $this->_modelpost->update(new article($post));
                     $con = $this->_modelpost->post(new article(array('id'=>$id)));
-                    $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'alert'=>'success','url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    $donnes = $con->fetch(\PDO::FETCH_OBJ);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'alert'=>'success','url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
                 } else { 
-                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes['user_id'],'Auteur'=>$donnesUser,'addAlert'=>$checking,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
+                    echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'addAlert'=>$checking,'url'=>'updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->_usercookie['role']]);
                 }
             }
         } else {
@@ -131,17 +131,17 @@ class Postcontroller extends twigenvi
     public function onepost($id,$error=null)
     {
         $con = $this->_modelpost->post(new Article(array('id'=>$id)));
-        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
+        $donnes = $con->fetch(\PDO::FETCH_OBJ);
         $con1 = $this->_modelpost->allcomment(new Article(array('id'=>$id)));
-        $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
-        $con2 = $this->_modelpost->findUser($donnes['user_id']);
-        $donnes2 = $con2->fetch(\PDO::FETCH_ASSOC);
+        $donnes1 = $con1->fetchAll(\PDO::FETCH_OBJ);
+        $con2 = $this->_modelpost->findUser($donnes->user_id);
+        $donnes2 = $con2->fetch(\PDO::FETCH_OBJ);
         foreach ($donnes1 as $key => $value) {
-            $con3 = $this->_modelpost->findUser($value['user_id']);
-            $donnes3 = $con3->fetch(\PDO::FETCH_ASSOC);
-            $donnes1[$key]['nom']=$donnes3['nom'];
+            $con3 = $this->_modelpost->findUser($value->user_id);
+            $donnes3 = $con3->fetch(\PDO::FETCH_OBJ);
+            $donnes1[$key]->nom=$donnes3->nom;
         }
-        $donnes['user_id']=$donnes2['nom'];
+        $donnes->user_id=$donnes2->nom;
         echo $this->twigenvi->render('/templates/post/onepost.html.twig', ['alert'=>$error,'nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->_usercookie['role']]);
     }
     /**
@@ -152,7 +152,7 @@ class Postcontroller extends twigenvi
     public function allposts()
     {
         $con = $this->_modelpost->posts();
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
+        $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
         echo $this->twigenvi->render('/templates/post/blogposts.html.twig', ['nom'=>array_reverse($donnes),'access'=>$this->_usercookie['role']]);
     }
     /**
