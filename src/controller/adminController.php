@@ -57,7 +57,9 @@ class Admincontroller extends twigenvi
                 echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes,'access'=>$this->_usercookie['role']]);
             } else {
                 $this->_modelpost->updaterole(new user($post));
-                return header("LOCATION:/admin/roles");
+                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usercookie['id'])));
+                $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
+                echo $this->twigenvi->render('/templates/user/user.html.twig', ['alert'=>'success','user'=>$donnes,'access'=>$this->_usercookie['role']]);
             }
         } else {
             return header("LOCATION:/");
