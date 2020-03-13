@@ -40,7 +40,7 @@ class Valide
         foreach ($donnees as $key => $value) {
             $method = 'get'.$key;
             if ($this->$method() == null) {
-                $this->checking[$key]=$key;
+                $this->checking[$key]=$value;
             }
         }
         $flash->setFlash($this->checking);
