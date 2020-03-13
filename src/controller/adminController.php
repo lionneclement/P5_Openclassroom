@@ -197,8 +197,7 @@ class Admincontroller extends twigenvi
                     return header("LOCATION:/admin/updatepassword");
                 }
             }
-        } else {
-            return header("LOCATION:/");
         }
+            return header("LOCATION:/");
     }
 }

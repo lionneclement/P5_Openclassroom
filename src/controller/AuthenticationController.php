@@ -194,8 +194,7 @@ class AuthentificationController extends twigenvi
                     return header("LOCATION:/auth/resetlink/$id/$url");
                 }
             }
-        } else {
-            return header("LOCATION:/");
         }
+            return header("LOCATION:/");
     }
 }
