@@ -190,8 +190,9 @@ class AuthentificationController extends twigenvi
                     $flash = new Flash();
                     $flash->setFlash(['resetpassword'=>'resetpassword']);
                     return header("LOCATION:/auth/login");
-                }
+                } else {
                     return header("LOCATION:/auth/resetlink/$id/$url");
+                }
             }
         }
             return header("LOCATION:/");
