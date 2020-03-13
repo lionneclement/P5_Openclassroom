@@ -39,10 +39,8 @@ class Postcontroller extends twigenvi
     {
         parent::__construct();
         $this->_modelpost = new postmodel;
-        if (isset($_SESSION['id'])) {
-            $this->_usersession['id'] = $_SESSION['id'];
-            $this->_usersession['role'] = $_SESSION['role'];
-        }
+        $this->_usersession['id'] = &$_SESSION['id'];
+        $this->_usersession['role'] = &$_SESSION['role'];
     }
     /**
      * Home page
@@ -88,7 +86,7 @@ class Postcontroller extends twigenvi
     {   
         $usersql = $this->_modelpost->findAlluser();
         $donnesUser = $usersql->fetchAll(\PDO::FETCH_OBJ);
-        if (isset($this->_usersession) && $this->_usersession['role'] == 3 && $id==null) {
+        if ($this->_usersession['role'] == 3 && $id==null) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
             } else {
@@ -101,7 +99,7 @@ class Postcontroller extends twigenvi
                     return header("LOCATION:/post/addpost");
                 }
             }
-        } elseif (isset($this->_usersession) && $this->_usersession['role'] >= 2) {
+        } elseif ($this->_usersession['role'] >= 2) {
             $con = $this->_modelpost->post(new article(['id'=>$id]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
@@ -124,8 +122,7 @@ class Postcontroller extends twigenvi
     /**
      * Update post
      * 
-     * @param integer $id    it's id post
-     * @param string  $error it's a string
+     * @param integer $id it's id post
      * 
      * @return template
      */
@@ -165,7 +162,7 @@ class Postcontroller extends twigenvi
      */
     public function remove($id)
     {
-        if (isset($this->_usersession) && $this->_usersession['role'] == 3) {
+        if ($this->_usersession['role'] == 3) {
             $this->_modelpost->remove(new article(['id'=>$id]));
             return header("LOCATION:/post/findAll");
         } else {
@@ -181,7 +178,7 @@ class Postcontroller extends twigenvi
      */
     public function comment($post)
     {
-        if (isset($this->_usersession)) {
+        if (isset($this->_usersession['id'])) {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);

@@ -37,10 +37,8 @@ class Admincontroller extends twigenvi
     {
         parent::__construct();
         $this->_modelpost = new adminmodel;
-        if (isset($_SESSION['id'])) {
-            $this->_usersession['id'] = $_SESSION['id'];
-            $this->_usersession['role'] = $_SESSION['role'];
-        }
+        $this->_usersession['id'] = &$_SESSION['id'];
+        $this->_usersession['role'] = &$_SESSION['role'];
     }
     /**
      * Role a user

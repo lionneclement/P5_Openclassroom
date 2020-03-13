@@ -36,10 +36,9 @@ class AuthentificationController extends twigenvi
     {
         parent::__construct();
         $this->_modelpost = new AuthentificationModel;
-        if (isset($_SESSION['id'])) {
-            $this->_usersession['id'] = $_SESSION['id'];
-            $this->_usersession['role'] = $_SESSION['role'];
-        }
+        $this->_usersession['id'] = &$_SESSION['id'];
+        $this->_usersession['role'] = &$_SESSION['role'];
+        $this->_usersession['reset'] = &$_SESSION['reset'];
     }
     /**
      * Register a user
@@ -50,7 +49,7 @@ class AuthentificationController extends twigenvi
      */
     public function register($post)
     {
-        if (!isset($this->_usersession)) {
+        if (!isset($this->_usersession['id'])) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/register.html.twig');
             } else {
@@ -85,7 +84,7 @@ class AuthentificationController extends twigenvi
      */
     public function login($post)
     {
-        if (!isset($this->_usersession)) {
+        if (!isset($this->_usersession['id'])) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/login.html.twig');
             } else {
@@ -132,8 +131,8 @@ class AuthentificationController extends twigenvi
      */
     public function confsession($user)
     {
-        $_SESSION['id']= $user->id;
-        $_SESSION['role']= $user->role_id;
+        $this->_usersession['id']= $user->id;
+        $this->_usersession['role']= $user->role_id;
     }
     /**
      * Send an email to be sure the user has the email and create a session
@@ -161,7 +160,7 @@ class AuthentificationController extends twigenvi
                     $rand .= $seed[$k];
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
-                $_SESSION['reset']=$obj;
+                $this->_usersession['reset']=$obj;
                 mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
                 $flash->setFlash(['emailtrue'=>'emailtrue']);
                 return header("LOCATION:/auth/resetpassword");
@@ -179,7 +178,7 @@ class AuthentificationController extends twigenvi
      */
     public function resetlink($id,$url,$post)
     {
-        if (isset($_SESSION['reset']) && password_verify($url, $_SESSION['reset'])) {
+        if (isset($this->_usersession['reset']) && password_verify($url, $this->_usersession['reset'])) {
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
@@ -187,7 +186,7 @@ class AuthentificationController extends twigenvi
                 $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
                     $this->_modelpost->updatepassword($entitypost);
-                    unset($_SESSION['reset']);
+                    $this->_usersession['reset']=null;
                     $flash = new Flash();
                     $flash->setFlash(['resetpassword'=>'resetpassword']);
                     return header("LOCATION:/auth/login");

@@ -29,6 +29,14 @@ use Closure;
 
 class Flash
 {
+    private $_sessionalert;
+    /**
+     * Init session alert
+     */
+    public function __construct()
+    {
+        $this->_sessionalert = &$_SESSION['alert'];
+    }
     /**
      * Set session
      * 
@@ -39,23 +47,21 @@ class Flash
     public function setFlash($array)
     {
         if (empty($array)) {
-            $_SESSION['alert']=['success'=>'success'];
+            $this->_sessionalert=['success'=>'success'];
         } else {
-            $_SESSION['alert']=$array;
+            $this->_sessionalert=$array;
         }
     }
     /**
      * Get and delete session
      * 
-     * @param array $key all data
-     * 
      * @return setter
      */
     public function getFlash()
     {
-        if (isset($_SESSION['alert'])) {
-            $flash=$_SESSION['alert'];
-            unset($_SESSION['alert']);
+        if (isset($this->_sessionalert)) {
+            $flash=$this->_sessionalert;
+            $this->_sessionalert=null;
             return $flash;
         }
         return null;

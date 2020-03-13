@@ -36,14 +36,16 @@ class Twigenvi
         $loader = new FilesystemLoader('../../src/view');
         $flash = new Flash();
         $this->twigenvi = new Environment($loader);
-        if (isset($_SESSION['alert'])) {
+        $sessionalert = &$_SESSION['alert'];
+        if (isset($sessionalert)) {
             $alert = $flash->getFlash();
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
         }
-        if (isset($_SESSION['role'])) {
-            $this->twigenvi->addGlobal('user_access', $_SESSION['role']);
+        $sessionrole = &$_SESSION['role'];
+        if (isset($sessionrole)) {
+            $this->twigenvi->addGlobal('user_access', $sessionrole);
         }
     }
 }
