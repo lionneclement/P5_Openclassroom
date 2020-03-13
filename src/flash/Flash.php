@@ -39,7 +39,7 @@ class Flash
     public function setFlash($array)
     {
         if (empty($array)) {
-            $_SESSION['alert']=array('success'=>'success');
+            $_SESSION['alert']=['success'=>'success'];
         } else {
             $_SESSION['alert']=$array;
         }

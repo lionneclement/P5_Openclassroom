@@ -47,7 +47,7 @@ class Adminmodel extends connectmodel
     public function updaterole(User $post)
     {
         $sql = 'UPDATE user SET role_id=:role_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('role_id'=>$post->getroleId(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['role_id'=>$post->getroleId(),'id'=>$post->getid()]);
     }
     /**
      * Get all comment
@@ -68,7 +68,7 @@ class Adminmodel extends connectmodel
     public function updatecomment(Commentaire $post)
     {
         $sql = 'UPDATE commentaire SET statut=:statut WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('statut'=>$post->getstatut(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['statut'=>$post->getstatut(),'id'=>$post->getid()]);
     }
     /**
      * Get all comment invalid
@@ -124,7 +124,7 @@ class Adminmodel extends connectmodel
     public function updateuser(User $post)
     {
         $sql = 'UPDATE user SET nom=:nom, prenom=:prenom, email=:email  WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()]);
     }
     /**
      * Update password
@@ -136,6 +136,6 @@ class Adminmodel extends connectmodel
     public function updatepassword(User $post)
     {
         $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('mdp'=>$post->getmdp(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['mdp'=>$post->getmdp(),'id'=>$post->getid()]);
     }
 }

@@ -61,11 +61,11 @@ class AuthentificationController extends twigenvi
                     $donnes = $con->fetchAll();
                     $flash = new Flash();
                     if (empty($donnes)) {
-                        $flash->setFlash(array());
+                        $flash->setFlash([]);
                         $this->_modelpost->register($entitypost);
                         return header("LOCATION:/auth/register");
                     } else {
-                        $flash->setFlash(array('already'=>'already'));
+                        $flash->setFlash(['already'=>'already']);
                         return header("LOCATION:/auth/register");
                     }
                 } else {
@@ -99,10 +99,10 @@ class AuthentificationController extends twigenvi
                         $this->confsession($donnes);
                         return header("LOCATION:/");
                     } elseif (!empty($donnes)) {
-                        $flash->setFlash(array('mdperror'=>'mdp'));
+                        $flash->setFlash(['mdperror'=>'mdp']);
                         return header("LOCATION:/auth/login");
                     } else {
-                        $flash->setFlash(array('emailerror'=>'email'));
+                        $flash->setFlash(['emailerror'=>'email']);
                         return header("LOCATION:/auth/login");
                     }
                 } else {
@@ -147,11 +147,11 @@ class AuthentificationController extends twigenvi
         if (empty($post)) {
             echo $this->twigenvi->render('/templates/authentication/reset.html.twig');
         } else {
-            $con = $this->_modelpost->check(new user(array('email'=>$post['email'])));
+            $con = $this->_modelpost->check(new user(['email'=>$post['email']]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             $flash = new Flash();
             if (empty($donnes)) {
-                $flash->setFlash(array('emailfalse'=>'emailfalse'));
+                $flash->setFlash(['emailfalse'=>'emailfalse']);
                 return header("LOCATION:/auth/resetpassword");
             } else {
                 $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
@@ -163,7 +163,7 @@ class AuthentificationController extends twigenvi
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 $_SESSION['reset']=$obj;
                 mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
-                $flash->setFlash(array('emailtrue'=>'emailtrue'));
+                $flash->setFlash(['emailtrue'=>'emailtrue']);
                 return header("LOCATION:/auth/resetpassword");
             }
         }
@@ -183,13 +183,13 @@ class AuthentificationController extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
-                $entitypost=new user(array('mdp'=>$post['newpassword'],'id'=>$id));
-                $checking = $entitypost->isValid(array('mdp'=>$post['newpassword'],'id'=>$id));
+                $entitypost=new user(['mdp'=>$post['newpassword'],'id'=>$id]);
+                $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
                     $this->_modelpost->updatepassword($entitypost);
                     unset($_SESSION['reset']);
                     $flash = new Flash();
-                    $flash->setFlash(array('resetpassword'=>'resetpassword'));
+                    $flash->setFlash(['resetpassword'=>'resetpassword']);
                     return header("LOCATION:/auth/login");
                 } else {
                     return header("LOCATION:/auth/resetlink/$id/$url");

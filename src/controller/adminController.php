@@ -53,13 +53,13 @@ class Admincontroller extends twigenvi
     {
         if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $con = $this->_modelpost->roles(new user(array('id'=>$this->_usersession['id'])));
+                $con = $this->_modelpost->roles(new user(['id'=>$this->_usersession['id']]));
                 $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
                 echo $this->twigenvi->render('/templates/user/user.html.twig', ['user'=>$donnes]);
             } else {
                 $this->_modelpost->updaterole(new user($post));
                 $flash = new Flash();
-                $flash->setFlash(array());
+                $flash->setFlash([]);
                 return header("LOCATION:/admin/roles");
             }
         } else {
@@ -97,7 +97,7 @@ class Admincontroller extends twigenvi
             } else {
                 $this->_modelpost->updatecomment(new commentaire($post));
                 $flash = new Flash();
-                $flash->setFlash(array());
+                $flash->setFlash([]);
                 return header("LOCATION:/admin/comment/$type");
             }
         } else {
@@ -115,7 +115,7 @@ class Admincontroller extends twigenvi
     public function deletecomment($id,$url)
     {
         if ($this->_usersession['role'] == 3 && !empty($id)) {
-            $this->_modelpost->deletecomment(new commentaire(array('id'=>$id)));
+            $this->_modelpost->deletecomment(new commentaire(['id'=>$id]));
             return header("LOCATION:/admin/comment/$url");
         } else {
             return header("LOCATION:/");
@@ -131,7 +131,7 @@ class Admincontroller extends twigenvi
     public function deleteuser($id)
     {
         if ($this->_usersession['role'] == 3 && !empty($id)) {
-            $this->_modelpost->deleteuser(new user(array('id'=>$id)));
+            $this->_modelpost->deleteuser(new user(['id'=>$id]));
             return header("LOCATION:/admin/roles");
         } else {
             return header("LOCATION:/");
@@ -147,7 +147,7 @@ class Admincontroller extends twigenvi
     public function updateuser($post)
     {
         if (isset($this->_usersession['id'])) {
-            $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
+            $con = $this->_modelpost->getuser(new user(['id'=>$this->_usersession['id']]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
@@ -158,7 +158,7 @@ class Admincontroller extends twigenvi
                     $post['id']=$this->_usersession['id'];
                     $this->_modelpost->updateuser(new user(($post)));
                     $flash = new Flash();
-                    $flash->setFlash(array());
+                    $flash->setFlash([]);
                     return header("LOCATION:/admin/updateuser");
                 } else {
                     return header("LOCATION:/admin/updateuser");
@@ -181,21 +181,21 @@ class Admincontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/user/updatepassword.html.twig');
             } else {
-                $con = $this->_modelpost->getuser(new user(array('id'=>$this->_usersession['id'])));
+                $con = $this->_modelpost->getuser(new user(['id'=>$this->_usersession['id']]));
                 $donnes = $con->fetch(\PDO::FETCH_OBJ);
                 $flash = new Flash();
                 if (password_verify($post['oldpassword'], $donnes->mdp)) {
-                    $entitypost=new user(array('mdp'=>$post['newpassword']));
-                    $checking = $entitypost->isValid(array('mdp'=>$post['newpassword']));
+                    $entitypost=new user(['mdp'=>$post['newpassword']]);
+                    $checking = $entitypost->isValid(['mdp'=>$post['newpassword']]);
                     if (empty($checking)) {
                         $this->_modelpost->updatepassword($entitypost);
-                        $flash->setFlash(array());
+                        $flash->setFlash([]);
                         return header("LOCATION:/admin/updatepassword");
                     } else {
                         return header("LOCATION:/admin/updatepassword");
                     }
                 } else {
-                    $flash->setFlash(array('danger'=>'danger'));
+                    $flash->setFlash(['danger'=>'danger']);
                     return header("LOCATION:/admin/updatepassword");
                 }
             }

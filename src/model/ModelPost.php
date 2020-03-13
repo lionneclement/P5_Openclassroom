@@ -59,7 +59,7 @@ class Postmodel extends connectmodel
     {
         $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id) 
     VALUES (NULL,:titre,:chapo,:contenu, CURRENT_TIMESTAMP,:user_id)';
-        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId()));
+        $this->bdd->prepare($sql)->execute(['titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId()]);
     }
     /**
      * Update post
@@ -71,7 +71,7 @@ class Postmodel extends connectmodel
     public function update(Article $post)
     {
         $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, date=CURRENT_TIMESTAMP, user_id=:user_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId(),'id'=>$post->getid()]);
     }
     /**
      * Remove post
@@ -118,7 +118,7 @@ class Postmodel extends connectmodel
     {
         $sql = 'INSERT INTO commentaire (id, message, statut, date, user_id, article_id) 
     VALUES (NULL,:message,0,CURRENT_TIMESTAMP,:user_id,:article_id)';
-        $this->bdd->prepare($sql)->execute(array('message'=>$post->getmessage(),'user_id'=>$post->getuserId(),'article_id'=>$post->getarticleId()));
+        $this->bdd->prepare($sql)->execute(['message'=>$post->getmessage(),'user_id'=>$post->getuserId(),'article_id'=>$post->getarticleId()]);
     }
     /**
      * Find all user

@@ -47,7 +47,7 @@ class AuthentificationModel extends connectmodel
     {
         $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
     VALUES (NULL,:nom,:prenom,:email,:mdp,1)';
-        $this->bdd->prepare($sql)->execute(array('nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'mdp'=>$post->getmdp()));
+        $this->bdd->prepare($sql)->execute(['nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'mdp'=>$post->getmdp()]);
     }
     /**
      * Update password
@@ -59,6 +59,6 @@ class AuthentificationModel extends connectmodel
     public function updatepassword(User $post)
     {
         $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(array('mdp'=>$post->getmdp(),'id'=>$post->getid()));
+        $this->bdd->prepare($sql)->execute(['mdp'=>$post->getmdp(),'id'=>$post->getid()]);
     }
 }

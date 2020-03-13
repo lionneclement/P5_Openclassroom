@@ -60,7 +60,7 @@ class Postcontroller extends twigenvi
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             $flash = new Flash();
-            $flash->setFlash(array('reCAPTCHA'=>'reCAPTCHA'));
+            $flash->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
                 unset($post['g-recaptcha-response']);
                 $entitypost=new contact($post);
@@ -102,7 +102,7 @@ class Postcontroller extends twigenvi
                 }
             }
         } elseif (isset($this->_usersession) && $this->_usersession['role'] >= 2) {
-            $con = $this->_modelpost->post(new article(array('id'=>$id)));
+            $con = $this->_modelpost->post(new article(['id'=>$id]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
@@ -131,9 +131,9 @@ class Postcontroller extends twigenvi
      */
     public function onepost($id)
     {
-        $con = $this->_modelpost->post(new Article(array('id'=>$id)));
+        $con = $this->_modelpost->post(new Article(['id'=>$id]));
         $donnes = $con->fetch(\PDO::FETCH_OBJ);
-        $con1 = $this->_modelpost->allcomment(new Article(array('id'=>$id)));
+        $con1 = $this->_modelpost->allcomment(new Article(['id'=>$id]));
         $donnes1 = $con1->fetchAll(\PDO::FETCH_OBJ);
         $con2 = $this->_modelpost->findUser($donnes->user_id);
         $donnes2 = $con2->fetch(\PDO::FETCH_OBJ);
@@ -166,7 +166,7 @@ class Postcontroller extends twigenvi
     public function remove($id)
     {
         if (isset($this->_usersession) && $this->_usersession['role'] == 3) {
-            $this->_modelpost->remove(new article(array('id'=>$id)));
+            $this->_modelpost->remove(new article(['id'=>$id]));
             return header("LOCATION:/post/findAll");
         } else {
             return header("LOCATION:/");
@@ -186,10 +186,10 @@ class Postcontroller extends twigenvi
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             $flash = new Flash();
-            $flash->setFlash(array('reCAPTCHA'=>'reCAPTCHA'));
+            $flash->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
-                $entitypost=new Commentaire(array('message'=>$post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$post['id']));
-                $checking = $entitypost->isValid(array('message'=>$post['contenu']));
+                $entitypost=new Commentaire(['message'=>$post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$post['id']]);
+                $checking = $entitypost->isValid(['message'=>$post['contenu']]);
                 if (empty($checking)) {
                     $this->_modelpost->addcomment($entitypost);
                     return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
