@@ -192,10 +192,9 @@ class Admincontroller extends twigenvi
                     } else {
                         return header("LOCATION:/admin/updatepassword");
                     }
-                } else {
+                }
                     $flash->setFlash(['danger'=>'danger']);
                     return header("LOCATION:/admin/updatepassword");
-                }
             }
         }
             return header("LOCATION:/");

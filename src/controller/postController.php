@@ -193,9 +193,8 @@ class Postcontroller extends twigenvi
                 } else {
                     return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
                 }
-            } else {
-                return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
             }
+                return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
         }
             return header("LOCATION:/");
     }
