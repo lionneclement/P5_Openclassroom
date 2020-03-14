@@ -10,11 +10,11 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\model;
+namespace App\Model;
 
-use App\model\connectmodel;
-use App\entity\User;
-use App\entity\Commentaire;
+use App\Model\Connectmodel;
+use App\Entity\User;
+use App\Entity\Commentaire;
 /**
  * Class for retrieve admin information from the database
  * 
@@ -24,7 +24,7 @@ use App\entity\Commentaire;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Adminmodel extends connectmodel
+class Adminmodel extends Connectmodel
 {
     /**
      * Get all user without us

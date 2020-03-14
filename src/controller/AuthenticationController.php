@@ -10,12 +10,12 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\controller;
+namespace App\Controller;
 
-use App\twig\twigenvi;
-use App\model\AuthentificationModel;
-use App\entity\user;
-use App\flash\Flash;
+use App\Twig\Twigenvi;
+use App\Model\AuthentificationModel;
+use App\Entity\User;
+use App\Flash\Flash;
 /**
  * Class for authentification
  * 
@@ -25,7 +25,7 @@ use App\flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class AuthentificationController extends twigenvi
+class AuthentificationController extends Twigenvi
 {
     private $_modelpost;
     private $_usersession;
@@ -53,7 +53,7 @@ class AuthentificationController extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/register.html.twig');
             } else {
-                $entitypost=new user($post);
+                $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $con = $this->_modelpost->check($entitypost);
@@ -88,7 +88,7 @@ class AuthentificationController extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/login.html.twig');
             } else {
-                $entitypost=new user($post);
+                $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $con = $this->_modelpost->check($entitypost);
@@ -146,7 +146,7 @@ class AuthentificationController extends twigenvi
         if (empty($post)) {
             echo $this->twigenvi->render('/templates/authentication/reset.html.twig');
         } else {
-            $con = $this->_modelpost->check(new user(['email'=>$post['email']]));
+            $con = $this->_modelpost->check(new User(['email'=>$post['email']]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             $flash = new Flash();
             if (empty($donnes)) {
@@ -182,7 +182,7 @@ class AuthentificationController extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
-                $entitypost=new user(['mdp'=>$post['newpassword'],'id'=>$id]);
+                $entitypost=new User(['mdp'=>$post['newpassword'],'id'=>$id]);
                 $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
                     $this->_modelpost->updatepassword($entitypost);

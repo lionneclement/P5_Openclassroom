@@ -10,10 +10,10 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\model;
+namespace App\Model;
 
-use App\model\connectmodel;
-use App\entity\User;
+use App\Model\Connectmodel;
+use App\Entity\User;
 /**
  * Class for retrieve authentification information from the database
  * 
@@ -23,7 +23,7 @@ use App\entity\User;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class AuthentificationModel extends connectmodel
+class AuthentificationModel extends Connectmodel
 {
     /**
      * Check if the user exist

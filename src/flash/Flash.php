@@ -11,9 +11,7 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\flash;
-
-use Closure;
+namespace App\Flash;
 
 /** 
  * Class for managing flash notification

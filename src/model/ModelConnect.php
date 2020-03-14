@@ -10,7 +10,7 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\model;
+namespace App\Model;
 /**
  * Class allows to connect to the database
  * 

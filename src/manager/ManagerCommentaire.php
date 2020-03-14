@@ -10,8 +10,8 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\entity;
-use App\entity\valide;
+namespace App\Entity;
+use App\Entity\Valide;
 /** 
  * Getter and Setter for commentaire
  * 
@@ -23,7 +23,7 @@ use App\entity\valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Commentaire extends valide
+class Commentaire extends Valide
 {
     private $_id;
     private $_message;

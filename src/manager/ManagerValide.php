@@ -10,8 +10,8 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\entity;
-use App\flash\Flash;
+namespace App\Entity;
+use App\Flash\Flash;
 /** 
  * Function valide
  * 

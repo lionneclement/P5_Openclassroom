@@ -10,14 +10,14 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\controller;
+namespace App\Controller;
 
-use App\twig\twigenvi;
-use App\model\postmodel;
-use App\entity\contact;
-use App\entity\article;
-use App\entity\Commentaire;
-use App\flash\Flash;
+use App\Twig\Twigenvi;
+use App\Model\Postmodel;
+use App\Entity\Contact;
+use App\Entity\Article;
+use App\Entity\Commentaire;
+use App\Flash\Flash;
 
 /**
  * Class for managing post
@@ -28,7 +28,7 @@ use App\flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Postcontroller extends twigenvi
+class Postcontroller extends Twigenvi
 {
     private $_modelpost;
     private $_usersession;
@@ -38,7 +38,7 @@ class Postcontroller extends twigenvi
     public function __construct()
     {
         parent::__construct();
-        $this->_modelpost = new postmodel;
+        $this->_modelpost = new Postmodel;
         $this->_usersession['id'] = &$_SESSION['id'];
         $this->_usersession['role'] = &$_SESSION['role'];
     }
@@ -61,7 +61,7 @@ class Postcontroller extends twigenvi
             $flash->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
                 unset($post['g-recaptcha-response']);
-                $entitypost=new contact($post);
+                $entitypost=new Contact($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     mail('nobody@gmail.com', $post['prenom'].' '.$post['nom'], $post['message'], 'From:'.$post['email']);
@@ -90,7 +90,7 @@ class Postcontroller extends twigenvi
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
             } else {
-                $entitypost=new article($post);
+                $entitypost=new Article($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $this->_modelpost->add($entitypost);
@@ -100,16 +100,16 @@ class Postcontroller extends twigenvi
                 }
             }
         } elseif ($this->_usersession['role'] >= 2) {
-            $con = $this->_modelpost->post(new article(['id'=>$id]));
+            $con = $this->_modelpost->post(new Article(['id'=>$id]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
             if (empty($post)) {
                 echo $this->twigenvi->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
             } else {
-                $entitypost=new article($post);
+                $entitypost=new Article($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $post['id']=$id;
-                    $this->_modelpost->update(new article($post));
+                    $this->_modelpost->update(new Article($post));
                     return header("LOCATION:/post/updatepost/$id");
                 } else { 
                     return header("LOCATION:/post/updatepost/$id");
@@ -163,7 +163,7 @@ class Postcontroller extends twigenvi
     public function remove($id)
     {
         if ($this->_usersession['role'] == 3) {
-            $this->_modelpost->remove(new article(['id'=>$id]));
+            $this->_modelpost->remove(new Article(['id'=>$id]));
             return header("LOCATION:/post/findAll");
         } else {
             return header("LOCATION:/");

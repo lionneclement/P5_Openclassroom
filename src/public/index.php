@@ -11,24 +11,10 @@
  * @link     http://localhost/
  */
 require '../../vendor/autoload.php';
-require '../../src/twig/TwigEnvironment.php';
-require '../flash/Flash.php';
-require '../controller/PostController.php';
-require '../controller/AdminController.php';
-require '../controller/AuthenticationController.php';
-require '../model/ModelConnect.php';
-require '../model/ModelAdmin.php';
-require '../model/ModelPost.php';
-require '../model/ModelAuthentification.php';
-require '../manager/ManagerValide.php';
-require '../manager/ManagerArticle.php';
-require '../manager/ManagerCommentaire.php';
-require '../manager/ManagerUser.php';
-require '../manager/ManagerContact.php';
 
-use App\controller\Admincontroller;
-use App\controller\Postcontroller;
-use App\controller\AuthentificationController;
+use App\Controller\Admincontroller;
+use App\Controller\Postcontroller;
+use App\Controller\AuthentificationController;
 use Dotenv\Dotenv;
 
 session_start();

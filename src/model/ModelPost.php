@@ -10,11 +10,11 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\model;
+namespace App\Model;
 
-use App\entity\Article;
-use App\entity\Commentaire;
-use App\model\connectmodel;
+use App\Entity\Article;
+use App\Entity\Commentaire;
+use App\Model\Connectmodel;
 /** 
  * The file is for retrieve post information from the database
  * 
@@ -26,7 +26,7 @@ use App\model\connectmodel;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Postmodel extends connectmodel
+class Postmodel extends Connectmodel
 {
     /**
      * Get all posts

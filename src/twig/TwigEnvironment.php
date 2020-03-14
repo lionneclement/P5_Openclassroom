@@ -10,11 +10,11 @@
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\twig;
+namespace App\Twig;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use App\flash\Flash;
+use App\Flash\Flash;
 /** 
  * This it's for init twig
  * 
