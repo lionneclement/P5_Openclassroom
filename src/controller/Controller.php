@@ -37,9 +37,7 @@ class Controller
         $this->_modelPost = new Postmodel;
         $this->_modelAdmin = new Adminmodel;
         $this->_modelAuth = new AuthentificationModel;
-        $this->_usersession['id'] = &$_SESSION['id'];
-        $this->_usersession['role'] = &$_SESSION['role'];
-        $this->_usersession['reset'] = &$_SESSION['reset'];
+        $this->setupSession();
         $this->twigenvi();
         $this->filterPost();
     }
@@ -104,5 +102,16 @@ class Controller
         if ($this->post !== null) {
             $this->post = array_filter($this->post);
         }
+    }
+    /**
+     * Setup session
+     *
+     * @return session
+     */
+    public function setupSession()
+    {
+        $this->_usersession['id'] = &$_SESSION['id'];
+        $this->_usersession['role'] = &$_SESSION['role'];
+        $this->_usersession['reset'] = &$_SESSION['reset'];
     }
 }
