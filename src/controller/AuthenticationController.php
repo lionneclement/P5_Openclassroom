@@ -51,7 +51,7 @@ class AuthentificationController extends Twigenvi
     {
         if (!isset($this->_usersession['id'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/authentication/register.html.twig');
+                return $this->render('/templates/authentication/register.html.twig');
             } else {
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
@@ -86,7 +86,7 @@ class AuthentificationController extends Twigenvi
     {
         if (!isset($this->_usersession['id'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/authentication/login.html.twig');
+                return $this->render('/templates/authentication/login.html.twig');
             } else {
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
@@ -144,7 +144,7 @@ class AuthentificationController extends Twigenvi
     public function resetpassword($post)
     {
         if (empty($post)) {
-            echo $this->twigenvi->render('/templates/authentication/reset.html.twig');
+            return $this->render('/templates/authentication/reset.html.twig');
         } else {
             $con = $this->_modelpost->check(new User(['email'=>$post['email']]));
             $donnes = $con->fetch(\PDO::FETCH_OBJ);
@@ -180,7 +180,7 @@ class AuthentificationController extends Twigenvi
     {
         if (isset($this->_usersession['reset']) && password_verify($url, $this->_usersession['reset'])) {
             if (empty($post)) {
-                echo $this->twigenvi->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
+                return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
                 $entitypost=new User(['mdp'=>$post['newpassword'],'id'=>$id]);
                 $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
