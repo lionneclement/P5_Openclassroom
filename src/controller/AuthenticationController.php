@@ -56,8 +56,7 @@ class AuthentificationController extends Twigenvi
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $con = $this->_modelpost->check($entitypost);
-                    $donnes = $con->fetchAll();
+                    $donnes = $this->_modelpost->check($entitypost);
                     $flash = new Flash();
                     if (empty($donnes)) {
                         $flash->setFlash([]);
@@ -91,8 +90,7 @@ class AuthentificationController extends Twigenvi
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $con = $this->_modelpost->check($entitypost);
-                    $donnes = $con->fetch(\PDO::FETCH_OBJ);
+                    $donnes = $this->_modelpost->check($entitypost);
                     $flash = new Flash();
                     if (password_verify($post['mdp'], $donnes->mdp)) {
                         $this->confsession($donnes);
@@ -146,8 +144,7 @@ class AuthentificationController extends Twigenvi
         if (empty($post)) {
             return $this->render('/templates/authentication/reset.html.twig');
         } else {
-            $con = $this->_modelpost->check(new User(['email'=>$post['email']]));
-            $donnes = $con->fetch(\PDO::FETCH_OBJ);
+            $donnes = $this->_modelpost->check(new User(['email'=>$post['email']]));
             $flash = new Flash();
             if (empty($donnes)) {
                 $flash->setFlash(['emailfalse'=>'emailfalse']);

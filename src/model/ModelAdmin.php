@@ -35,7 +35,8 @@ class Adminmodel extends Connectmodel
      */
     public function roles(User $post)
     {
-        return $this->bdd->query('SELECT * FROM user WHERE NOT id='.$post->getid().''); 
+        $sql = $this->bdd->query('SELECT * FROM user WHERE NOT id='.$post->getid().''); 
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Update role
@@ -56,7 +57,9 @@ class Adminmodel extends Connectmodel
      */
     public function allcomment()
     {
-        return $this->bdd->query('SELECT * FROM commentaire');
+        $sql = $this->bdd->query('SELECT * FROM commentaire');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
+
     }
     /**
      * Update comment
@@ -77,7 +80,8 @@ class Adminmodel extends Connectmodel
      */
     public function invalidecomment()
     {
-        return $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
+        $sql = $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Delete comment
@@ -112,7 +116,8 @@ class Adminmodel extends Connectmodel
      */
     public function getuser(User $post)
     {
-        return $this->bdd->query('SELECT * FROM user WHERE id='.$post->getid().''); 
+        $sql = $this->bdd->query('SELECT * FROM user WHERE id='.$post->getid().''); 
+        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Update user

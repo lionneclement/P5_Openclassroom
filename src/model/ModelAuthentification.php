@@ -34,7 +34,8 @@ class AuthentificationModel extends Connectmodel
      */
     public function check(User $post)
     {
-        return $this->bdd->query("SELECT * FROM user WHERE email='".$post->getemail()."'"); 
+        $sql = $this->bdd->query("SELECT * FROM user WHERE email='".$post->getemail()."'"); 
+        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Register a user

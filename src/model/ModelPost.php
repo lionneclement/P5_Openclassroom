@@ -35,7 +35,8 @@ class Postmodel extends Connectmodel
      */
     public function posts()
     {
-        return $this->bdd->query('SELECT * FROM article ORDER BY date DESC');
+        $sql = $this->bdd->query('SELECT * FROM article ORDER BY date DESC');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Get one post
@@ -46,7 +47,8 @@ class Postmodel extends Connectmodel
      */
     public function post(Article $post)
     {
-        return $this->bdd->query('SELECT * FROM article WHERE id='.$post->getid().'');
+        $sql = $this->bdd->query('SELECT * FROM article WHERE id='.$post->getid().'');
+        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Add post
@@ -94,7 +96,8 @@ class Postmodel extends Connectmodel
      */
     public function allcomment(Article $post)
     {
-        return $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
+        $sql = $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Find one user
@@ -105,7 +108,8 @@ class Postmodel extends Connectmodel
      */
     public function findUser($post)
     {
-        return $this->bdd->query('SELECT * FROM user WHERE id='.$post.'');
+        $sql = $this->bdd->query('SELECT * FROM user WHERE id='.$post.'');
+        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Add comment
@@ -127,6 +131,7 @@ class Postmodel extends Connectmodel
      */
     public function findAlluser()
     {
-        return $this->bdd->query('SELECT * FROM user');
+        $sql = $this->bdd->query('SELECT * FROM user');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
 }

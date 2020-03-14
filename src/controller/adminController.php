@@ -51,8 +51,7 @@ class Admincontroller extends Twigenvi
     {
         if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $con = $this->_modelpost->roles(new User(['id'=>$this->_usersession['id']]));
-                $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
+                $donnes = $this->_modelpost->roles(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
             } else {
                 $this->_modelpost->updaterole(new User($post));
@@ -89,8 +88,7 @@ class Admincontroller extends Twigenvi
     {
         if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $con = $this->_modelpost->$type();
-                $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
+                $donnes = $this->_modelpost->$type();
                 return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
             } else {
                 $this->_modelpost->updatecomment(new Commentaire($post));
@@ -145,8 +143,7 @@ class Admincontroller extends Twigenvi
     public function updateuser($post)
     {
         if (isset($this->_usersession['id'])) {
-            $con = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
-            $donnes = $con->fetch(\PDO::FETCH_OBJ);
+            $donnes = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
             if (empty($post)) {
                 return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
             } else {
@@ -179,8 +176,7 @@ class Admincontroller extends Twigenvi
             if (empty($post)) {
                 return $this->render('/templates/user/updatepassword.html.twig');
             } else {
-                $con = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
-                $donnes = $con->fetch(\PDO::FETCH_OBJ);
+                $donnes = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
                 $flash = new Flash();
                 if (password_verify($post['oldpassword'], $donnes->mdp)) {
                     $entitypost=new User(['mdp'=>$post['newpassword']]);

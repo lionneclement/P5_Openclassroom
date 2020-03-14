@@ -84,8 +84,7 @@ class Postcontroller extends Twigenvi
      */
     public function addUpdate($post,$id=null)
     {   
-        $usersql = $this->_modelpost->findAlluser();
-        $donnesUser = $usersql->fetchAll(\PDO::FETCH_OBJ);
+        $donnesUser = $this->_modelpost->findAlluser();
         if ($this->_usersession['role'] == 3 && $id==null) {
             if (empty($post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
@@ -100,8 +99,7 @@ class Postcontroller extends Twigenvi
                 }
             }
         } elseif ($this->_usersession['role'] >= 2) {
-            $con = $this->_modelpost->post(new Article(['id'=>$id]));
-            $donnes = $con->fetch(\PDO::FETCH_OBJ);
+            $donnes = $this->_modelpost->post(new Article(['id'=>$id]));
             if (empty($post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
             } else {
@@ -128,15 +126,11 @@ class Postcontroller extends Twigenvi
      */
     public function onepost($id)
     {
-        $con = $this->_modelpost->post(new Article(['id'=>$id]));
-        $donnes = $con->fetch(\PDO::FETCH_OBJ);
-        $con1 = $this->_modelpost->allcomment(new Article(['id'=>$id]));
-        $donnes1 = $con1->fetchAll(\PDO::FETCH_OBJ);
-        $con2 = $this->_modelpost->findUser($donnes->user_id);
-        $donnes2 = $con2->fetch(\PDO::FETCH_OBJ);
+        $donnes = $this->_modelpost->post(new Article(['id'=>$id]));
+        $donnes1 = $this->_modelpost->allcomment(new Article(['id'=>$id]));
+        $donnes2 = $this->_modelpost->findUser($donnes->user_id);
         foreach ($donnes1 as $key => $value) {
-            $con3 = $this->_modelpost->findUser($value->user_id);
-            $donnes3 = $con3->fetch(\PDO::FETCH_OBJ);
+            $donnes3 = $this->_modelpost->findUser($value->user_id);
             $donnes1[$key]->nom=$donnes3->nom;
         }
         $donnes->nom=$donnes2->nom;
@@ -149,8 +143,7 @@ class Postcontroller extends Twigenvi
      */
     public function allposts()
     {
-        $con = $this->_modelpost->posts();
-        $donnes = $con->fetchAll(\PDO::FETCH_OBJ);
+        $donnes = $this->_modelpost->posts();
         return $this->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
     }
     /**
