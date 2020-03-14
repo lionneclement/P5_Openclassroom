@@ -1,37 +1,53 @@
 <?php
 /** 
- * The file it's for init twig
+ * The file is for managing all controller file
  * 
  * PHP version 7.2.18
  * 
- * @category Twig
- * @package  Twig
+ * @category Controller
+ * @package  Controller
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\Twig;
+namespace App\Controller;
 
+use App\Model\AuthentificationModel;
+use App\Model\Adminmodel;
+use App\Model\Postmodel;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Flash\Flash;
-/** 
- * This it's for init twig
+/**
+ * Class for managing all controller file
  * 
- * PHP version 7.2.18
- * 
- * @category Twig
- * @package  Twig
+ * @category Controller
+ * @package  Controller
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Twigenvi
+class Controller
 {
     /**
-     * Init twig
+     * Init model and session
      */
     public function __construct()
+    {
+        $this->_modelPost = new Postmodel;
+        $this->_modelAdmin = new Adminmodel;
+        $this->_modelAuth = new AuthentificationModel;
+        $this->_usersession['id'] = &$_SESSION['id'];
+        $this->_usersession['role'] = &$_SESSION['role'];
+        $this->_usersession['reset'] = &$_SESSION['reset'];
+        $this->twigenvi();
+    }
+    /**
+     * Render the twig file with the parameters
+     *
+     * @return template
+     */
+    public function twigenvi()
     {
         $loader = new FilesystemLoader('../../src/view');
         $flash = new Flash();

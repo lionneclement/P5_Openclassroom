@@ -12,8 +12,7 @@
  */
 namespace App\Controller;
 
-use App\Twig\Twigenvi;
-use App\Model\AuthentificationModel;
+use App\Controller\Controller;
 use App\Entity\User;
 use App\Flash\Flash;
 /**
@@ -25,20 +24,14 @@ use App\Flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class AuthentificationController extends Twigenvi
+class AuthentificationController extends Controller
 {
-    private $_modelpost;
-    private $_usersession;
     /**
-     * Init model and session
+     * Init controller
      */
     public function __construct()
     {
         parent::__construct();
-        $this->_modelpost = new AuthentificationModel;
-        $this->_usersession['id'] = &$_SESSION['id'];
-        $this->_usersession['role'] = &$_SESSION['role'];
-        $this->_usersession['reset'] = &$_SESSION['reset'];
     }
     /**
      * Register a user
@@ -56,11 +49,11 @@ class AuthentificationController extends Twigenvi
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $donnes = $this->_modelpost->check($entitypost);
+                    $donnes = $this->_modelAuth->check($entitypost);
                     $flash = new Flash();
                     if (empty($donnes)) {
                         $flash->setFlash([]);
-                        $this->_modelpost->register($entitypost);
+                        $this->_modelAuth->register($entitypost);
                         return header("LOCATION:/auth/register");
                     } else {
                         $flash->setFlash(['already'=>'already']);
@@ -90,7 +83,7 @@ class AuthentificationController extends Twigenvi
                 $entitypost=new User($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $donnes = $this->_modelpost->check($entitypost);
+                    $donnes = $this->_modelAuth->check($entitypost);
                     $flash = new Flash();
                     if (password_verify($post['mdp'], $donnes->mdp)) {
                         $this->confsession($donnes);
@@ -144,7 +137,7 @@ class AuthentificationController extends Twigenvi
         if (empty($post)) {
             return $this->render('/templates/authentication/reset.html.twig');
         } else {
-            $donnes = $this->_modelpost->check(new User(['email'=>$post['email']]));
+            $donnes = $this->_modelAuth->check(new User(['email'=>$post['email']]));
             $flash = new Flash();
             if (empty($donnes)) {
                 $flash->setFlash(['emailfalse'=>'emailfalse']);
@@ -182,7 +175,7 @@ class AuthentificationController extends Twigenvi
                 $entitypost=new User(['mdp'=>$post['newpassword'],'id'=>$id]);
                 $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
-                    $this->_modelpost->updatepassword($entitypost);
+                    $this->_modelAuth->updatepassword($entitypost);
                     $this->_usersession['reset']=null;
                     $flash = new Flash();
                     $flash->setFlash(['resetpassword'=>'resetpassword']);

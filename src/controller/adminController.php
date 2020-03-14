@@ -12,8 +12,7 @@
  */
 namespace App\Controller;
 
-use App\Twig\Twigenvi;
-use App\Model\Adminmodel;
+use App\Controller\Controller;
 use App\Entity\User;
 use App\Entity\Commentaire;
 use App\Flash\Flash;
@@ -26,19 +25,14 @@ use App\Flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Admincontroller extends Twigenvi
+class Admincontroller extends Controller
 {
-    private $_modelpost;
-    private $_usersession;
     /**
      * Init model and session
      */
     public function __construct()
     {
         parent::__construct();
-        $this->_modelpost = new Adminmodel;
-        $this->_usersession['id'] = &$_SESSION['id'];
-        $this->_usersession['role'] = &$_SESSION['role'];
     }
     /**
      * Role a user
@@ -51,10 +45,10 @@ class Admincontroller extends Twigenvi
     {
         if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $donnes = $this->_modelpost->roles(new User(['id'=>$this->_usersession['id']]));
+                $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
             } else {
-                $this->_modelpost->updaterole(new User($post));
+                $this->_modelAdmin->updaterole(new User($post));
                 $flash = new Flash();
                 $flash->setFlash([]);
                 return header("LOCATION:/admin/roles");
@@ -88,10 +82,10 @@ class Admincontroller extends Twigenvi
     {
         if ($this->_usersession['role'] == 3) {
             if (empty($post)) {
-                $donnes = $this->_modelpost->$type();
+                $donnes = $this->_modelAdmin->$type();
                 return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
             } else {
-                $this->_modelpost->updatecomment(new Commentaire($post));
+                $this->_modelAdmin->updatecomment(new Commentaire($post));
                 $flash = new Flash();
                 $flash->setFlash([]);
                 return header("LOCATION:/admin/comment/$type");
@@ -111,7 +105,7 @@ class Admincontroller extends Twigenvi
     public function deletecomment($id,$url)
     {
         if ($this->_usersession['role'] == 3 && !empty($id)) {
-            $this->_modelpost->deletecomment(new Commentaire(['id'=>$id]));
+            $this->_modelAdmin->deletecomment(new Commentaire(['id'=>$id]));
             return header("LOCATION:/admin/comment/$url");
         } else {
             return header("LOCATION:/");
@@ -127,7 +121,7 @@ class Admincontroller extends Twigenvi
     public function deleteuser($id)
     {
         if ($this->_usersession['role'] == 3 && !empty($id)) {
-            $this->_modelpost->deleteuser(new User(['id'=>$id]));
+            $this->_modelAdmin->deleteuser(new User(['id'=>$id]));
             return header("LOCATION:/admin/roles");
         } else {
             return header("LOCATION:/");
@@ -143,7 +137,7 @@ class Admincontroller extends Twigenvi
     public function updateuser($post)
     {
         if (isset($this->_usersession['id'])) {
-            $donnes = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
+            $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
             if (empty($post)) {
                 return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
             } else {
@@ -151,7 +145,7 @@ class Admincontroller extends Twigenvi
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $post['id']=$this->_usersession['id'];
-                    $this->_modelpost->updateuser(new User(($post)));
+                    $this->_modelAdmin->updateuser(new User(($post)));
                     $flash = new Flash();
                     $flash->setFlash([]);
                     return header("LOCATION:/admin/updateuser");
@@ -176,13 +170,13 @@ class Admincontroller extends Twigenvi
             if (empty($post)) {
                 return $this->render('/templates/user/updatepassword.html.twig');
             } else {
-                $donnes = $this->_modelpost->getuser(new User(['id'=>$this->_usersession['id']]));
+                $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
                 $flash = new Flash();
                 if (password_verify($post['oldpassword'], $donnes->mdp)) {
                     $entitypost=new User(['mdp'=>$post['newpassword']]);
                     $checking = $entitypost->isValid(['mdp'=>$post['newpassword']]);
                     if (empty($checking)) {
-                        $this->_modelpost->updatepassword($entitypost);
+                        $this->_modelAdmin->updatepassword($entitypost);
                         $flash->setFlash([]);
                         return header("LOCATION:/admin/updatepassword");
                     } else {

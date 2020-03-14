@@ -12,8 +12,7 @@
  */
 namespace App\Controller;
 
-use App\Twig\Twigenvi;
-use App\Model\Postmodel;
+use App\Controller\Controller;
 use App\Entity\Contact;
 use App\Entity\Article;
 use App\Entity\Commentaire;
@@ -28,19 +27,14 @@ use App\Flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Postcontroller extends Twigenvi
+class Postcontroller extends Controller
 {
-    private $_modelpost;
-    private $_usersession;
     /**
-     * Init model and session
+     * Init controller
      */
     public function __construct()
     {
         parent::__construct();
-        $this->_modelpost = new Postmodel;
-        $this->_usersession['id'] = &$_SESSION['id'];
-        $this->_usersession['role'] = &$_SESSION['role'];
     }
     /**
      * Home page
@@ -84,7 +78,7 @@ class Postcontroller extends Twigenvi
      */
     public function addUpdate($post,$id=null)
     {   
-        $donnesUser = $this->_modelpost->findAlluser();
+        $donnesUser = $this->_modelPost->findAlluser();
         if ($this->_usersession['role'] == 3 && $id==null) {
             if (empty($post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
@@ -92,14 +86,14 @@ class Postcontroller extends Twigenvi
                 $entitypost=new Article($post);
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
-                    $this->_modelpost->add($entitypost);
+                    $this->_modelPost->add($entitypost);
                     return header("LOCATION:/post/findAll");
                 } else { 
                     return header("LOCATION:/post/addpost");
                 }
             }
         } elseif ($this->_usersession['role'] >= 2) {
-            $donnes = $this->_modelpost->post(new Article(['id'=>$id]));
+            $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
             if (empty($post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
             } else {
@@ -107,7 +101,7 @@ class Postcontroller extends Twigenvi
                 $checking = $entitypost->isValid($post);
                 if (empty($checking)) {
                     $post['id']=$id;
-                    $this->_modelpost->update(new Article($post));
+                    $this->_modelPost->update(new Article($post));
                     return header("LOCATION:/post/updatepost/$id");
                 } else { 
                     return header("LOCATION:/post/updatepost/$id");
@@ -126,11 +120,11 @@ class Postcontroller extends Twigenvi
      */
     public function onepost($id)
     {
-        $donnes = $this->_modelpost->post(new Article(['id'=>$id]));
-        $donnes1 = $this->_modelpost->allcomment(new Article(['id'=>$id]));
-        $donnes2 = $this->_modelpost->findUser($donnes->user_id);
+        $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
+        $donnes1 = $this->_modelPost->allcomment(new Article(['id'=>$id]));
+        $donnes2 = $this->_modelPost->findUser($donnes->user_id);
         foreach ($donnes1 as $key => $value) {
-            $donnes3 = $this->_modelpost->findUser($value->user_id);
+            $donnes3 = $this->_modelPost->findUser($value->user_id);
             $donnes1[$key]->nom=$donnes3->nom;
         }
         $donnes->nom=$donnes2->nom;
@@ -143,7 +137,7 @@ class Postcontroller extends Twigenvi
      */
     public function allposts()
     {
-        $donnes = $this->_modelpost->posts();
+        $donnes = $this->_modelPost->posts();
         return $this->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
     }
     /**
@@ -156,7 +150,7 @@ class Postcontroller extends Twigenvi
     public function remove($id)
     {
         if ($this->_usersession['role'] == 3) {
-            $this->_modelpost->remove(new Article(['id'=>$id]));
+            $this->_modelPost->remove(new Article(['id'=>$id]));
             return header("LOCATION:/post/findAll");
         } else {
             return header("LOCATION:/");
@@ -181,7 +175,7 @@ class Postcontroller extends Twigenvi
                 $entitypost=new Commentaire(['message'=>$post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$post['id']]);
                 $checking = $entitypost->isValid(['message'=>$post['contenu']]);
                 if (empty($checking)) {
-                    $this->_modelpost->addcomment($entitypost);
+                    $this->_modelPost->addcomment($entitypost);
                     return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
                 } else {
                     return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
