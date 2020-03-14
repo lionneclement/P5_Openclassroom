@@ -56,7 +56,7 @@ $router->map(
 $router->map(
     'POST', '/post/comment', function () {
         $page = new Postcontroller;
-        $page->comment($_POST);
+        $page->commentPost($_POST);
     }
 );
 $router->map(

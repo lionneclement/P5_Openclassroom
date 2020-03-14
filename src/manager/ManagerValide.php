@@ -35,15 +35,14 @@ class Valide
      */
     public function isValid(array $donnees)
     {
-        $flash = new Flash();
         $this->checking=[];
         foreach ($donnees as $key => $value) {
             $method = 'get'.$key;
-            if ($this->$method() == null) {
+            if (is_null($this->$method())) {
                 $this->checking[$key]=$value;
             }
         }
-        $flash->setFlash($this->checking);
+        (new Flash())->setFlash($this->checking);
         return $this->checking;
     }
 }

@@ -36,10 +36,13 @@ class User extends Valide
      * 
      * @param array $data all data
      */
-    public function __construct(array $data =[])
+    public function __construct(array $data =[],string $post=null)
     {
         if (!empty($data)) {
             $this->hydrate($data);
+            if ($post) {
+                $this->isValid($data);
+            }
         }
     }
     /**
