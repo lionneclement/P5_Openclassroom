@@ -37,18 +37,16 @@ class Admincontroller extends Controller
     /**
      * Role a user
      * 
-     * @param array $post it's user data
-     * 
      * @return template
      */
-    public function roles($post)
+    public function roles()
     {
         if ($this->_usersession['role'] == 3) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
             } else {
-                $this->_modelAdmin->updaterole(new User($post, 'post'));
+                $this->_modelAdmin->updaterole(new User($this->post, 'post'));
                 return header("LOCATION:/admin/roles");
             }
         } else {
@@ -71,19 +69,18 @@ class Admincontroller extends Controller
     /**
      * Show comment valid and comment invalid
      * 
-     * @param array  $post it's user data
      * @param string $type The param is to know if the comment is to be created or modified
      * 
      * @return template
      */
-    public function comment($post,$type)
+    public function comment($type)
     {
         if ($this->_usersession['role'] == 3) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->$type();
                 return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
             } else {
-                $this->_modelAdmin->updatecomment(new Commentaire($post, 'post'));
+                $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
                 return header("LOCATION:/admin/comment/$type");
             }
         } else {
@@ -126,19 +123,17 @@ class Admincontroller extends Controller
     /**
      * Update user (name,email)
      * 
-     * @param array $post it's user data
-     * 
      * @return template
      */
-    public function updateuser($post)
+    public function updateuser()
     {
         if (isset($this->_usersession['id'])) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
             } else {
-                    $post['id']=$this->_usersession['id'];
-                    $this->_modelAdmin->updateuser(new User(($post), 'post'));
+                    $this->post['id']=$this->_usersession['id'];
+                    $this->_modelAdmin->updateuser(new User(($this->post), 'post'));
                     return header("LOCATION:/admin/updateuser");
             }
         } else {
@@ -148,19 +143,17 @@ class Admincontroller extends Controller
      /**
       * Update the password with the old password
       * 
-      * @param array $post it's user data
-      * 
       * @return template
       */
-    public function updatepassword($post)
+    public function updatepassword()
     {
         if (isset($this->_usersession['id'])) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/user/updatepassword.html.twig');
             } else {
                 $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
-                if (password_verify($post['oldpassword'], $donnes->mdp)) {
-                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$post['newpassword'],'id'=>$this->_usersession['id']], 'post'));
+                if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
+                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->_usersession['id']], 'post'));
                     return header("LOCATION:/admin/updatepassword");
                 } else {
                     (new Flash())->setFlash(['danger'=>'danger']);

@@ -36,19 +36,17 @@ class AuthentificationController extends Controller
     /**
      * Register a user
      * 
-     * @param array $post it's user data
-     * 
      * @return template
      */
-    public function register($post)
+    public function register()
     {
         if (!isset($this->_usersession['id'])) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/authentication/register.html.twig');
             } else {
-                $donnes = $this->_modelAuth->check(new User($post));
+                $donnes = $this->_modelAuth->check(new User($this->post));
                 if (empty($donnes)) {
-                    $this->_modelAuth->register(new User($post, 'post')); 
+                    $this->_modelAuth->register(new User($this->post, 'post')); 
                     return header("LOCATION:/auth/register");
                 } else {
                     (new Flash())->setFlash(['already'=>'already']);
@@ -62,19 +60,17 @@ class AuthentificationController extends Controller
     /**
      * Login a user
      * 
-     * @param array $post it's user data
-     * 
      * @return template
      */
-    public function login($post)
+    public function login()
     {
         if (!isset($this->_usersession['id'])) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/authentication/login.html.twig');
             } else {
-                $donnes = $this->_modelAuth->check(new User($post, 'post'));
+                $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
                 $flash = new Flash();
-                if (password_verify($post['mdp'], $donnes->mdp)) {
+                if (password_verify($this->post['mdp'], $donnes->mdp)) {
                     $this->confsession($donnes);
                     return header("LOCATION:/");
                 } elseif (!empty($donnes)) {
@@ -114,16 +110,14 @@ class AuthentificationController extends Controller
     /**
      * Send an email to be sure the user has the email and create a session
      * 
-     * @param array $post it's user data
-     * 
      * @return template
      */
-    public function resetpassword($post)
+    public function resetpassword()
     {
-        if (empty($post)) {
+        if (empty($this->post)) {
             return $this->render('/templates/authentication/reset.html.twig');
         } else {
-            $donnes = $this->_modelAuth->check(new User(['email'=>$post['email']]));
+            $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
             if (empty($donnes)) {
                 (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
                 return header("LOCATION:/auth/resetpassword");
@@ -136,7 +130,7 @@ class AuthentificationController extends Controller
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 $this->_usersession['reset']=$obj;
-                mail($post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
+                mail($this->post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
                 (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
                 return header("LOCATION:/auth/resetpassword");
             }
@@ -145,20 +139,19 @@ class AuthentificationController extends Controller
     /**
      * Check if the session and the url match, if it's good reset password and delete session
      * 
-     * @param integer $id   it's user id
-     * @param string  $url  it's the url
-     * @param array   $post it's user data
+     * @param integer $id  it's user id
+     * @param string  $url it's the url
      * 
      * @return template
      */
-    public function resetlink($id,$url,$post)
+    public function resetlink($id,$url)
     {
         if (isset($this->_usersession['reset']) && password_verify($url, $this->_usersession['reset'])) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
             } else {
-                $entitypost=new User(['mdp'=>$post['newpassword'],'id'=>$id]);
-                $checking = $entitypost->isValid(['mdp'=>$post['newpassword'],'id'=>$id]);
+                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id]);
+                $checking = $entitypost->isValid(['mdp'=>$this->post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
                     $this->_modelAuth->updatepassword($entitypost);
                     $this->_usersession['reset']=null;

@@ -41,6 +41,7 @@ class Controller
         $this->_usersession['role'] = &$_SESSION['role'];
         $this->_usersession['reset'] = &$_SESSION['reset'];
         $this->twigenvi();
+        $this->filterPost();
     }
     /**
      * Render the twig file with the parameters
@@ -78,6 +79,30 @@ class Controller
             echo $this->twigenvi->render($twigFile, $parameters);
         } catch (\Exception $e) {
             return $e;
+        }
+    }
+    /**
+     * Render post secure
+     *
+     * @return template
+     */
+    public function filterPost()
+    {
+        $args = [
+            'id' => FILTER_SANITIZE_NUMBER_INT,
+            'oldpassword'=>FILTER_SANITIZE_STRING,
+            'newpassword'=>FILTER_SANITIZE_STRING,
+            'mdp'=>FILTER_SANITIZE_STRING,
+            'email'=> FILTER_SANITIZE_EMAIL,
+            'nom'=>FILTER_SANITIZE_STRING,
+            'prenom'=>FILTER_SANITIZE_STRING,
+            'g-recaptcha-response'=>FILTER_SANITIZE_STRING,
+            'message'=>FILTER_SANITIZE_STRING,
+            'contenu'=>FILTER_SANITIZE_STRING
+        ];
+        $this->post = filter_input_array(INPUT_POST, $args);
+        if ($this->post !== null) {
+            $this->post = array_filter($this->post);
         }
     }
 }

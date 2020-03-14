@@ -39,25 +39,23 @@ class Postcontroller extends Controller
     /**
      * Home page
      * 
-     * @param array $post it's post data
-     * 
      * @return template
      */
-    public function home($post)
+    public function home()
     {
-        if (empty($post)) {
+        if (empty($this->post)) {
             return $this->render('/templates/home.html.twig');
         } else {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+                ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
-                unset($post['g-recaptcha-response']);
-                $entitypost=new Contact($post);
-                $checking = $entitypost->isValid($post);
+                unset($this->post['g-recaptcha-response']);
+                $entitypost=new Contact($this->post);
+                $checking = $entitypost->isValid($this->post);
                 if (empty($checking)) {
-                    mail('nobody@gmail.com', $post['prenom'].' '.$post['nom'], $post['message'], 'From:'.$post['email']);
+                    mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
                     return header("LOCATION:/#contact");
                 } else {
                     return header("LOCATION:/#contact");
@@ -65,25 +63,24 @@ class Postcontroller extends Controller
             } else {
                 return header("LOCATION:/#contact");
             }
-        } 
+        }
     }
     /**
      * Update and add  post
      * 
-     * @param array   $post it's post data
-     * @param integer $id   it's id post
+     * @param integer $id it's id post
      * 
      * @return template
      */
-    public function addUpdate($post,$id=null)
+    public function addUpdate(int $id=null)
     {   
         $donnesUser = $this->_modelPost->findAlluser();
         if ($this->_usersession['role'] == 3 && $id==null) {
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
             } else {
-                $entitypost=new Article($post);
-                $checking = $entitypost->isValid($post);
+                $entitypost=new Article($this->post);
+                $checking = $entitypost->isValid($this->post);
                 if (empty($checking)) {
                     $this->_modelPost->add($entitypost);
                     return header("LOCATION:/post/findAll");
@@ -93,11 +90,11 @@ class Postcontroller extends Controller
             }
         } elseif ($this->_usersession['role'] >= 2) {
             $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
-            if (empty($post)) {
+            if (empty($this->post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
             } else {
-                $post['id']=$id;
-                $this->_modelPost->update(new Article($post, 'post'));
+                $this->post['id']=$id;
+                $this->_modelPost->update(new Article($this->post, 'post'));
                 return header("LOCATION:/post/updatepost/$id");
             }
         } else {
@@ -152,22 +149,20 @@ class Postcontroller extends Controller
     /**
      * Add comment in one post
      * 
-     * @param array $post it's post data
-     * 
      * @return template
      */
-    public function commentPost($post)
+    public function commentPost()
     {
         if (isset($this->_usersession['id'])) {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+                ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
             (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
-                $entitypost=new Commentaire(['message'=>$post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$post['id']], 'post');
+                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$this->post['id']], 'post');
                 $this->_modelPost->addcomment($entitypost);
             }
-                return header('LOCATION:/post/findOne/'.$post['id'].'#addcomment');
+                return header('LOCATION:/post/findOne/'.$this->post['id'].'#addcomment');
         } else {
             return header("LOCATION:/");
         }

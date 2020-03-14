@@ -26,7 +26,7 @@ $router = new AltoRouter();
 $router->map(
     'GET|POST', '/', function () {
         $page = new Postcontroller;
-        $page->home($_POST);
+        $page->home();
     }
 );
 $router->map(
@@ -44,19 +44,19 @@ $router->map(
 $router->map(
     'GET|POST', '/post/addpost', function () {
         $page = new Postcontroller;
-        $page->addUpdate($_POST);
+        $page->addUpdate();
     }
 );
 $router->map(
     'GET|POST', '/post/updatepost/[i:id]', function ($id) {
         $page = new Postcontroller;
-        $page->addUpdate($_POST, $id); 
+        $page->addUpdate($id); 
     }
 );
 $router->map(
     'POST', '/post/comment', function () {
         $page = new Postcontroller;
-        $page->commentPost($_POST);
+        $page->commentPost();
     }
 );
 $router->map(
@@ -68,13 +68,13 @@ $router->map(
 $router->map(
     'GET|POST', '/auth/register', function () {
         $page = new AuthentificationController;
-        $page->register($_POST);
+        $page->register();
     }
 );
 $router->map(
     'GET|POST', '/auth/login', function () {
         $page = new AuthentificationController;
-        $page->login($_POST);
+        $page->login();
     }
 );
 $router->map(
@@ -86,19 +86,19 @@ $router->map(
 $router->map(
     'GET|POST', '/auth/resetpassword', function () {
         $page = new AuthentificationController;
-        $page->resetpassword($_POST);
+        $page->resetpassword();
     }
 );
 $router->map(
     'GET|POST', '/auth/resetlink/[i:id]/[a:action]', function ($id,$action) {
         $page = new AuthentificationController;
-        $page->resetlink($id, $action, $_POST);
+        $page->resetlink($id, $action);
     }
 );
 $router->map(
     'GET|POST', '/admin/roles', function () {
         $page = new Admincontroller;
-        $page->roles($_POST);
+        $page->roles();
     }
 );
 $router->map(
@@ -110,7 +110,7 @@ $router->map(
 $router->map(
     'GET|POST', '/admin/comment/[a:action]', function ($action) {
         $page = new Admincontroller;
-        $page->comment($_POST, $action);
+        $page->comment($action);
     }
 );
 $router->map(
@@ -128,13 +128,13 @@ $router->map(
 $router->map(
     'GET|POST', '/admin/updateuser', function () {
         $page = new Admincontroller;
-        $page->updateuser($_POST);
+        $page->updateuser();
     }
 );
 $router->map(
     'GET|POST', '/admin/updatepassword', function () {
         $page = new Admincontroller;
-        $page->updatepassword($_POST);
+        $page->updatepassword();
     }
 );
 
