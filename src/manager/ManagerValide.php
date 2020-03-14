@@ -38,7 +38,7 @@ class Valide
         $this->checking=[];
         foreach ($donnees as $key => $value) {
             $method = 'get'.$key;
-            if (is_null($this->$method())) {
+            if ($this->$method()===null) {
                 $this->checking[$key]=$value;
             }
         }
