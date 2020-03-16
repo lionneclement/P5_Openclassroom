@@ -48,7 +48,7 @@ class Postcontroller extends Controller
         }
         $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
         $resp = $recaptcha->setExpectedHostname('localhost')
-            ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+            ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
         (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
         if ($resp->isSuccess()) {
             unset($this->post['g-recaptcha-response']);
@@ -146,7 +146,7 @@ class Postcontroller extends Controller
         if (isset($this->_usersession['id'])) {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+                ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
             (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
                 $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$this->post['id']], 'post');

@@ -144,5 +144,6 @@ $router->map(
 if (is_array($match) && is_callable($match['target'])) {
     call_user_func_array($match['target'], $match['params']); 
 } else {
-    header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+    $server = filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_SPECIAL_CHARS);
+    header($server . ' 404 Not Found');
 }

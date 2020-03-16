@@ -37,7 +37,7 @@ class Controller
         $this->_modelPost = new Postmodel;
         $this->_modelAdmin = new Adminmodel;
         $this->_modelAuth = new AuthentificationModel;
-        $this->setupSession();
+        $this->superGlobal();
         $this->twigenvi();
         $this->filterPost();
     }
@@ -108,10 +108,11 @@ class Controller
      *
      * @return session
      */
-    public function setupSession()
+    public function superGlobal()
     {
         $this->_usersession['id'] = &$_SESSION['id'];
         $this->_usersession['role'] = &$_SESSION['role'];
         $this->_usersession['reset'] = &$_SESSION['reset'];
+        $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
 }
