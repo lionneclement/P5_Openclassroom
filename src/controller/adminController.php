@@ -45,13 +45,11 @@ class Admincontroller extends Controller
             if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
-            } else {
-                $this->_modelAdmin->updaterole(new User($this->post, 'post'));
-                return header("LOCATION:/admin/roles");
             }
-        } else {
-            return header("LOCATION:/");
+            $this->_modelAdmin->updaterole(new User($this->post, 'post'));
+            return header("LOCATION:/admin/roles");
         }
+        return header("LOCATION:/");
     }
     /**
      * Page admin
@@ -62,9 +60,8 @@ class Admincontroller extends Controller
     {
         if ($this->_usersession['role'] == 3) {
             return $this->render('/templates/user/admin.html.twig');
-        } else {
-            return header("LOCATION:/");
         }
+        return header("LOCATION:/");
     }
     /**
      * Show comment valid and comment invalid
@@ -79,13 +76,11 @@ class Admincontroller extends Controller
             if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->$type();
                 return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
-            } else {
-                $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
-                return header("LOCATION:/admin/comment/$type");
             }
-        } else {
-            return header("LOCATION:/");
+            $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
+            return header("LOCATION:/admin/comment/$type");
         }
+        return header("LOCATION:/");
     }
     /**
      * Delete comment
@@ -100,9 +95,8 @@ class Admincontroller extends Controller
         if ($this->_usersession['role'] == 3 && !empty($id)) {
             $this->_modelAdmin->deletecomment(new Commentaire(['id'=>$id]));
             return header("LOCATION:/admin/comment/$url");
-        } else {
-            return header("LOCATION:/");
         }
+        return header("LOCATION:/");
     }
     /**
      * Delete user
@@ -116,9 +110,8 @@ class Admincontroller extends Controller
         if ($this->_usersession['role'] == 3 && !empty($id)) {
             $this->_modelAdmin->deleteuser(new User(['id'=>$id]));
             return header("LOCATION:/admin/roles");
-        } else {
-            return header("LOCATION:/");
         }
+        return header("LOCATION:/");
     }
     /**
      * Update user (name,email)
@@ -131,14 +124,12 @@ class Admincontroller extends Controller
             if (empty($this->post)) {
                 $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
                 return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
-            } else {
-                    $this->post['id']=$this->_usersession['id'];
-                    $this->_modelAdmin->updateuser(new User(($this->post), 'post'));
-                    return header("LOCATION:/admin/updateuser");
             }
-        } else {
-            return header("LOCATION:/");
+            $this->post['id']=$this->_usersession['id'];
+            $this->_modelAdmin->updateuser(new User(($this->post), 'post'));
+            return header("LOCATION:/admin/updateuser");
         }
+        return header("LOCATION:/");
     }
      /**
       * Update the password with the old password
@@ -150,18 +141,15 @@ class Admincontroller extends Controller
         if (isset($this->_usersession['id'])) {
             if (empty($this->post)) {
                 return $this->render('/templates/user/updatepassword.html.twig');
-            } else {
-                $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
-                if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->_usersession['id']], 'post'));
-                    return header("LOCATION:/admin/updatepassword");
-                } else {
-                    (new Flash())->setFlash(['danger'=>'danger']);
-                    return header("LOCATION:/admin/updatepassword");
-                }
             }
-        } else {
-            return header("LOCATION:/");
+            $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
+            if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
+                $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->_usersession['id']], 'post'));
+                return header("LOCATION:/admin/updatepassword");
+            }
+            (new Flash())->setFlash(['danger'=>'danger']);
+            return header("LOCATION:/admin/updatepassword");
         }
+        return header("LOCATION:/");
     }
 }

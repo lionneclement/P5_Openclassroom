@@ -45,25 +45,20 @@ class Postcontroller extends Controller
     {
         if (empty($this->post)) {
             return $this->render('/templates/home.html.twig');
-        } else {
-            $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
-            $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-            (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
-            if ($resp->isSuccess()) {
-                unset($this->post['g-recaptcha-response']);
-                $entitypost=new Contact($this->post);
-                $checking = $entitypost->isValid($this->post);
-                if (empty($checking)) {
-                    mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
-                    return header("LOCATION:/#contact");
-                } else {
-                    return header("LOCATION:/#contact");
-                }
-            } else {
-                return header("LOCATION:/#contact");
+        }
+        $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
+        $resp = $recaptcha->setExpectedHostname('localhost')
+            ->verify($this->post['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+        (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
+        if ($resp->isSuccess()) {
+            unset($this->post['g-recaptcha-response']);
+            $entitypost=new Contact($this->post);
+            $checking = $entitypost->isValid($this->post);
+            if (empty($checking)) {
+                mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
             }
         }
+        return header("LOCATION:/#contact");
     }
     /**
      * Update and add  post
@@ -78,28 +73,24 @@ class Postcontroller extends Controller
         if ($this->_usersession['role'] == 3 && $id==null) {
             if (empty($this->post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
-            } else {
-                $entitypost=new Article($this->post);
-                $checking = $entitypost->isValid($this->post);
-                if (empty($checking)) {
-                    $this->_modelPost->add($entitypost);
-                    return header("LOCATION:/post/findAll");
-                } else { 
-                    return header("LOCATION:/post/addpost");
-                }
             }
-        } elseif ($this->_usersession['role'] >= 2) {
+            $entitypost=new Article($this->post);
+            $checking = $entitypost->isValid($this->post);
+            if (empty($checking)) {
+                $this->_modelPost->add($entitypost);
+                return header("LOCATION:/post/findAll");
+            }
+            return header("LOCATION:/post/addpost");
+        } if ($this->_usersession['role'] >= 2) {
             $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
             if (empty($this->post)) {
                 return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
-            } else {
-                $this->post['id']=$id;
-                $this->_modelPost->update(new Article($this->post, 'post'));
-                return header("LOCATION:/post/updatepost/$id");
             }
-        } else {
-            return header("LOCATION:/");
+            $this->post['id']=$id;
+            $this->_modelPost->update(new Article($this->post, 'post'));
+            return header("LOCATION:/post/updatepost/$id");
         }
+        return header("LOCATION:/");
     }
     /**
      * Update post
@@ -142,9 +133,8 @@ class Postcontroller extends Controller
         if ($this->_usersession['role'] == 3) {
             $this->_modelPost->remove(new Article(['id'=>$id]));
             return header("LOCATION:/post/findAll");
-        } else {
-            return header("LOCATION:/");
         }
+        return header("LOCATION:/");
     }
     /**
      * Add comment in one post
@@ -162,9 +152,8 @@ class Postcontroller extends Controller
                 $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$this->post['id']], 'post');
                 $this->_modelPost->addcomment($entitypost);
             }
-                return header('LOCATION:/post/findOne/'.$this->post['id'].'#addcomment');
-        } else {
-            return header("LOCATION:/");
+            return header('LOCATION:/post/findOne/'.$this->post['id'].'#addcomment');
         }
+        return header("LOCATION:/");
     }
 }
