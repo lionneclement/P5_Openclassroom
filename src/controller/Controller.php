@@ -50,14 +50,13 @@ class Controller
     {
         $loader = new FilesystemLoader('../../src/view');
         $this->twigenvi = new Environment($loader);
-        $sessionalert = &$_SESSION['alert'];
-        if (isset($sessionalert)) {
+        if (isset($this->_usersession['alert'])) {
             $alert = (new Flash())->getFlash();
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
         }
-        $sessionrole = &$_SESSION['role'];
+        $sessionrole = $this->_usersession['role'];
         if (isset($sessionrole)) {
             $this->twigenvi->addGlobal('user_access', $sessionrole);
         }
@@ -112,6 +111,7 @@ class Controller
         $this->_usersession['id'] = &$_SESSION['id'];
         $this->_usersession['role'] = &$_SESSION['role'];
         $this->_usersession['reset'] = &$_SESSION['reset'];
+        $this->_usersession['alert'] = &$_SESSION['alert'];
         $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
 }
