@@ -49,11 +49,10 @@ class Controller
     public function twigenvi()
     {
         $loader = new FilesystemLoader('../../src/view');
-        $flash = new Flash();
         $this->twigenvi = new Environment($loader);
         $sessionalert = &$_SESSION['alert'];
         if (isset($sessionalert)) {
-            $alert = $flash->getFlash();
+            $alert = (new Flash())->getFlash();
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }

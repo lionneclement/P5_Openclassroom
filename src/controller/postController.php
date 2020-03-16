@@ -52,8 +52,7 @@ class Postcontroller extends Controller
         (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
         if ($resp->isSuccess()) {
             unset($this->post['g-recaptcha-response']);
-            $entitypost=new Contact($this->post);
-            $checking = $entitypost->isValid($this->post);
+            $checking = (new Contact($this->post))->isValid($this->post);
             if (empty($checking)) {
                 mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
             }

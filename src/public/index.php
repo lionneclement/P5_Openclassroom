@@ -25,120 +25,100 @@ $router = new AltoRouter();
 
 $router->map(
     'GET|POST', '/', function () {
-        $page = new Postcontroller;
-        $page->home();
+        (new Postcontroller)->home();
     }
 );
 $router->map(
     'GET', '/post/findAll', function () {
-        $page = new Postcontroller;
-        $page->allposts();
+        (new Postcontroller)->allposts();
     }
 );
 $router->map(
     'GET', '/post/findOne/[i:id]', function ($id) {
-        $page = new Postcontroller;
-        $page->onepost($id);
+        (new Postcontroller)->onepost($id);
     }
 );
 $router->map(
     'GET|POST', '/post/addpost', function () {
-        $page = new Postcontroller;
-        $page->addUpdate();
+        (new Postcontroller)->addUpdate();
     }
 );
 $router->map(
     'GET|POST', '/post/updatepost/[i:id]', function ($id) {
-        $page = new Postcontroller;
-        $page->addUpdate($id); 
+        (new Postcontroller)->addUpdate($id); 
     }
 );
 $router->map(
     'POST', '/post/comment', function () {
-        $page = new Postcontroller;
-        $page->commentPost();
+        (new Postcontroller)->commentPost();
     }
 );
 $router->map(
     'GET', '/post/removepost/[i:id]', function ($id) {
-        $page = new Postcontroller;
-        $page->remove($id);
+        (new Postcontroller)->remove($id);
     }
 );
 $router->map(
     'GET|POST', '/auth/register', function () {
-        $page = new AuthentificationController;
-        $page->register();
+        (new AuthentificationController)->register();
     }
 );
 $router->map(
     'GET|POST', '/auth/login', function () {
-        $page = new AuthentificationController;
-        $page->login();
+        (new AuthentificationController)->login();
     }
 );
 $router->map(
     'GET', '/auth/logout', function () {
-        $page = new AuthentificationController;
-        $page->logout();
+        (new AuthentificationController)->logout();
     }
 );
 $router->map(
     'GET|POST', '/auth/resetpassword', function () {
-        $page = new AuthentificationController;
-        $page->resetpassword();
+        (new AuthentificationController)->resetpassword();
     }
 );
 $router->map(
     'GET|POST', '/auth/resetlink/[i:id]/[a:action]', function ($id,$action) {
-        $page = new AuthentificationController;
-        $page->resetlink($id, $action);
+        (new AuthentificationController)->resetlink($id, $action);
     }
 );
 $router->map(
     'GET|POST', '/admin/roles', function () {
-        $page = new Admincontroller;
-        $page->roles();
+        (new Admincontroller)->roles();
     }
 );
 $router->map(
     'GET', '/admin', function () {
-        $page = new Admincontroller;
-        $page->admin();
+        (new Admincontroller)->admin();
     }
 );
 $router->map(
     'GET|POST', '/admin/comment/[a:action]', function ($action) {
-        $page = new Admincontroller;
-        $page->comment($action);
+        (new Admincontroller)->comment($action);
     }
 );
 $router->map(
     'GET', '/admin/deletecomment/[i:id]/[a:action]', function ($id,$action) {
-        $page = new Admincontroller;
-        $page->deletecomment($id, $action);
+        (new Admincontroller)->deletecomment($id, $action);
     }
 );
 $router->map(
     'GET', '/admin/deleteuser/[i:id]', function ($id) {
-        $page = new Admincontroller;
-        $page->deleteuser($id);
+        (new Admincontroller)->deleteuser($id);
     }
 );
 $router->map(
     'GET|POST', '/admin/updateuser', function () {
-        $page = new Admincontroller;
-        $page->updateuser();
+        (new Admincontroller)->updateuser();
     }
 );
 $router->map(
     'GET|POST', '/admin/updatepassword', function () {
-        $page = new Admincontroller;
-        $page->updatepassword();
+        (new Admincontroller)->updatepassword();
     }
 );
 
-  
  $match = $router->match();
 
 if (is_array($match) && is_callable($match['target'])) {

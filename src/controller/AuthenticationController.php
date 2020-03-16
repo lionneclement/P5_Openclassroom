@@ -66,14 +66,13 @@ class AuthentificationController extends Controller
                 return $this->render('/templates/authentication/login.html.twig');
             }
             $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
-            $flash = new Flash();
             if (password_verify($this->post['mdp'], $donnes->mdp)) {
                 $this->confsession($donnes);
                 return header("LOCATION:/");
             } elseif (!empty($donnes)) {
-                $flash->setFlash(['mdperror'=>'mdp']);
+                (new Flash())->setFlash(['mdperror'=>'mdp']);
             } else {
-                $flash->setFlash(['emailerror'=>'email']);
+                (new Flash())->setFlash(['emailerror'=>'email']);
             }
             return header("LOCATION:/auth/login");
         }
