@@ -74,6 +74,9 @@ class Controller
     public function render(string $twigFile, array $parameters = [])
     {
         try {
+            if ($parameters == []) {
+                echo $this->twigenvi->render($twigFile);
+            }
             echo $this->twigenvi->render($twigFile, $parameters);
         } catch (\Exception $e) {
             return $e;
