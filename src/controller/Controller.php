@@ -72,7 +72,7 @@ class Controller
     public function render(string $twigFile, array $parameters = [])
     {
         try {
-            echo $this->twigenvi->render($twigFile, $parameters);
+            print_r($this->twigenvi->render($twigFile, $parameters));
         } catch (\Exception $e) {
             return $e;
         }

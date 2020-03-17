@@ -59,7 +59,6 @@ class Adminmodel extends Connectmodel
     {
         $sql = $this->bdd->query('SELECT * FROM commentaire');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
-
     }
     /**
      * Update comment
