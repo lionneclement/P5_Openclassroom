@@ -35,7 +35,8 @@ class Adminmodel extends Connectmodel
      */
     public function roles(User $post)
     {
-        $sql = $this->bdd->query('SELECT * FROM user WHERE NOT id='.$post->getid().''); 
+        $sql = $this->bdd->prepare('SELECT * FROM user WHERE NOT id=?');
+        $sql->execute([$post->getid()]);
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -47,8 +48,8 @@ class Adminmodel extends Connectmodel
      */
     public function updaterole(User $post)
     {
-        $sql = 'UPDATE user SET role_id=:role_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['role_id'=>$post->getroleId(),'id'=>$post->getid()]);
+        $sql = 'UPDATE user SET role_id=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getroleId(),$post->getid()]);
     }
     /**
      * Get all comment
@@ -69,8 +70,8 @@ class Adminmodel extends Connectmodel
      */
     public function updatecomment(Commentaire $post)
     {
-        $sql = 'UPDATE commentaire SET statut=:statut WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['statut'=>$post->getstatut(),'id'=>$post->getid()]);
+        $sql = 'UPDATE commentaire SET statut=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getstatut(),$post->getid()]);
     }
     /**
      * Get all comment invalid
@@ -91,7 +92,8 @@ class Adminmodel extends Connectmodel
      */
     public function deletecomment(Commentaire $post)
     {
-        $this->bdd->query('DELETE FROM commentaire WHERE id='.$post->getid().'');
+        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE id=?');
+        $sql->execute([$post->getid()]);
     }
     /**
      * Delete user
@@ -102,9 +104,12 @@ class Adminmodel extends Connectmodel
      */
     public function deleteuser(User $post)
     {
-        $this->bdd->query('DELETE FROM commentaire WHERE user_id='.$post->getid().'');
-        $this->bdd->query('DELETE FROM article WHERE user_id='.$post->getid().'');
-        $this->bdd->query('DELETE FROM user WHERE id='.$post->getid().'');
+        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
+        $sql->execute([$post->getid()]);
+        $sql1 =$this->bdd->prepare('DELETE FROM article WHERE user_id=?');
+        $sql1->execute([$post->getid()]);
+        $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
+        $sql2->execute([$post->getid()]);
     }
     /**
      * Get one user
@@ -115,7 +120,8 @@ class Adminmodel extends Connectmodel
      */
     public function getuser(User $post)
     {
-        $sql = $this->bdd->query('SELECT * FROM user WHERE id='.$post->getid().''); 
+        $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
+        $sql->execute([$post->getid()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -127,8 +133,9 @@ class Adminmodel extends Connectmodel
      */
     public function updateuser(User $post)
     {
-        $sql = 'UPDATE user SET nom=:nom, prenom=:prenom, email=:email  WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'id'=>$post->getid()]);
+        $sql = 'UPDATE user SET nom=?, prenom=?, email=?  WHERE id=?';
+        $db = $this->bdd->prepare($sql);
+        $db->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getid()]);
     }
     /**
      * Update password
@@ -139,7 +146,7 @@ class Adminmodel extends Connectmodel
      */
     public function updatepassword(User $post)
     {
-        $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['mdp'=>$post->getmdp(),'id'=>$post->getid()]);
+        $sql = 'UPDATE user SET mdp=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getmdp(),$post->getid()]);
     }
 }

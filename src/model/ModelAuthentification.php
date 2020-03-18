@@ -34,7 +34,8 @@ class AuthentificationModel extends Connectmodel
      */
     public function check(User $post)
     {
-        $sql = $this->bdd->query("SELECT * FROM user WHERE email='".$post->getemail()."'"); 
+        $sql = $this->bdd->prepare("SELECT * FROM user WHERE email=?");
+        $sql->execute([$post->getemail()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -47,8 +48,9 @@ class AuthentificationModel extends Connectmodel
     public function register(User $post)
     {
         $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
-    VALUES (NULL,:nom,:prenom,:email,:mdp,1)';
-        $this->bdd->prepare($sql)->execute(['nom'=>$post->getnom(),'prenom'=>$post->getprenom(),'email'=>$post->getemail(),'mdp'=>$post->getmdp()]);
+    VALUES (NULL,?,?,?,?,1)';
+        $db = $this->bdd->prepare($sql);
+        $db->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getmdp()]);
     }
     /**
      * Update password
@@ -59,7 +61,7 @@ class AuthentificationModel extends Connectmodel
      */
     public function updatepassword(User $post)
     {
-        $sql = 'UPDATE user SET mdp=:mdp WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['mdp'=>$post->getmdp(),'id'=>$post->getid()]);
+        $sql = 'UPDATE user SET mdp=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getmdp(),$post->getid()]);
     }
 }

@@ -47,7 +47,8 @@ class Postmodel extends Connectmodel
      */
     public function post(Article $post)
     {
-        $sql = $this->bdd->query('SELECT * FROM article WHERE id='.$post->getid().'');
+        $sql = $this->bdd->prepare('SELECT * FROM article WHERE id=?');
+        $sql->execute([$post->getid()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -59,9 +60,10 @@ class Postmodel extends Connectmodel
      */
     public function add(Article $post)
     {
-        $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id) 
-    VALUES (NULL,:titre,:chapo,:contenu, CURRENT_TIMESTAMP,:user_id)';
-        $this->bdd->prepare($sql)->execute(['titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId()]);
+        $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id)
+        VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
+        $db = $this->bdd->prepare($sql);
+        $db->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId()]);
     }
     /**
      * Update post
@@ -72,8 +74,9 @@ class Postmodel extends Connectmodel
      */
     public function update(Article $post)
     {
-        $sql = 'UPDATE article SET titre=:titre, chapo=:chapo, contenu=:contenu, date=CURRENT_TIMESTAMP, user_id=:user_id WHERE id=:id';
-        $this->bdd->prepare($sql)->execute(['titre'=>$post->gettitre(),'chapo'=>$post->getchapo(),'contenu'=>$post->getcontenu(),'user_id'=>$post->getuserId(),'id'=>$post->getid()]);
+        $sql = 'UPDATE article SET titre=?,chapo=?,contenu=?,date=CURRENT_TIMESTAMP,user_id=? WHERE id=?';
+        $db =$this->bdd->prepare($sql);
+        $db->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId(),$post->getid()]);
     }
     /**
      * Remove post
@@ -84,8 +87,10 @@ class Postmodel extends Connectmodel
      */
     public function remove(Article $post)
     {
-        $this->bdd->query('DELETE FROM commentaire WHERE article_id='.$post->getid().'');
-        $this->bdd->query('DELETE FROM article WHERE id='.$post->getid().'');
+        $sql = 'DELETE FROM commentaire WHERE article_id=?';
+        $this->bdd->prepare($sql)->execute([$post->getid()]);
+        $sql1 = 'DELETE FROM article WHERE id=?';
+        $this->bdd->prepare($sql1)->execute([$post->getid()]);
     }
     /**
      * Get all comment
@@ -96,8 +101,10 @@ class Postmodel extends Connectmodel
      */
     public function allcomment(Article $post)
     {
-        $sql = $this->bdd->query('SELECT * FROM commentaire WHERE article_id='.$post->getid().' AND statut=1');
-        return $sql->fetchAll(\PDO::FETCH_OBJ);
+        $sql='SELECT * FROM commentaire WHERE article_id=? AND statut=1';
+        $db = $this->bdd->prepare($sql);
+        $db->execute([$post->getid()]);
+        return $db->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Find one user
@@ -108,7 +115,8 @@ class Postmodel extends Connectmodel
      */
     public function findUser($post)
     {
-        $sql = $this->bdd->query('SELECT * FROM user WHERE id='.$post.'');
+        $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
+        $sql->execute([$post]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -120,9 +128,10 @@ class Postmodel extends Connectmodel
      */
     public function addcomment(Commentaire $post)
     {
-        $sql = 'INSERT INTO commentaire (id, message, statut, date, user_id, article_id) 
-    VALUES (NULL,:message,0,CURRENT_TIMESTAMP,:user_id,:article_id)';
-        $this->bdd->prepare($sql)->execute(['message'=>$post->getmessage(),'user_id'=>$post->getuserId(),'article_id'=>$post->getarticleId()]);
+        $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
+    VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
+        $db =$this->bdd->prepare($sql);
+        $db->execute([$post->getmessage(),$post->getuserId(),$post->getarticleId()]);
     }
     /**
      * Find all user
