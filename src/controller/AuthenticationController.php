@@ -136,14 +136,9 @@ class AuthentificationController extends Controller
     {
         if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
             if (!empty($this->post)) {
-                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id]);
-                $checking = $entitypost->isValid(['mdp'=>$this->post['newpassword'],'id'=>$id]);
-                if (empty($checking)) {
-                    $this->_modelAuth->updatepassword($entitypost);
-                    $this->deleteSession('reset');
-                    (new Flash())->setFlash(['resetpassword'=>'resetpassword']);
-                    return header("LOCATION:/auth/login");
-                }
+                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id], 'post');
+                $this->_modelAuth->updatepassword($entitypost);
+                $this->deleteSession('reset');
             }
             return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }

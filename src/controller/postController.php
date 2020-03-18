@@ -47,7 +47,7 @@ class Postcontroller extends Controller
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
-                (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
+            (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
                 unset($this->post['g-recaptcha-response']);
                 $checking = (new Contact($this->post))->isValid($this->post);
@@ -70,11 +70,8 @@ class Postcontroller extends Controller
         $donnesUser = $this->_modelPost->findAlluser();
         if ($this->getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
-                $entitypost=new Article($this->post);
-                $checking = $entitypost->isValid($this->post);
-                if (empty($checking)) {
-                    $this->_modelPost->add($entitypost);
-                }
+                $entitypost=new Article($this->post, 'post');
+                $this->_modelPost->add($entitypost);
             }
             return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
         } if ($this->getSession('role') >= 2) {
@@ -144,10 +141,7 @@ class Postcontroller extends Controller
             (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
                 $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
-                $checking = $entitypost->isValid(['message'=>$this->post['contenu']]);
-                if (empty($checking)) {
-                    $this->_modelPost->addcomment($entitypost);
-                }
+                $this->_modelPost->addcomment($entitypost);
                 return $this->onepost($this->post['id']);
             }
             return $this->render("/templates/error.html.twig");
