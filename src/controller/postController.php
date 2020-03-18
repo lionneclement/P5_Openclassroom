@@ -59,7 +59,7 @@ class Postcontroller extends Controller
         return $this->render('/templates/home.html.twig');
     }
     /**
-     * Update and add  post
+     * Update and add post
      * 
      * @param integer $id it's id post
      * 
@@ -68,7 +68,7 @@ class Postcontroller extends Controller
     public function addUpdate(int $id=null)
     {   
         $donnesUser = $this->_modelPost->findAlluser();
-        if ($this->_usersession['role'] == 3 && $id==null) {
+        if ($this->getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
                 $entitypost=new Article($this->post);
                 $checking = $entitypost->isValid($this->post);
@@ -76,8 +76,8 @@ class Postcontroller extends Controller
                     $this->_modelPost->add($entitypost);
                 }
             }
-            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->_usersession['id'],'Auteur'=>$donnesUser,'url'=>'addpost']);
-        } if ($this->_usersession['role'] >= 2) {
+            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
+        } if ($this->getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
                 $this->_modelPost->update(new Article($this->post, 'post'));
@@ -125,7 +125,7 @@ class Postcontroller extends Controller
      */
     public function remove($id)
     {
-        if ($this->_usersession['role'] == 3) {
+        if ($this->getSession('role') == 3) {
             $this->_modelPost->remove(new Article(['id'=>$id]));
         }
         return $this->allposts();
@@ -137,13 +137,13 @@ class Postcontroller extends Controller
      */
     public function commentPost()
     {
-        if (isset($this->_usersession['id'])) {
+        if (!empty($this->getSession('id'))) {
             $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
             $resp = $recaptcha->setExpectedHostname('localhost')
                 ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
             (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
             if ($resp->isSuccess()) {
-                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->_usersession['id'],'articleId'=>$this->post['id']], 'post');
+                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
                 $checking = $entitypost->isValid(['message'=>$this->post['contenu']]);
                 if (empty($checking)) {
                     $this->_modelPost->addcomment($entitypost);

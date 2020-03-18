@@ -40,7 +40,7 @@ class AuthentificationController extends Controller
      */
     public function register()
     {
-        if (!isset($this->_usersession['id'])) {
+        if (empty($this->getSession('id'))) {
             if (!empty($this->post)) {
                 $donnes = $this->_modelAuth->check(new User($this->post));
                 if (empty($donnes)) {
@@ -60,7 +60,7 @@ class AuthentificationController extends Controller
      */
     public function login()
     {
-        if (!isset($this->_usersession['id'])) {
+        if (empty($this->getSession('id'))) {
             if (!empty($this->post)) {
                 $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
                 if (empty($donnes)) {
@@ -95,8 +95,8 @@ class AuthentificationController extends Controller
      */
     public function confsession($user)
     {
-        $this->_usersession['id']= $user->id;
-        $this->_usersession['role']= $user->role_id;
+        $this->setSession('id', $user->id);
+        $this->setSession('role', $user->role_id);
     }
     /**
      * Send an email to be sure the user has the email and create a session
@@ -117,7 +117,7 @@ class AuthentificationController extends Controller
                     $rand .= $seed[$k];
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
-                $this->_usersession['reset']=$obj;
+                $this->setSession('reset', $obj);
                 mail($this->post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
                 (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
             }
@@ -134,13 +134,13 @@ class AuthentificationController extends Controller
      */
     public function resetlink($id,$url)
     {
-        if (isset($this->_usersession['reset']) && password_verify($url, $this->_usersession['reset'])) {
+        if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
             if (!empty($this->post)) {
                 $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id]);
                 $checking = $entitypost->isValid(['mdp'=>$this->post['newpassword'],'id'=>$id]);
                 if (empty($checking)) {
                     $this->_modelAuth->updatepassword($entitypost);
-                    $this->_usersession['reset']=null;
+                    $this->deleteSession('reset');
                     (new Flash())->setFlash(['resetpassword'=>'resetpassword']);
                     return header("LOCATION:/auth/login");
                 }

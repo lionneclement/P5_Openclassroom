@@ -41,11 +41,11 @@ class Admincontroller extends Controller
      */
     public function roles()
     {
-        if ($this->_usersession['role'] == 3) {
+        if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
                 $this->_modelAdmin->updaterole(new User($this->post, 'post'));
             }
-            $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->_usersession['id']]));
+            $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
         return header("LOCATION:/");
@@ -57,7 +57,7 @@ class Admincontroller extends Controller
      */
     public function admin()
     {
-        if ($this->_usersession['role'] == 3) {
+        if ($this->getSession('role') == 3) {
             return $this->render('/templates/user/admin.html.twig');
         }
         return header("LOCATION:/");
@@ -71,7 +71,7 @@ class Admincontroller extends Controller
      */
     public function comment($type)
     {
-        if ($this->_usersession['role'] == 3) {
+        if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
                 $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
                 }
@@ -90,7 +90,7 @@ class Admincontroller extends Controller
      */
     public function deletecomment($id,$url)
     {
-        if ($this->_usersession['role'] == 3 && !empty($id)) {
+        if ($this->getSession('role') == 3 && !empty($id)) {
             $this->_modelAdmin->deletecomment(new Commentaire(['id'=>$id]));
             return $this->comment($url);
         }
@@ -105,7 +105,7 @@ class Admincontroller extends Controller
      */
     public function deleteuser($id)
     {
-        if ($this->_usersession['role'] == 3 && !empty($id)) {
+        if ($this->getSession('role') == 3 && !empty($id)) {
             $this->_modelAdmin->deleteuser(new User(['id'=>$id]));
             return $this->roles();
         }
@@ -118,12 +118,12 @@ class Admincontroller extends Controller
      */
     public function updateuser()
     {
-        if (isset($this->_usersession['id'])) {
+        if (!empty($this->getSession('id'))) {
             if (!empty($this->post)) {
-                $this->post['id']=$this->_usersession['id'];
+                $this->post['id']=$this->getSession('id');
                 $this->_modelAdmin->updateuser(new User(($this->post), 'post'));
             }
-            $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
+            $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
         return header("LOCATION:/");
@@ -135,11 +135,11 @@ class Admincontroller extends Controller
       */
     public function updatepassword()
     {
-        if (isset($this->_usersession['id'])) {
+        if (!empty($this->getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->_usersession['id']]));
+                $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->getSession('id')]));
                 if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->_usersession['id']], 'post'));
+                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
                 } else {
                     (new Flash())->setFlash(['danger'=>'danger']);
                 }

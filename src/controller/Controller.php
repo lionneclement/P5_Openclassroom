@@ -58,14 +58,14 @@ class Controller
      */
     public function twigFlash()
     {
-        if (isset($this->_usersession['alert'])) {
+        if (!empty($this->getSession('alert'))) {
             $alert = (new Flash())->getFlash();
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
         }
-        $sessionrole = $this->_usersession['role'];
-        if (isset($sessionrole)) {
+        $sessionrole = $this->getSession('role');
+        if (!empty($sessionrole)) {
             $this->twigenvi->addGlobal('user_access', $sessionrole);
         }
     }
@@ -116,16 +116,50 @@ class Controller
         }
     }
     /**
-     * Setup session
+     * Setter session
+     *
+     * @param string $key   The key
+     * @param string $value The value
+     * 
+     * @return bool
+     */
+    public function setSession(string $key, $value)
+    {
+        $_SESSION[$key]=$value;
+    }
+    /**
+     * Getter session
+     *
+     * @param string $key The key
+     * 
+     * @return bool
+     */
+    public function getSession(string $key)
+    {
+        if (!empty($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+        return null;
+        
+    }
+    /**
+     * Delete session
+     *
+     * @param string $key The key
+     * 
+     * @return bool
+     */
+    public function deleteSession(string $key)
+    {
+        unset($_SESSION[$key]);
+    }
+    /**
+     * Setup serverADDR
      *
      * @return session
      */
     public function superGlobal()
     {
-        $this->_usersession['id'] = &$_SESSION['id'];
-        $this->_usersession['role'] = &$_SESSION['role'];
-        $this->_usersession['reset'] = &$_SESSION['reset'];
-        $this->_usersession['alert'] = &$_SESSION['alert'];
         $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
 }
