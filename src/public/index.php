@@ -15,6 +15,7 @@ require '../../vendor/autoload.php';
 use App\Controller\Admincontroller;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
+use App\Controller\Controller;
 use Dotenv\Dotenv;
 
 session_start();
@@ -124,6 +125,5 @@ $router->map(
 if (is_array($match) && is_callable($match['target'])) {
     call_user_func_array($match['target'], $match['params']); 
 } else {
-    $server = filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_SPECIAL_CHARS);
-    header($server . ' 404 Not Found');
+    return (new Controller)->render("/templates/error.html.twig");
 }

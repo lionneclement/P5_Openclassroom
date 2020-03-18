@@ -48,7 +48,7 @@ class Admincontroller extends Controller
             $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Page admin
@@ -60,7 +60,7 @@ class Admincontroller extends Controller
         if ($this->getSession('role') == 3) {
             return $this->render('/templates/user/admin.html.twig');
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Show comment valid and comment invalid
@@ -78,7 +78,7 @@ class Admincontroller extends Controller
                 $donnes = $this->_modelAdmin->$type();
                 return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Delete comment
@@ -94,7 +94,7 @@ class Admincontroller extends Controller
             $this->_modelAdmin->deletecomment(new Commentaire(['id'=>$id]));
             return $this->comment($url);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Delete user
@@ -109,7 +109,7 @@ class Admincontroller extends Controller
             $this->_modelAdmin->deleteuser(new User(['id'=>$id]));
             return $this->roles();
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Update user (name,email)
@@ -126,7 +126,7 @@ class Admincontroller extends Controller
             $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
      /**
       * Update the password with the old password
@@ -146,6 +146,6 @@ class Admincontroller extends Controller
             }
             return $this->render('/templates/user/updatepassword.html.twig');
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
 }

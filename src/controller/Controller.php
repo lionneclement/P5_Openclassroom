@@ -139,8 +139,7 @@ class Controller
         if (!empty($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        return null;
-        
+        return null;   
     }
     /**
      * Delete session

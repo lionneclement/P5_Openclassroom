@@ -85,7 +85,7 @@ class Postcontroller extends Controller
             $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
             return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Update post
@@ -150,7 +150,7 @@ class Postcontroller extends Controller
                 }
                 return $this->onepost($this->post['id']);
             }
-            return header("LOCATION:/");
+            return $this->render("/templates/error.html.twig");
         }
     }
 }

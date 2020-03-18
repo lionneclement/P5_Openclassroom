@@ -51,7 +51,7 @@ class AuthentificationController extends Controller
             }
             return $this->render('/templates/authentication/register.html.twig');
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Login a user
@@ -67,14 +67,14 @@ class AuthentificationController extends Controller
                     (new Flash())->setFlash(['emailerror'=>'email']);
                 } elseif (password_verify($this->post['mdp'], $donnes->mdp)) {
                     $this->confsession($donnes);
-                    return header("LOCATION:/");
+                    return $this->render("/templates/error.html.twig");
                 } else {
                     (new Flash())->setFlash(['mdperror'=>'mdp']);
                 }
             }
             return $this->render('/templates/authentication/login.html.twig');
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Logout a user
@@ -84,7 +84,7 @@ class AuthentificationController extends Controller
     public function logout()
     {
         session_unset();
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
     /**
      * Create session
@@ -147,6 +147,6 @@ class AuthentificationController extends Controller
             }
             return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }
-        return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
 }
