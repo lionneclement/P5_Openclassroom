@@ -134,8 +134,8 @@ class Adminmodel extends Connectmodel
     public function updateuser(User $post)
     {
         $sql = 'UPDATE user SET nom=?, prenom=?, email=?  WHERE id=?';
-        $db = $this->bdd->prepare($sql);
-        $db->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getid()]);
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getid()]);
     }
     /**
      * Update password

@@ -62,8 +62,8 @@ class Postmodel extends Connectmodel
     {
         $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id)
         VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
-        $db = $this->bdd->prepare($sql);
-        $db->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId()]);
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId()]);
     }
     /**
      * Update post
@@ -75,8 +75,8 @@ class Postmodel extends Connectmodel
     public function update(Article $post)
     {
         $sql = 'UPDATE article SET titre=?,chapo=?,contenu=?,date=CURRENT_TIMESTAMP,user_id=? WHERE id=?';
-        $db =$this->bdd->prepare($sql);
-        $db->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId(),$post->getid()]);
+        $dbb =$this->bdd->prepare($sql);
+        $dbb->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId(),$post->getid()]);
     }
     /**
      * Remove post
@@ -102,9 +102,9 @@ class Postmodel extends Connectmodel
     public function allcomment(Article $post)
     {
         $sql='SELECT * FROM commentaire WHERE article_id=? AND statut=1';
-        $db = $this->bdd->prepare($sql);
-        $db->execute([$post->getid()]);
-        return $db->fetchAll(\PDO::FETCH_OBJ);
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->getid()]);
+        return $dbb->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
      * Find one user
@@ -130,8 +130,8 @@ class Postmodel extends Connectmodel
     {
         $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
     VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
-        $db =$this->bdd->prepare($sql);
-        $db->execute([$post->getmessage(),$post->getuserId(),$post->getarticleId()]);
+        $dbb =$this->bdd->prepare($sql);
+        $dbb->execute([$post->getmessage(),$post->getuserId(),$post->getarticleId()]);
     }
     /**
      * Find all user

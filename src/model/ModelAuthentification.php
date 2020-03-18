@@ -49,8 +49,8 @@ class AuthentificationModel extends Connectmodel
     {
         $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
     VALUES (NULL,?,?,?,?,1)';
-        $db = $this->bdd->prepare($sql);
-        $db->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getmdp()]);
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getmdp()]);
     }
     /**
      * Update password
