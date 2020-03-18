@@ -106,12 +106,13 @@ class Controller
             'contenu'=>FILTER_SANITIZE_STRING,
             'titre'=>FILTER_SANITIZE_STRING,
             'chapo'=>FILTER_SANITIZE_STRING,
-            'userId'=>FILTER_SANITIZE_STRING,
-            'statut'=>FILTER_SANITIZE_NUMBER_INT
+            'userId'=>FILTER_SANITIZE_NUMBER_INT,
+            'statut'=>FILTER_SANITIZE_NUMBER_INT,
+            'roleId'=>FILTER_SANITIZE_NUMBER_INT
         ];
         $this->post = filter_input_array(INPUT_POST, $args);
         if ($this->post !== null) {
-            $this->post = array_filter($this->post);
+            $this->post = array_filter($this->post, 'strlen');
         }
     }
     /**
