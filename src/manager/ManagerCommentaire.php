@@ -128,7 +128,7 @@ class Commentaire extends Valide
      */
     public function setMessage($message)
     {
-        if (is_string($message)) {
+        if (is_string($message) && strlen($message) <= 250) {
             $this->_message = $message;
         }
     }

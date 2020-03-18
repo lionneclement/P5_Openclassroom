@@ -42,7 +42,7 @@ class Controller
         $this->filterPost();
     }
     /**
-     * Render the twig file with the parameters
+     * Init twig
      *
      * @return template
      */
@@ -50,6 +50,14 @@ class Controller
     {
         $loader = new FilesystemLoader('../../src/view');
         $this->twigenvi = new Environment($loader);
+    }
+    /**
+     * AddGlobal in twig
+     *
+     * @return template
+     */
+    public function twigFlash()
+    {
         if (isset($this->_usersession['alert'])) {
             $alert = (new Flash())->getFlash();
             foreach ($alert as $key=>$value) {
@@ -71,6 +79,7 @@ class Controller
      */
     public function render(string $twigFile, array $parameters = [])
     {
+        $this->twigFlash();
         try {
             print_r($this->twigenvi->render($twigFile, $parameters));
         } catch (\Exception $e) {
@@ -85,7 +94,7 @@ class Controller
     public function filterPost()
     {
         $args = [
-            'id' => FILTER_SANITIZE_NUMBER_INT,
+            'id' =>FILTER_SANITIZE_NUMBER_INT,
             'oldpassword'=>FILTER_SANITIZE_STRING,
             'newpassword'=>FILTER_SANITIZE_STRING,
             'mdp'=>FILTER_SANITIZE_STRING,
@@ -94,7 +103,11 @@ class Controller
             'prenom'=>FILTER_SANITIZE_STRING,
             'g-recaptcha-response'=>FILTER_SANITIZE_STRING,
             'message'=>FILTER_SANITIZE_STRING,
-            'contenu'=>FILTER_SANITIZE_STRING
+            'contenu'=>FILTER_SANITIZE_STRING,
+            'titre'=>FILTER_SANITIZE_STRING,
+            'chapo'=>FILTER_SANITIZE_STRING,
+            'userId'=>FILTER_SANITIZE_STRING,
+            'statut'=>FILTER_SANITIZE_NUMBER_INT
         ];
         $this->post = filter_input_array(INPUT_POST, $args);
         if ($this->post !== null) {

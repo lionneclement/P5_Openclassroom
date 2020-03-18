@@ -6,7 +6,11 @@
     <h1 class="text-center">Article</h1>
     {% if alert_success %}
       <div class="alert alert-success" role="alert">
-        La modification à été faite
+        {% if url == 'addpost' %}
+          L'article viens d'être créer
+        {% else %}
+          La modification à été faite
+        {% endif %}
       </div>
     {% endif %}
     {% if alert_titre %}
