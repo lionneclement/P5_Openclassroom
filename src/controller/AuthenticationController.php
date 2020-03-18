@@ -41,16 +41,15 @@ class AuthentificationController extends Controller
     public function register()
     {
         if (!isset($this->_usersession['id'])) {
-            if (empty($this->post)) {
-                return $this->render('/templates/authentication/register.html.twig');
+            if (!empty($this->post)) {
+                $donnes = $this->_modelAuth->check(new User($this->post));
+                if (empty($donnes)) {
+                    $this->_modelAuth->register(new User($this->post, 'post'));
+                } else {
+                    (new Flash())->setFlash(['already'=>'already']);
+                }
             }
-            $donnes = $this->_modelAuth->check(new User($this->post));
-            if (empty($donnes)) {
-                $this->_modelAuth->register(new User($this->post, 'post'));
-            } else {
-                (new Flash())->setFlash(['already'=>'already']);
-            }
-            return header("LOCATION:/auth/register");
+            return $this->render('/templates/authentication/register.html.twig');
         }
         return header("LOCATION:/");
     }
@@ -62,19 +61,18 @@ class AuthentificationController extends Controller
     public function login()
     {
         if (!isset($this->_usersession['id'])) {
-            if (empty($this->post)) {
-                return $this->render('/templates/authentication/login.html.twig');
+            if (!empty($this->post)) {
+                $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
+                if (empty($donnes)) {
+                    (new Flash())->setFlash(['emailerror'=>'email']);
+                } elseif (password_verify($this->post['mdp'], $donnes->mdp)) {
+                    $this->confsession($donnes);
+                    return header("LOCATION:/");
+                } else {
+                    (new Flash())->setFlash(['mdperror'=>'mdp']);
+                }
             }
-            $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
-            if (password_verify($this->post['mdp'], $donnes->mdp)) {
-                $this->confsession($donnes);
-                return header("LOCATION:/");
-            } elseif (!empty($donnes)) {
-                (new Flash())->setFlash(['mdperror'=>'mdp']);
-            } else {
-                (new Flash())->setFlash(['emailerror'=>'email']);
-            }
-            return header("LOCATION:/auth/login");
+            return $this->render('/templates/authentication/login.html.twig');
         }
         return header("LOCATION:/");
     }
@@ -107,25 +105,24 @@ class AuthentificationController extends Controller
      */
     public function resetpassword()
     {
-        if (empty($this->post)) {
-            return $this->render('/templates/authentication/reset.html.twig');
+        if (!empty($this->post)) {
+            $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
+            if (empty($donnes)) {
+                (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
+            } else {
+                $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+                shuffle($seed);
+                $rand = '';
+                foreach (array_rand($seed, 10) as $k) { 
+                    $rand .= $seed[$k];
+                }
+                $obj = password_hash($rand, PASSWORD_DEFAULT);
+                $this->_usersession['reset']=$obj;
+                mail($this->post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
+                (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
+            }
         }
-        $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
-        if (empty($donnes)) {
-            (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
-            return header("LOCATION:/auth/resetpassword");
-        }
-        $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-        shuffle($seed);
-        $rand = '';
-        foreach (array_rand($seed, 10) as $k) { 
-            $rand .= $seed[$k];
-        }
-        $obj = password_hash($rand, PASSWORD_DEFAULT);
-        $this->_usersession['reset']=$obj;
-        mail($this->post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
-        (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
-        return header("LOCATION:/auth/resetpassword");
+        return $this->render('/templates/authentication/reset.html.twig');
     }
     /**
      * Check if the session and the url match, if it's good reset password and delete session
@@ -138,18 +135,17 @@ class AuthentificationController extends Controller
     public function resetlink($id,$url)
     {
         if (isset($this->_usersession['reset']) && password_verify($url, $this->_usersession['reset'])) {
-            if (empty($this->post)) {
-                return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
+            if (!empty($this->post)) {
+                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id]);
+                $checking = $entitypost->isValid(['mdp'=>$this->post['newpassword'],'id'=>$id]);
+                if (empty($checking)) {
+                    $this->_modelAuth->updatepassword($entitypost);
+                    $this->_usersession['reset']=null;
+                    (new Flash())->setFlash(['resetpassword'=>'resetpassword']);
+                    return header("LOCATION:/auth/login");
+                }
             }
-            $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id]);
-            $checking = $entitypost->isValid(['mdp'=>$this->post['newpassword'],'id'=>$id]);
-            if (empty($checking)) {
-                $this->_modelAuth->updatepassword($entitypost);
-                $this->_usersession['reset']=null;
-                (new Flash())->setFlash(['resetpassword'=>'resetpassword']);
-                return header("LOCATION:/auth/login");
-            }
-            return header("LOCATION:/auth/resetlink/$id/$url");
+            return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }
         return header("LOCATION:/");
     }
