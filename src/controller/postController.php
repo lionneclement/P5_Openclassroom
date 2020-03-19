@@ -83,17 +83,17 @@ class Postcontroller extends Controller
     /**
      * Update post
      * 
-     * @param integer $id it's id post
+     * @param int $id it's id post
      * 
      * @return void
      */
-    public function onePost($id)
+    public function onePost(int $id)
     {
         $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
         $donnes1 = $this->_modelPost->allComment(new Article(['id'=>$id]));
-        $donnes2 = $this->_modelPost->findUser($donnes->user_id);
+        $donnes2 = $this->_modelPost->findUser(new Article(['id'=>$donnes->user_id]));
         foreach ($donnes1 as $key => $value) {
-            $donnes3 = $this->_modelPost->findUser($value->user_id);
+            $donnes3 = $this->_modelPost->findUser(new Article(['id'=>$value->user_id]));
             $donnes1[$key]->nom=$donnes3->nom;
         }
         $donnes->nom=$donnes2->nom;
@@ -112,11 +112,11 @@ class Postcontroller extends Controller
     /**
      * Remove one post
      * 
-     * @param integer $id it's id post
+     * @param int $id it's id post
      * 
      * @return void
      */
-    public function remove($id)
+    public function remove(int $id)
     {
         if ($this->getSession('role') == 3) {
             $this->_modelPost->remove(new Article(['id'=>$id]));

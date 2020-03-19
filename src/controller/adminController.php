@@ -71,7 +71,7 @@ class Admincontroller extends Controller
      * 
      * @return void
      */
-    public function comment($type)
+    public function comment(string $type)
     {
         if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
@@ -86,11 +86,11 @@ class Admincontroller extends Controller
      * Delete comment
      * 
      * @param integer $id  it's id comment
-     * @param array   $url the paramis here to find out in which url was doing the deletion
+     * @param string  $url the paramis here to find out in which url was doing the deletion
      * 
      * @return void
      */
-    public function deleteComment($id,$url)
+    public function deleteComment(int $id,string $url)
     {
         if ($this->getSession('role') == 3 && !empty($id)) {
             $this->_modelAdmin->deleteComment(new Commentaire(['id'=>$id]));
@@ -105,7 +105,7 @@ class Admincontroller extends Controller
      * 
      * @return void
      */
-    public function deleteUser($id)
+    public function deleteUser(int $id)
     {
         if ($this->getSession('role') == 3 && !empty($id)) {
             $Post = $this->_modelAdmin->findAllPosts(new User(['id'=>$id]));

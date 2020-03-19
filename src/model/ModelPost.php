@@ -113,10 +113,10 @@ class Postmodel extends Connectmodel
      * 
      * @return null
      */
-    public function findUser($post)
+    public function findUser(Article $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
-        $sql->execute([$post]);
+        $sql->execute([$post->getid()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**

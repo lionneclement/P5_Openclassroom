@@ -93,7 +93,7 @@ class AuthentificationController extends Controller
      * 
      * @return void
      */
-    public function confSession($user)
+    public function confSession(object $user)
     {
         $this->setSession('id', $user->id);
         $this->setSession('role', $user->role_id);
@@ -139,7 +139,7 @@ class AuthentificationController extends Controller
      * 
      * @return void
      */
-    public function resetLink($id,$url)
+    public function resetLink(int $id,string $url)
     {
         if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
             if (!empty($this->post)) {

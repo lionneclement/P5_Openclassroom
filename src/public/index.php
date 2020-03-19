@@ -12,13 +12,13 @@
  */
 require '../../vendor/autoload.php';
 
+session_start();
+
 use App\Controller\Admincontroller;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
 use App\Controller\Controller;
 use Dotenv\Dotenv;
-
-session_start();
 
 $dotenv = Dotenv::createImmutable('../../');
 $dotenv->load();

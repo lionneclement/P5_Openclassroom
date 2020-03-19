@@ -34,7 +34,7 @@ class Flash extends Controller
      * 
      * @return null
      */
-    public function setFlash($array)
+    public function setFlash(array $array)
     {
         if (empty($array)) {
             $this->setSession('alert', ['success'=>'success']);

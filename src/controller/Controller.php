@@ -118,8 +118,8 @@ class Controller
     /**
      * Setter session
      *
-     * @param string $key   The key
-     * @param string $value The value
+     * @param string           $key   The key
+     * @param array|string|int $value The value
      * 
      * @return null
      */
@@ -168,7 +168,7 @@ class Controller
      * 
      * @return bool
      */
-    public function recaptcha($parameters)
+    public function recaptcha(string $parameters)
     {
         $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
         $resp = $recaptcha->setExpectedHostname('localhost')
