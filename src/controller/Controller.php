@@ -164,9 +164,9 @@ class Controller
     /**
      * Init recaptcha
      * 
-     * @paramters string $parameters it's the post
+     * @parameters string $parameters it's the post
      * 
-     * @return boolean
+     * @return bool
      */
     public function recaptcha($parameters)
     {

@@ -118,7 +118,14 @@ class AuthentificationController extends Controller
                 }
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 $this->setSession('reset', $obj);
-                mail($this->post['email'], 'Changement de mot de passe', 'Voici le lien pour changer de mot de passe: http://localhost/auth/resetlink/'.$donnes->id.'/'.$rand);
+                $text = "<html><body>
+                Voici le lien pour changer de mot de passe:
+                <a href='http://localhost/auth/resetlink/$donnes->id/$rand'
+                target='_blank'>Votre lien:</a>
+                </body></html>";
+                $headers  = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                mail($this->post['email'], 'Changement de mot de passe', $text, $headers);
                 (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
             }
         }
