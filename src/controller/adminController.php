@@ -13,9 +13,12 @@
 namespace App\Controller;
 
 use App\Controller\Controller;
+use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Commentaire;
 use App\Flash\Flash;
+use PHP_CodeSniffer\Autoload;
+
 /**
  * Class for managing connected users
  * 
@@ -74,9 +77,9 @@ class Admincontroller extends Controller
         if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
                 $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
-                }
-                $donnes = $this->_modelAdmin->$type();
-                return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
+            }
+            $donnes = $this->_modelAdmin->$type();
+            return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
         }
         return $this->render("/templates/error.html.twig");
     }
@@ -103,10 +106,14 @@ class Admincontroller extends Controller
      * 
      * @return template
      */
-    public function deleteuser($id)
+    public function deleteUser($id)
     {
         if ($this->getSession('role') == 3 && !empty($id)) {
-            $this->_modelAdmin->deleteuser(new User(['id'=>$id]));
+            $Post = $this->_modelAdmin->findAllPosts(new User(['id'=>$id]));
+            foreach ($Post as $value) {
+                $this->_modelAdmin->deleteAllCommentWithArticleid(new Article(['id'=>$value->id]));
+            };
+            $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
             return $this->roles();
         }
         return $this->render("/templates/error.html.twig");

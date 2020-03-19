@@ -12,6 +12,7 @@
  */
 namespace App\Model;
 
+use App\Entity\Article;
 use App\Model\Connectmodel;
 use App\Entity\User;
 use App\Entity\Commentaire;
@@ -84,7 +85,7 @@ class Adminmodel extends Connectmodel
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
-     * Delete comment
+     * Delete comment with id comment
      * 
      * @param array $post it's user data
      * 
@@ -102,7 +103,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function deleteuser(User $post)
+    public function deleteUser(User $post)
     {
         $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
         $sql->execute([$post->getid()]);
@@ -110,6 +111,31 @@ class Adminmodel extends Connectmodel
         $sql1->execute([$post->getid()]);
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getid()]);
+    }
+    /**
+     * Find all posts with id user
+     * 
+     * @param array $post get id user
+     * 
+     * @return data
+     */
+    public function findAllPosts(User $post)
+    {
+        $sql = $this->bdd->prepare('SELECT * FROM article WHERE user_id=?');
+        $sql->execute([$post->getid()]);
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
+    }
+    /**
+     * Delete comment with id article
+     * 
+     * @param array $post it's user data
+     * 
+     * @return data
+     */
+    public function deleteAllCommentWithArticleid(Article $post)
+    {
+        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE article_id=?');
+        $sql->execute([$post->getid()]);
     }
     /**
      * Get one user
