@@ -93,7 +93,7 @@ class AuthentificationController extends Controller
      * 
      * @return template
      */
-    public function confsession($user)
+    public function confSession($user)
     {
         $this->setSession('id', $user->id);
         $this->setSession('role', $user->role_id);
@@ -103,7 +103,7 @@ class AuthentificationController extends Controller
      * 
      * @return template
      */
-    public function resetpassword()
+    public function resetPassword()
     {
         if (!empty($this->post)) {
             $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
@@ -139,12 +139,12 @@ class AuthentificationController extends Controller
      * 
      * @return template
      */
-    public function resetlink($id,$url)
+    public function resetLink($id,$url)
     {
         if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
             if (!empty($this->post)) {
                 $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id], 'post');
-                $this->_modelAuth->updatepassword($entitypost);
+                $this->_modelAuth->updatePassword($entitypost);
                 $this->deleteSession('reset');
             }
             return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);

@@ -17,7 +17,6 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Commentaire;
 use App\Flash\Flash;
-use PHP_CodeSniffer\Autoload;
 
 /**
  * Class for managing connected users
@@ -46,7 +45,7 @@ class Admincontroller extends Controller
     {
         if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
-                $this->_modelAdmin->updaterole(new User($this->post, 'post'));
+                $this->_modelAdmin->updateRole(new User($this->post, 'post'));
             }
             $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
@@ -76,7 +75,7 @@ class Admincontroller extends Controller
     {
         if ($this->getSession('role') == 3) {
             if (!empty($this->post)) {
-                $this->_modelAdmin->updatecomment(new Commentaire($this->post, 'post'));
+                $this->_modelAdmin->updateComment(new Commentaire($this->post, 'post'));
             }
             $donnes = $this->_modelAdmin->$type();
             return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
@@ -91,10 +90,10 @@ class Admincontroller extends Controller
      * 
      * @return template
      */
-    public function deletecomment($id,$url)
+    public function deleteComment($id,$url)
     {
         if ($this->getSession('role') == 3 && !empty($id)) {
-            $this->_modelAdmin->deletecomment(new Commentaire(['id'=>$id]));
+            $this->_modelAdmin->deleteComment(new Commentaire(['id'=>$id]));
             return $this->comment($url);
         }
         return $this->render("/templates/error.html.twig");
@@ -123,14 +122,14 @@ class Admincontroller extends Controller
      * 
      * @return template
      */
-    public function updateuser()
+    public function updateUser()
     {
         if (!empty($this->getSession('id'))) {
             if (!empty($this->post)) {
                 $this->post['id']=$this->getSession('id');
-                $this->_modelAdmin->updateuser(new User(($this->post), 'post'));
+                $this->_modelAdmin->updateUser(new User(($this->post), 'post'));
             }
-            $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->getSession('id')]));
+            $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
         return $this->render("/templates/error.html.twig");
@@ -144,9 +143,9 @@ class Admincontroller extends Controller
     {
         if (!empty($this->getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAdmin->getuser(new User(['id'=>$this->getSession('id')]));
+                $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
                 if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    $this->_modelAdmin->updatepassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
+                    $this->_modelAdmin->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
                 } else {
                     (new Flash())->setFlash(['danger'=>'danger']);
                 }

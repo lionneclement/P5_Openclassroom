@@ -47,7 +47,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function updaterole(User $post)
+    public function updateRole(User $post)
     {
         $sql = 'UPDATE user SET role_id=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getroleId(),$post->getid()]);
@@ -57,7 +57,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function allcomment()
+    public function allComment()
     {
         $sql = $this->bdd->query('SELECT * FROM commentaire');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
@@ -69,7 +69,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function updatecomment(Commentaire $post)
+    public function updateComment(Commentaire $post)
     {
         $sql = 'UPDATE commentaire SET statut=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getstatut(),$post->getid()]);
@@ -79,7 +79,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function invalidecomment()
+    public function invalideComment()
     {
         $sql = $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
@@ -91,7 +91,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function deletecomment(Commentaire $post)
+    public function deleteComment(Commentaire $post)
     {
         $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE id=?');
         $sql->execute([$post->getid()]);
@@ -144,7 +144,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function getuser(User $post)
+    public function getUser(User $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
         $sql->execute([$post->getid()]);
@@ -157,7 +157,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function updateuser(User $post)
+    public function updateUser(User $post)
     {
         $sql = 'UPDATE user SET nom=?, prenom=?, email=?  WHERE id=?';
         $dbb = $this->bdd->prepare($sql);
@@ -170,7 +170,7 @@ class Adminmodel extends Connectmodel
      * 
      * @return data
      */
-    public function updatepassword(User $post)
+    public function updatePassword(User $post)
     {
         $sql = 'UPDATE user SET mdp=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getmdp(),$post->getid()]);

@@ -31,12 +31,12 @@ $router->map(
 );
 $router->map(
     'GET', '/post/findAll', function () {
-        (new Postcontroller)->allposts();
+        (new Postcontroller)->allPosts();
     }
 );
 $router->map(
     'GET', '/post/findOne/[i:id]', function ($id) {
-        (new Postcontroller)->onepost($id);
+        (new Postcontroller)->onePost($id);
     }
 );
 $router->map(
@@ -76,12 +76,12 @@ $router->map(
 );
 $router->map(
     'GET|POST', '/auth/resetpassword', function () {
-        (new AuthentificationController)->resetpassword();
+        (new AuthentificationController)->resetPassword();
     }
 );
 $router->map(
     'GET|POST', '/auth/resetlink/[i:id]/[a:action]', function ($id,$action) {
-        (new AuthentificationController)->resetlink($id, $action);
+        (new AuthentificationController)->resetLink($id, $action);
     }
 );
 $router->map(
@@ -101,22 +101,22 @@ $router->map(
 );
 $router->map(
     'GET', '/admin/deletecomment/[i:id]/[a:action]', function ($id,$action) {
-        (new Admincontroller)->deletecomment($id, $action);
+        (new Admincontroller)->deleteComment($id, $action);
     }
 );
 $router->map(
     'GET', '/admin/deleteuser/[i:id]', function ($id) {
-        (new Admincontroller)->deleteuser($id);
+        (new Admincontroller)->deleteUser($id);
     }
 );
 $router->map(
     'GET|POST', '/admin/updateuser', function () {
-        (new Admincontroller)->updateuser();
+        (new Admincontroller)->updateUser();
     }
 );
 $router->map(
     'GET|POST', '/admin/updatepassword', function () {
-        (new Admincontroller)->updatepassword();
+        (new Admincontroller)->updatePassword();
     }
 );
 

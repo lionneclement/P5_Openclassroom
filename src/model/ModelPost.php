@@ -99,7 +99,7 @@ class Postmodel extends Connectmodel
      * 
      * @return data
      */
-    public function allcomment(Article $post)
+    public function allComment(Article $post)
     {
         $sql='SELECT * FROM commentaire WHERE article_id=? AND statut=1';
         $dbb = $this->bdd->prepare($sql);
@@ -126,7 +126,7 @@ class Postmodel extends Connectmodel
      * 
      * @return data
      */
-    public function addcomment(Commentaire $post)
+    public function addComment(Commentaire $post)
     {
         $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
     VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
@@ -138,7 +138,7 @@ class Postmodel extends Connectmodel
      * 
      * @return data
      */
-    public function findAlluser()
+    public function findAllUser()
     {
         $sql = $this->bdd->query('SELECT * FROM user');
         return $sql->fetchAll(\PDO::FETCH_OBJ);

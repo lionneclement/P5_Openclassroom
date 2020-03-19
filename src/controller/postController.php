@@ -63,7 +63,7 @@ class Postcontroller extends Controller
      */
     public function addUpdate(int $id=null)
     {   
-        $donnesUser = $this->_modelPost->findAlluser();
+        $donnesUser = $this->_modelPost->findAllUser();
         if ($this->getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
                 $entitypost=new Article($this->post, 'post');
@@ -87,10 +87,10 @@ class Postcontroller extends Controller
      * 
      * @return template
      */
-    public function onepost($id)
+    public function onePost($id)
     {
         $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
-        $donnes1 = $this->_modelPost->allcomment(new Article(['id'=>$id]));
+        $donnes1 = $this->_modelPost->allComment(new Article(['id'=>$id]));
         $donnes2 = $this->_modelPost->findUser($donnes->user_id);
         foreach ($donnes1 as $key => $value) {
             $donnes3 = $this->_modelPost->findUser($value->user_id);
@@ -104,7 +104,7 @@ class Postcontroller extends Controller
      * 
      * @return template
      */
-    public function allposts()
+    public function allPosts()
     {
         $donnes = $this->_modelPost->posts();
         return $this->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
@@ -133,7 +133,7 @@ class Postcontroller extends Controller
         if (!empty($this->getSession('id'))) {
             if ($this->recaptcha($this->post['g-recaptcha-response'])) {
                 $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
-                $this->_modelPost->addcomment($entitypost);
+                $this->_modelPost->addComment($entitypost);
                 return $this->onepost($this->post['id']);
             }
             return $this->render("/templates/error.html.twig");

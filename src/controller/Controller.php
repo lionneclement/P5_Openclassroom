@@ -38,7 +38,7 @@ class Controller
         $this->_modelAdmin = new Adminmodel;
         $this->_modelAuth = new AuthentificationModel;
         $this->superGlobal();
-        $this->twigenvi();
+        $this->twigEnvi();
         $this->filterPost();
     }
     /**
@@ -46,7 +46,7 @@ class Controller
      *
      * @return template
      */
-    public function twigenvi()
+    public function twigEnvi()
     {
         $loader = new FilesystemLoader('../../src/view');
         $this->twigenvi = new Environment($loader);
