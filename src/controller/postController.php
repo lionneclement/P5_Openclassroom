@@ -44,11 +44,7 @@ class Postcontroller extends Controller
     public function home()
     {
         if (!empty($this->post)) {
-            $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
-            $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
-            (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
-            if ($resp->isSuccess()) {
+            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
                 unset($this->post['g-recaptcha-response']);
                 $checking = (new Contact($this->post))->isValid($this->post);
                 if (empty($checking)) {
@@ -135,11 +131,7 @@ class Postcontroller extends Controller
     public function commentPost()
     {
         if (!empty($this->getSession('id'))) {
-            $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
-            $resp = $recaptcha->setExpectedHostname('localhost')
-                ->verify($this->post['g-recaptcha-response'], $this->serverADDR);
-            (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
-            if ($resp->isSuccess()) {
+            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
                 $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
                 $this->_modelPost->addcomment($entitypost);
                 return $this->onepost($this->post['id']);

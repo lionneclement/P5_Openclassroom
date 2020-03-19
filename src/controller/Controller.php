@@ -161,4 +161,19 @@ class Controller
     {
         $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
+    /**
+     * Init recaptcha
+     * 
+     * @paramters string $parameters it's the post
+     * 
+     * @return boolean
+     */
+    public function recaptcha($parameters)
+    {
+        $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
+        $resp = $recaptcha->setExpectedHostname('localhost')
+            ->verify($parameters, $this->serverADDR);
+        (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
+        return $resp->isSuccess();
+    }
 }
