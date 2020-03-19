@@ -33,7 +33,8 @@ class Article extends Valide
     /**
      * Call hydrate
      * 
-     * @param array $data all data
+     * @param array  $data all data
+     * @param string $post just an string 
      */
     public function __construct(array $data =[],string $post=null)
     {
@@ -49,7 +50,7 @@ class Article extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return setter
+     * @return null
      */
     public function hydrate(array $donnees)
     {
@@ -63,7 +64,7 @@ class Article extends Valide
     /**
      * Get id
      * 
-     * @return variable
+     * @return int
      */
     public function getid()
     {
@@ -72,7 +73,7 @@ class Article extends Valide
     /**
      * Get title
      * 
-     * @return variable
+     * @return string
      */
     public function gettitre()
     {
@@ -81,7 +82,7 @@ class Article extends Valide
     /**
      * Get chapo
      * 
-     * @return variable
+     * @return string
      */
     public function getchapo()
     {
@@ -89,7 +90,7 @@ class Article extends Valide
     }/**
       * Get content
       * 
-      * @return variable
+      * @return string
       */
     public function getcontenu()
     {
@@ -98,7 +99,7 @@ class Article extends Valide
     /**
      * Get user id
      * 
-     * @return variable
+     * @return int
      */
     public function getuserId()
     {
@@ -109,7 +110,7 @@ class Article extends Valide
      * 
      * @param integer $id data
      * 
-     * @return variable
+     * @return null
      */
     public function setId($id)
     {
@@ -123,7 +124,7 @@ class Article extends Valide
      * 
      * @param String $titre data
      * 
-     * @return variable
+     * @return null
      */
     public function setTitre($titre)
     {
@@ -136,7 +137,7 @@ class Article extends Valide
      * 
      * @param String $chapo data
      * 
-     * @return variable
+     * @return null
      */
     public function setChapo($chapo)
     {
@@ -149,7 +150,7 @@ class Article extends Valide
      * 
      * @param String $contenu data
      * 
-     * @return variable
+     * @return null
      */
     public function setContenu($contenu)
     {
@@ -162,7 +163,7 @@ class Article extends Valide
      * 
      * @param integer $userId data
      * 
-     * @return variable
+     * @return null
      */
     public function setUserId($userId)
     {

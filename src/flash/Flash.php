@@ -32,7 +32,7 @@ class Flash extends Controller
      * 
      * @param array $array it's array
      * 
-     * @return setter
+     * @return null
      */
     public function setFlash($array)
     {
@@ -45,7 +45,7 @@ class Flash extends Controller
     /**
      * Get and delete session
      * 
-     * @return setter
+     * @return array
      */
     public function getFlash()
     {

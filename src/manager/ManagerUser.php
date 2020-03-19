@@ -34,7 +34,8 @@ class User extends Valide
     /**
      * Call hydrate
      * 
-     * @param array $data all data
+     * @param array  $data all data
+     * @param string $post just an string 
      */
     public function __construct(array $data =[],string $post=null)
     {
@@ -50,7 +51,7 @@ class User extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return setter
+     * @return null
      */
     public function hydrate(array $donnees)
     {
@@ -64,7 +65,7 @@ class User extends Valide
     /**
      * Get id
      * 
-     * @return variable
+     * @return int
      */
     public function getid()
     {
@@ -73,7 +74,7 @@ class User extends Valide
     /**
      * Get nom
      * 
-     * @return variable
+     * @return string
      */
     public function getnom()
     {
@@ -82,7 +83,7 @@ class User extends Valide
     /**
      * Get prenom
      * 
-     * @return variable
+     * @return string
      */
     public function getprenom()
     {
@@ -91,7 +92,7 @@ class User extends Valide
     /**
      * Get email
      * 
-     * @return variable
+     * @return string
      */
     public function getemail()
     {
@@ -100,7 +101,7 @@ class User extends Valide
     /**
      * Get mdp
      * 
-     * @return variable
+     * @return string
      */
     public function getmdp()
     {
@@ -109,7 +110,7 @@ class User extends Valide
     /**
      * Get role id
      * 
-     * @return variable
+     * @return int
      */
     public function getroleId()
     {
@@ -121,7 +122,7 @@ class User extends Valide
      * 
      * @param Integer $id data
      * 
-     * @return variable
+     * @return null
      */
     public function setId($id)
     {
@@ -135,7 +136,7 @@ class User extends Valide
      * 
      * @param String $nom data
      * 
-     * @return variable
+     * @return null
      */
     public function setNom($nom)
     {
@@ -148,7 +149,7 @@ class User extends Valide
      * 
      * @param String $prenom data
      * 
-     * @return variable
+     * @return null
      */
     public function setPrenom($prenom)
     {
@@ -161,7 +162,7 @@ class User extends Valide
      * 
      * @param String $email data
      * 
-     * @return variable
+     * @return null
      */
     public function setEmail($email)
     {
@@ -174,7 +175,7 @@ class User extends Valide
      * 
      * @param Strign $mdp data
      * 
-     * @return variable
+     * @return null
      */
     public function setMdp($mdp)
     {
@@ -187,7 +188,7 @@ class User extends Valide
      * 
      * @param String $roleId data
      * 
-     * @return variable
+     * @return null
      */
     public function setRoleId($roleId)
     {

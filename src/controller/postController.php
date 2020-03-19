@@ -39,7 +39,7 @@ class Postcontroller extends Controller
     /**
      * Home page
      * 
-     * @return template
+     * @return void
      */
     public function home()
     {
@@ -59,7 +59,7 @@ class Postcontroller extends Controller
      * 
      * @param integer $id it's id post
      * 
-     * @return template
+     * @return void
      */
     public function addUpdate(int $id=null)
     {   
@@ -85,7 +85,7 @@ class Postcontroller extends Controller
      * 
      * @param integer $id it's id post
      * 
-     * @return template
+     * @return void
      */
     public function onePost($id)
     {
@@ -102,7 +102,7 @@ class Postcontroller extends Controller
     /**
      * Find all post
      * 
-     * @return template
+     * @return void
      */
     public function allPosts()
     {
@@ -114,7 +114,7 @@ class Postcontroller extends Controller
      * 
      * @param integer $id it's id post
      * 
-     * @return template
+     * @return void
      */
     public function remove($id)
     {
@@ -126,7 +126,7 @@ class Postcontroller extends Controller
     /**
      * Add comment in one post
      * 
-     * @return template
+     * @return void
      */
     public function commentPost()
     {

@@ -36,7 +36,7 @@ class AuthentificationController extends Controller
     /**
      * Register a user
      * 
-     * @return template
+     * @return void
      */
     public function register()
     {
@@ -56,7 +56,7 @@ class AuthentificationController extends Controller
     /**
      * Login a user
      * 
-     * @return template
+     * @return void
      */
     public function login()
     {
@@ -79,7 +79,7 @@ class AuthentificationController extends Controller
     /**
      * Logout a user
      * 
-     * @return template
+     * @return void
      */
     public function logout()
     {
@@ -91,7 +91,7 @@ class AuthentificationController extends Controller
      * 
      * @param array $user it's user id and user role
      * 
-     * @return template
+     * @return void
      */
     public function confSession($user)
     {
@@ -101,7 +101,7 @@ class AuthentificationController extends Controller
     /**
      * Send an email to be sure the user has the email and create a session
      * 
-     * @return template
+     * @return void
      */
     public function resetPassword()
     {
@@ -137,7 +137,7 @@ class AuthentificationController extends Controller
      * @param integer $id  it's user id
      * @param string  $url it's the url
      * 
-     * @return template
+     * @return void
      */
     public function resetLink($id,$url)
     {

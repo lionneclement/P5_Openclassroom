@@ -39,7 +39,7 @@ class Admincontroller extends Controller
     /**
      * Role a user
      * 
-     * @return template
+     * @return void
      */
     public function roles()
     {
@@ -55,7 +55,7 @@ class Admincontroller extends Controller
     /**
      * Page admin
      * 
-     * @return template
+     * @return void
      */
     public function admin()
     {
@@ -69,7 +69,7 @@ class Admincontroller extends Controller
      * 
      * @param string $type The param is to know if the comment is to be created or modified
      * 
-     * @return template
+     * @return void
      */
     public function comment($type)
     {
@@ -88,7 +88,7 @@ class Admincontroller extends Controller
      * @param integer $id  it's id comment
      * @param array   $url the paramis here to find out in which url was doing the deletion
      * 
-     * @return template
+     * @return void
      */
     public function deleteComment($id,$url)
     {
@@ -103,7 +103,7 @@ class Admincontroller extends Controller
      * 
      * @param integer $id it's user data
      * 
-     * @return template
+     * @return void
      */
     public function deleteUser($id)
     {
@@ -120,7 +120,7 @@ class Admincontroller extends Controller
     /**
      * Update user (name,email)
      * 
-     * @return template
+     * @return void
      */
     public function updateUser()
     {
@@ -137,7 +137,7 @@ class Admincontroller extends Controller
      /**
       * Update the password with the old password
       * 
-      * @return template
+      * @return void
       */
     public function updatepassword()
     {

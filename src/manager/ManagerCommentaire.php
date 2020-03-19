@@ -33,7 +33,8 @@ class Commentaire extends Valide
     /**
      * Call hydrate
      * 
-     * @param array $data all data
+     * @param array  $data all data
+     * @param string $post just an string 
      */
     public function __construct(array $data =[],string $post=null)
     {
@@ -49,7 +50,7 @@ class Commentaire extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return setter
+     * @return null
      */
     public function hydrate(array $donnees)
     {
@@ -63,7 +64,7 @@ class Commentaire extends Valide
     /**
      * Get id
      * 
-     * @return variable
+     * @return int
      */
     public function getid()
     {
@@ -72,7 +73,7 @@ class Commentaire extends Valide
     /**
      * Get message
      * 
-     * @return variable
+     * @return string
      */
     public function getmessage()
     {
@@ -81,7 +82,7 @@ class Commentaire extends Valide
     /**
      * Get statut
      * 
-     * @return variable
+     * @return int
      */
     public function getstatut()
     {
@@ -90,7 +91,7 @@ class Commentaire extends Valide
     /**
      * Get user id
      * 
-     * @return variable
+     * @return int
      */
     public function getuserId()
     {
@@ -99,7 +100,7 @@ class Commentaire extends Valide
     /**
      * Get article id
      * 
-     * @return variable
+     * @return int
      */
     public function getarticleId()
     {
@@ -110,7 +111,7 @@ class Commentaire extends Valide
      * 
      * @param Integer $id data
      * 
-     * @return variable
+     * @return null
      */
     public function setId($id)
     {
@@ -124,7 +125,7 @@ class Commentaire extends Valide
      * 
      * @param String $message data
      * 
-     * @return variable
+     * @return null
      */
     public function setMessage($message)
     {
@@ -137,7 +138,7 @@ class Commentaire extends Valide
      * 
      * @param String $statut data
      * 
-     * @return variable
+     * @return null
      */
     public function setStatut($statut)
     {
@@ -151,7 +152,7 @@ class Commentaire extends Valide
      * 
      * @param Integer $userId data
      * 
-     * @return variable
+     * @return null
      */
     public function setUserId($userId)
     {
@@ -165,7 +166,7 @@ class Commentaire extends Valide
      * 
      * @param Integer $articleId data
      * 
-     * @return variable
+     * @return null
      */
     public function setArticleId($articleId)
     {

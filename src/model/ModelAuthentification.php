@@ -30,7 +30,7 @@ class AuthentificationModel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return object
      */
     public function check(User $post)
     {
@@ -43,7 +43,7 @@ class AuthentificationModel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function register(User $post)
     {
@@ -57,7 +57,7 @@ class AuthentificationModel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function updatePassword(User $post)
     {

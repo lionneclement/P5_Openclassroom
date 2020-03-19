@@ -31,7 +31,7 @@ class Postmodel extends Connectmodel
     /**
      * Get all posts
      * 
-     * @return data
+     * @return object
      */
     public function posts()
     {
@@ -43,7 +43,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return object
      */
     public function post(Article $post)
     {
@@ -56,7 +56,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function add(Article $post)
     {
@@ -70,7 +70,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function update(Article $post)
     {
@@ -83,7 +83,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function remove(Article $post)
     {
@@ -97,7 +97,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return object
      */
     public function allComment(Article $post)
     {
@@ -111,7 +111,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function findUser($post)
     {
@@ -124,7 +124,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function addComment(Commentaire $post)
     {
@@ -136,7 +136,7 @@ class Postmodel extends Connectmodel
     /**
      * Find all user
      * 
-     * @return data
+     * @return object
      */
     public function findAllUser()
     {

@@ -44,7 +44,7 @@ class Controller
     /**
      * Init twig
      *
-     * @return template
+     * @return void
      */
     public function twigEnvi()
     {
@@ -54,7 +54,7 @@ class Controller
     /**
      * AddGlobal in twig
      *
-     * @return template
+     * @return void
      */
     public function twigFlash()
     {
@@ -75,7 +75,7 @@ class Controller
      * @param string $twigFile   The twig file
      * @param array  $parameters The parameters
      *
-     * @return template
+     * @return void
      */
     public function render(string $twigFile, array $parameters = [])
     {
@@ -89,7 +89,7 @@ class Controller
     /**
      * Render post secure
      *
-     * @return template
+     * @return array
      */
     public function filterPost()
     {
@@ -121,7 +121,7 @@ class Controller
      * @param string $key   The key
      * @param string $value The value
      * 
-     * @return bool
+     * @return null
      */
     public function setSession(string $key, $value)
     {
@@ -132,7 +132,7 @@ class Controller
      *
      * @param string $key The key
      * 
-     * @return bool
+     * @return null|array
      */
     public function getSession(string $key)
     {
@@ -146,7 +146,7 @@ class Controller
      *
      * @param string $key The key
      * 
-     * @return bool
+     * @return null
      */
     public function deleteSession(string $key)
     {
@@ -155,7 +155,7 @@ class Controller
     /**
      * Setup serverADDR
      *
-     * @return session
+     * @return null
      */
     public function superGlobal()
     {
@@ -164,7 +164,7 @@ class Controller
     /**
      * Init recaptcha
      * 
-     * @parameters string $parameters it's the post
+     * @param string $parameters it's the post
      * 
      * @return bool
      */

@@ -32,7 +32,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return object
      */
     public function roles(User $post)
     {
@@ -45,7 +45,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function updateRole(User $post)
     {
@@ -55,7 +55,7 @@ class Adminmodel extends Connectmodel
     /**
      * Get all comment
      * 
-     * @return data
+     * @return object
      */
     public function allComment()
     {
@@ -67,7 +67,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function updateComment(Commentaire $post)
     {
@@ -77,7 +77,7 @@ class Adminmodel extends Connectmodel
     /**
      * Get all comment invalid
      * 
-     * @return data
+     * @return object
      */
     public function invalideComment()
     {
@@ -89,7 +89,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function deleteComment(Commentaire $post)
     {
@@ -101,7 +101,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function deleteUser(User $post)
     {
@@ -117,7 +117,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post get id user
      * 
-     * @return data
+     * @return object
      */
     public function findAllPosts(User $post)
     {
@@ -130,7 +130,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function deleteAllCommentWithArticleid(Article $post)
     {
@@ -142,7 +142,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return object
      */
     public function getUser(User $post)
     {
@@ -155,7 +155,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function updateUser(User $post)
     {
@@ -168,7 +168,7 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return data
+     * @return null
      */
     public function updatePassword(User $post)
     {

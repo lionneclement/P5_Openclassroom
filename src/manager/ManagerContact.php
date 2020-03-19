@@ -32,7 +32,8 @@ class Contact extends Valide
     /**
      * Call hydrate
      * 
-     * @param array $data all data
+     * @param array  $data all data
+     * @param string $post just an string 
      */
     public function __construct(array $data =[],string $post=null)
     {
@@ -48,7 +49,7 @@ class Contact extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return setter
+     * @return null
      */
     public function hydrate(array $donnees)
     {
@@ -62,7 +63,7 @@ class Contact extends Valide
     /**
      * Get nom
      * 
-     * @return variable
+     * @return string
      */
     public function getnom()
     {
@@ -71,7 +72,7 @@ class Contact extends Valide
     /**
      * Get prenom
      * 
-     * @return variable
+     * @return string
      */
     public function getprenom()
     {
@@ -80,7 +81,7 @@ class Contact extends Valide
     /**
      * Get email
      * 
-     * @return variable
+     * @return string
      */
     public function getemail()
     {
@@ -89,7 +90,7 @@ class Contact extends Valide
     /**
      * Get message
      * 
-     * @return variable
+     * @return string
      */
     public function getmessage()
     {
@@ -102,7 +103,7 @@ class Contact extends Valide
      * 
      * @param String $nom data
      * 
-     * @return variable
+     * @return null
      */
     public function setNom($nom)
     {
@@ -115,7 +116,7 @@ class Contact extends Valide
      * 
      * @param String $prenom data
      * 
-     * @return variable
+     * @return null
      */
     public function setPrenom($prenom)
     {
@@ -128,7 +129,7 @@ class Contact extends Valide
      * 
      * @param String $email data
      * 
-     * @return variable
+     * @return null
      */
     public function setEmail($email)
     {
@@ -141,7 +142,7 @@ class Contact extends Valide
      * 
      * @param String $message data
      * 
-     * @return variable
+     * @return null
      */
     public function setMessage($message)
     {
