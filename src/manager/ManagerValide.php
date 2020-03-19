@@ -25,7 +25,6 @@ use App\Flash\Flash;
  */
 class Valide
 {
-    protected $checking;
     /**
      * Check if it's valid
      * 
@@ -43,6 +42,5 @@ class Valide
             }
         }
         (new Flash())->setFlash($this->checking);
-        return $this->checking;
     }
 }

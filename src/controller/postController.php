@@ -46,8 +46,8 @@ class Postcontroller extends Controller
         if (!empty($this->post)) {
             if ($this->recaptcha($this->post['g-recaptcha-response'])) {
                 unset($this->post['g-recaptcha-response']);
-                $checking = (new Contact($this->post))->isValid($this->post);
-                if (empty($checking)) {
+                $checking = (new Contact($this->post, 'post'));
+                if (empty($checking->checking)) {
                     mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
                 }
             }
