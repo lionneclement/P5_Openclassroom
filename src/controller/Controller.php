@@ -170,7 +170,7 @@ class Controller
      */
     public function recaptcha(string $parameters)
     {
-        $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
+        $recaptcha = new \ReCaptcha\ReCaptcha(getenv('RECAPTCHA'));
         $resp = $recaptcha->setExpectedHostname('localhost')
             ->verify($parameters, $this->serverADDR);
         (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);

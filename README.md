@@ -16,8 +16,15 @@ Create your first blog in php
     DB_NAME="your name"
     DB_USER="your user"
     DB_PASSWORD="your password"
+    RECAPTCHA="your number"
     ```
    Default password and user: 'root','' or 'root','root'
+
+   For the Recaptcha i use v2 Checkbox.
+   https://developers.google.com/recaptcha/docs/display#automatically_render_the_recaptcha_widget
+
+   Don't forget to change the code to html.
+
 6) In apache change httpd-vhosts.conf from
     ```
     DocumentRoot "${INSTALL_DIR}/www"
