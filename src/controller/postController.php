@@ -132,4 +132,13 @@ class Postcontroller extends Controller
             return $this->render("/templates/error.html.twig");
         }
     }
+    /**
+     * Return error 404 page
+     * 
+     * @return void
+     */
+    public function error404()
+    {
+        return $this->render("/templates/error.html.twig");
+    }
 }

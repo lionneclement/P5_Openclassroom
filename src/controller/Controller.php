@@ -27,7 +27,7 @@ use App\Flash\Flash;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Controller
+abstract class Controller
 {
     /**
      * Init model and session

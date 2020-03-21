@@ -17,7 +17,6 @@ session_start();
 use App\Controller\Admincontroller;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
-use App\Controller\Controller;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../');
@@ -125,5 +124,5 @@ $router->map(
 if (is_array($match) && is_callable($match['target'])) {
     call_user_func_array($match['target'], $match['params']); 
 } else {
-    return (new Controller)->render("/templates/error.html.twig");
+    return (new Postcontroller)->error404();
 }
