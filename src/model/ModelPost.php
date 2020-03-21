@@ -105,7 +105,8 @@ class Postmodel extends Connectmodel
     public function getAllComment(Article $post)
     {
         $sql='SELECT commentaire.*,user.nom FROM article 
-        INNER JOIN commentaire ON commentaire.article_id=? AND commentaire.statut=1
+        INNER JOIN commentaire ON article.id=commentaire.article_id 
+        AND commentaire.article_id=? AND commentaire.statut=1
         INNER JOIN user ON user.id=commentaire.user_id';
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getid()]);
