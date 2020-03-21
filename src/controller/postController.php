@@ -89,15 +89,9 @@ class Postcontroller extends Controller
      */
     public function onePost(int $id)
     {
-        $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
-        $donnes1 = $this->_modelPost->allComment(new Article(['id'=>$id]));
-        $donnes2 = $this->_modelPost->findUser(new Article(['id'=>$donnes->user_id]));
-        foreach ($donnes1 as $key => $value) {
-            $donnes3 = $this->_modelPost->findUser(new Article(['id'=>$value->user_id]));
-            $donnes1[$key]->nom=$donnes3->nom;
-        }
-        $donnes->nom=$donnes2->nom;
-        return $this->render('/templates/post/onepost.html.twig', ['nom'=>$donnes,'comment'=>$donnes1]);
+        $post = $this->_modelPost->post(new Article(['id'=>$id]));
+        $comment = $this->_modelPost->getAllComment(new Article(['id'=>$id]));
+        return $this->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
     }
     /**
      * Find all post

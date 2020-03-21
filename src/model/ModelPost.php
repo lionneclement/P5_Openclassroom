@@ -47,9 +47,12 @@ class Postmodel extends Connectmodel
      */
     public function post(Article $post)
     {
-        $sql = $this->bdd->prepare('SELECT * FROM article WHERE id=?');
-        $sql->execute([$post->getid()]);
-        return $sql->fetch(\PDO::FETCH_OBJ);
+        $sql = 'SELECT article.*, user.nom FROM article
+        INNER JOIN user ON 
+        article.user_id=user.id AND article.id=?';
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->getid()]);
+        return $dbb->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Add post
@@ -99,9 +102,11 @@ class Postmodel extends Connectmodel
      * 
      * @return object
      */
-    public function allComment(Article $post)
+    public function getAllComment(Article $post)
     {
-        $sql='SELECT * FROM commentaire WHERE article_id=? AND statut=1';
+        $sql='SELECT commentaire.*,user.nom FROM article 
+        INNER JOIN commentaire ON commentaire.article_id=? AND commentaire.statut=1
+        INNER JOIN user ON user.id=commentaire.user_id';
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getid()]);
         return $dbb->fetchAll(\PDO::FETCH_OBJ);
