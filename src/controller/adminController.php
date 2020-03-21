@@ -108,10 +108,6 @@ class Admincontroller extends Controller
     public function deleteUser(int $id)
     {
         if ($this->getSession('role') == 3 && !empty($id)) {
-            $Post = $this->_modelAdmin->findAllPosts(new User(['id'=>$id]));
-            foreach ($Post as $value) {
-                $this->_modelAdmin->deleteAllCommentWithArticleid(new Article(['id'=>$value->id]));
-            };
             $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
             return $this->roles();
         }

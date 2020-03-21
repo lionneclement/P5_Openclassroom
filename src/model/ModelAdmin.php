@@ -105,37 +105,16 @@ class Adminmodel extends Connectmodel
      */
     public function deleteUser(User $post)
     {
-        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
-        $sql->execute([$post->getid()]);
+        $sql = 'DELETE commentaire.* FROM commentaire INNER JOIN article
+        ON article.user_id=? AND commentaire.article_id=article.id';
+        $dbb = $this->bdd->prepare($sql);
+        $dbb->execute([$post->getid()]);
+        $sql0 = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
+        $sql0->execute([$post->getid()]);
         $sql1 =$this->bdd->prepare('DELETE FROM article WHERE user_id=?');
         $sql1->execute([$post->getid()]);
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getid()]);
-    }
-    /**
-     * Find all posts with id user
-     * 
-     * @param array $post get id user
-     * 
-     * @return object
-     */
-    public function findAllPosts(User $post)
-    {
-        $sql = $this->bdd->prepare('SELECT * FROM article WHERE user_id=?');
-        $sql->execute([$post->getid()]);
-        return $sql->fetchAll(\PDO::FETCH_OBJ);
-    }
-    /**
-     * Delete comment with id article
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function deleteAllCommentWithArticleid(Article $post)
-    {
-        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE article_id=?');
-        $sql->execute([$post->getid()]);
     }
     /**
      * Get one user

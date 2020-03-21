@@ -16,7 +16,6 @@ use App\Controller\Controller;
 use App\Entity\Contact;
 use App\Entity\Article;
 use App\Entity\Commentaire;
-use App\Flash\Flash;
 
 /**
  * Class for managing post
