@@ -110,12 +110,7 @@ class AuthentificationController extends Controller
             if (empty($donnes)) {
                 (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
             } else {
-                $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-                shuffle($seed);
-                $rand = '';
-                foreach (array_rand($seed, 10) as $k) { 
-                    $rand .= $seed[$k];
-                }
+                $rand = $this->randomWord(10);
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
                 $this->setSession('reset', $obj);
                 $text = "<html><body>

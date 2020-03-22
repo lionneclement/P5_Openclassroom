@@ -176,4 +176,21 @@ abstract class Controller
         (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
         return $resp->isSuccess();
     }
+    /**
+     * Generate an random word
+     * 
+     * @param int $numberCharacter it's the number of character
+     * 
+     * @return string
+     */
+    public function randomWord(int $numberCharacter)
+    {
+        $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        shuffle($seed);
+        $rand = '';
+        foreach (array_rand($seed, $numberCharacter) as $k) { 
+            $rand .= $seed[$k];
+        }
+        return $rand;
+    }
 }
