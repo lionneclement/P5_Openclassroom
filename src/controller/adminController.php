@@ -53,18 +53,6 @@ class Admincontroller extends Controller
         return $this->render("/templates/error.html.twig");
     }
     /**
-     * Page admin
-     * 
-     * @return void
-     */
-    public function admin()
-    {
-        if ($this->getSession('role') == 3) {
-            return $this->render('/templates/user/admin.html.twig');
-        }
-        return $this->render("/templates/error.html.twig");
-    }
-    /**
      * Show comment valid and comment invalid
      * 
      * @param string $type The param is to know if the comment is to be created or modified

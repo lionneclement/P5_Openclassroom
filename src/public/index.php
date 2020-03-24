@@ -89,11 +89,6 @@ $router->map(
     }
 );
 $router->map(
-    'GET', '/admin', function () {
-        (new Admincontroller)->admin();
-    }
-);
-$router->map(
     'GET|POST', '/admin/comment/[a:action]', function ($action) {
         (new Admincontroller)->comment($action);
     }

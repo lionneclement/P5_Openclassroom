@@ -5,9 +5,9 @@
         <title>Blog de Clément</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="\css\mystyle.css">
         <link href="\dist\css\bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="\css\mystyle.css">
     {% endblock %}
   </head>
 
@@ -42,8 +42,16 @@
             {% endif %}
             {% if user_access %}
               {% if user_access == 3 %}
-                <li class="nav-item">
-                <a class="nav-link" href="/admin">Admin</a>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                    Admin
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/post/addpost">Ajouter un article</a>
+                    <a class="dropdown-item" href="/admin/roles">Gérer les utilisateurs</a>
+                    <a class="dropdown-item" href="/admin/comment/allcomment">Gérer tout les commentaires</a>
+                    <a class="dropdown-item" href="/admin/comment/invalidecomment">Gérer tout les commentaire invalide</a>
+                  </div>
                 </li>
               {% endif %}
               <li class="nav-item">
