@@ -52,50 +52,6 @@ class Adminmodel extends Connectmodel
         $this->bdd->prepare($sql)->execute([$post->getroleId(),$post->getid()]);
     }
     /**
-     * Get all comment
-     * 
-     * @return object
-     */
-    public function allComment()
-    {
-        $sql = $this->bdd->query('SELECT * FROM commentaire');
-        return $sql->fetchAll(\PDO::FETCH_OBJ);
-    }
-    /**
-     * Update comment
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function updateComment(Commentaire $post)
-    {
-        $sql = 'UPDATE commentaire SET statut=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getstatut(),$post->getid()]);
-    }
-    /**
-     * Get all comment invalid
-     * 
-     * @return object
-     */
-    public function invalideComment()
-    {
-        $sql = $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
-        return $sql->fetchAll(\PDO::FETCH_OBJ);
-    }
-    /**
-     * Delete comment with id comment
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function deleteComment(Commentaire $post)
-    {
-        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE id=?');
-        $sql->execute([$post->getid()]);
-    }
-    /**
      * Delete user
      * 
      * @param array $post it's user data

@@ -15,7 +15,7 @@ namespace App\Controller;
 use App\Controller\Controller;
 use App\Entity\Contact;
 use App\Entity\Article;
-use App\Entity\Commentaire;
+use App\Manager\CommentManager;
 
 /**
  * Class for managing post
@@ -80,7 +80,7 @@ class Postcontroller extends Controller
         return $this->render("/templates/error.html.twig");
     }
     /**
-     * Update post
+     * One post
      * 
      * @param int $id it's id post
      * 
@@ -89,7 +89,7 @@ class Postcontroller extends Controller
     public function onePost(int $id)
     {
         $post = $this->_modelPost->post(new Article(['id'=>$id]));
-        $comment = $this->_modelPost->getAllComment(new Article(['id'=>$id]));
+        $comment = (new CommentManager)->findAllArticleComment(new Article(['id'=>$id]));
         return $this->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
     }
     /**
@@ -115,22 +115,6 @@ class Postcontroller extends Controller
             $this->_modelPost->remove(new Article(['id'=>$id]));
         }
         return $this->allposts();
-    }
-    /**
-     * Add comment in one post
-     * 
-     * @return void
-     */
-    public function commentPost()
-    {
-        if (!empty($this->getSession('id'))) {
-            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
-                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
-                $this->_modelPost->addComment($entitypost);
-                return $this->onepost($this->post['id']);
-            }
-            return $this->render("/templates/error.html.twig");
-        }
     }
     /**
      * Return error 404 page

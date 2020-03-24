@@ -96,23 +96,6 @@ class Postmodel extends Connectmodel
         $this->bdd->prepare($sql1)->execute([$post->getid()]);
     }
     /**
-     * Get all comment
-     * 
-     * @param array $post it's user data
-     * 
-     * @return object
-     */
-    public function getAllComment(Article $post)
-    {
-        $sql='SELECT commentaire.*,user.nom FROM article 
-        INNER JOIN commentaire ON article.id=commentaire.article_id 
-        AND commentaire.article_id=? AND commentaire.statut=1
-        INNER JOIN user ON user.id=commentaire.user_id';
-        $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getid()]);
-        return $dbb->fetchAll(\PDO::FETCH_OBJ);
-    }
-    /**
      * Find one user
      * 
      * @param array $post it's user data
@@ -124,20 +107,6 @@ class Postmodel extends Connectmodel
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
         $sql->execute([$post->getid()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
-    }
-    /**
-     * Add comment
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function addComment(Commentaire $post)
-    {
-        $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
-    VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
-        $dbb =$this->bdd->prepare($sql);
-        $dbb->execute([$post->getmessage(),$post->getuserId(),$post->getarticleId()]);
     }
     /**
      * Find all user

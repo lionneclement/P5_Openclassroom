@@ -20,7 +20,7 @@
               <div class="card-body">
                 <h5 class="card-title">Message: {{n.message}}</h5>
                 <p class="card-text">Date: {{n.date}}</p>
-                <form method="post" action="/admin/comment/{{return}}">
+                <form method="post" action="/admin/updatecomment/{{n.id}}/{{url}}">
                   <label for="FormControlInput1">Statut :</label>
                   <select id="inputState"  name="statut" class="form-control" required>
                     <option value='1' {% if n.statut == 1 %}selected{% endif %}>Valide</option>
@@ -29,7 +29,7 @@
                   <input type="hidden" name="id" value="{{n.id}}">
                   <br>
                   <button type="submit" class='btn btn-secondary'>Modifier</button>
-                  <a href="/admin/deletecomment/{{n.id}}/{{return}}" class='btn btn-secondary'>Supprimer</a>
+                  <a href="/admin/deletecomment/{{n.id}}/{{url}}" class='btn btn-secondary'>Supprimer</a>
                   <a href="/post/findOne/{{n.article_id}}" class="btn btn-secondary">Lien de l'article</a>
                 </form>
               </div>

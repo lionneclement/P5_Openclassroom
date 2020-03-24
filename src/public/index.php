@@ -17,6 +17,7 @@ session_start();
 use App\Controller\Admincontroller;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
+use App\Controller\CommentController;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../');
@@ -46,11 +47,6 @@ $router->map(
 $router->map(
     'GET|POST', '/post/updatepost/[i:id]', function ($id) {
         (new Postcontroller)->addUpdate($id); 
-    }
-);
-$router->map(
-    'POST', '/post/comment', function () {
-        (new Postcontroller)->commentPost();
     }
 );
 $router->map(
@@ -89,16 +85,6 @@ $router->map(
     }
 );
 $router->map(
-    'GET|POST', '/admin/comment/[a:action]', function ($action) {
-        (new Admincontroller)->comment($action);
-    }
-);
-$router->map(
-    'GET', '/admin/deletecomment/[i:id]/[a:action]', function ($id,$action) {
-        (new Admincontroller)->deleteComment($id, $action);
-    }
-);
-$router->map(
     'GET', '/admin/deleteuser/[i:id]', function ($id) {
         (new Admincontroller)->deleteUser($id);
     }
@@ -111,6 +97,32 @@ $router->map(
 $router->map(
     'GET|POST', '/admin/updatepassword', function () {
         (new Admincontroller)->updatePassword();
+    }
+);
+//Route for comment
+$router->map(
+    'GET|POST', '/admin/allinvalidecomment', function () {
+        (new CommentController)->findAllInvalideComment();
+    }
+);
+$router->map(
+    'GET|POST', '/admin/allcomment', function () {
+        (new CommentController)->findAllComment();
+    }
+);
+$router->map(
+    'GET|POST', '/admin/updatecomment/[i:id]/[a:action]', function ($id,$action) {
+        (new CommentController)->updateComment($id, $action);
+    }
+);
+$router->map(
+    'GET', '/admin/deletecomment/[i:id]/[a:action]', function ($id,$action) {
+        (new CommentController)->removeComment($id, $action);
+    }
+);
+$router->map(
+    'POST', '/post/addcomment', function () {
+        (new CommentController)->addComment();
     }
 );
 

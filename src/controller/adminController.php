@@ -13,9 +13,7 @@
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\Entity\Article;
 use App\Entity\User;
-use App\Entity\Commentaire;
 use App\Flash\Flash;
 
 /**
@@ -49,40 +47,6 @@ class Admincontroller extends Controller
             }
             $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
             return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
-        }
-        return $this->render("/templates/error.html.twig");
-    }
-    /**
-     * Show comment valid and comment invalid
-     * 
-     * @param string $type The param is to know if the comment is to be created or modified
-     * 
-     * @return void
-     */
-    public function comment(string $type)
-    {
-        if ($this->getSession('role') == 3) {
-            if (!empty($this->post)) {
-                $this->_modelAdmin->updateComment(new Commentaire($this->post, 'post'));
-            }
-            $donnes = $this->_modelAdmin->$type();
-            return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
-        }
-        return $this->render("/templates/error.html.twig");
-    }
-    /**
-     * Delete comment
-     * 
-     * @param integer $id  it's id comment
-     * @param string  $url the paramis here to find out in which url was doing the deletion
-     * 
-     * @return void
-     */
-    public function deleteComment(int $id,string $url)
-    {
-        if ($this->getSession('role') == 3 && !empty($id)) {
-            $this->_modelAdmin->deleteComment(new Commentaire(['id'=>$id]));
-            return $this->comment($url);
         }
         return $this->render("/templates/error.html.twig");
     }
