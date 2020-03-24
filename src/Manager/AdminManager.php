@@ -97,16 +97,4 @@ class Adminmodel extends Connectmodel
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getid()]);
     }
-    /**
-     * Update password
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function updatePassword(User $post)
-    {
-        $sql = 'UPDATE user SET mdp=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getmdp(),$post->getid()]);
-    }
 }

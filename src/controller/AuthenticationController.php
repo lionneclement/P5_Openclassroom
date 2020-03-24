@@ -67,7 +67,7 @@ class AuthentificationController extends Controller
                     (new Flash())->setFlash(['emailerror'=>'email']);
                 } elseif (password_verify($this->post['mdp'], $donnes->mdp)) {
                     $this->confsession($donnes);
-                    return $this->render("/templates/error.html.twig");
+                    header("Location:/");
                 } else {
                     (new Flash())->setFlash(['mdperror'=>'mdp']);
                 }
@@ -84,7 +84,7 @@ class AuthentificationController extends Controller
     public function logout()
     {
         session_unset();
-        return $this->render("/templates/error.html.twig");
+        header("Location:/");
     }
     /**
      * Create session
@@ -97,53 +97,5 @@ class AuthentificationController extends Controller
     {
         $this->setSession('id', $user->id);
         $this->setSession('role', $user->role_id);
-    }
-    /**
-     * Send an email to be sure the user has the email and create a session
-     * 
-     * @return void
-     */
-    public function resetPassword()
-    {
-        if (!empty($this->post)) {
-            $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
-            if (empty($donnes)) {
-                (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
-            } else {
-                $rand = $this->randomWord(10);
-                $obj = password_hash($rand, PASSWORD_DEFAULT);
-                $this->setSession('reset', $obj);
-                $text = "<html><body>
-                Voici le lien pour changer de mot de passe:
-                <a href='http://localhost/auth/resetlink/$donnes->id/$rand'
-                target='_blank'>Votre lien:</a>
-                </body></html>";
-                $headers  = 'MIME-Version: 1.0' . "\r\n";
-                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                mail($this->post['email'], 'Changement de mot de passe', $text, $headers);
-                (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
-            }
-        }
-        return $this->render('/templates/authentication/reset.html.twig');
-    }
-    /**
-     * Check if the session and the url match, if it's good reset password and delete session
-     * 
-     * @param integer $id  it's user id
-     * @param string  $url it's the url
-     * 
-     * @return void
-     */
-    public function resetLink(int $id,string $url)
-    {
-        if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
-            if (!empty($this->post)) {
-                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id], 'post');
-                $this->_modelAuth->updatePassword($entitypost);
-                $this->deleteSession('reset');
-            }
-            return $this->render('/templates/authentication/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
-        }
-        return $this->render("/templates/error.html.twig");
     }
 }

@@ -82,24 +82,4 @@ class Admincontroller extends Controller
         }
         return $this->render("/templates/error.html.twig");
     }
-     /**
-      * Update the password with the old password
-      * 
-      * @return void
-      */
-    public function updatepassword()
-    {
-        if (!empty($this->getSession('id'))) {
-            if (!empty($this->post)) {
-                $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
-                if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    $this->_modelAdmin->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
-                } else {
-                    (new Flash())->setFlash(['danger'=>'danger']);
-                }
-            }
-            return $this->render('/templates/user/updatepassword.html.twig');
-        }
-        return $this->render("/templates/error.html.twig");
-    }
 }

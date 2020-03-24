@@ -18,6 +18,7 @@ use App\Controller\Admincontroller;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
 use App\Controller\CommentController;
+use App\Controller\PasswordController;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../');
@@ -70,16 +71,6 @@ $router->map(
     }
 );
 $router->map(
-    'GET|POST', '/auth/resetpassword', function () {
-        (new AuthentificationController)->resetPassword();
-    }
-);
-$router->map(
-    'GET|POST', '/auth/resetlink/[i:id]/[a:action]', function ($id,$action) {
-        (new AuthentificationController)->resetLink($id, $action);
-    }
-);
-$router->map(
     'GET|POST', '/admin/roles', function () {
         (new Admincontroller)->roles();
     }
@@ -92,11 +83,6 @@ $router->map(
 $router->map(
     'GET|POST', '/admin/updateuser', function () {
         (new Admincontroller)->updateUser();
-    }
-);
-$router->map(
-    'GET|POST', '/admin/updatepassword', function () {
-        (new Admincontroller)->updatePassword();
     }
 );
 //Route for comment
@@ -123,6 +109,22 @@ $router->map(
 $router->map(
     'POST', '/post/addcomment', function () {
         (new CommentController)->addComment();
+    }
+);
+//Route for password
+$router->map(
+    'GET|POST', '/password/sendlink', function () {
+        (new PasswordController)->sendLinkForResetPassword();
+    }
+);
+$router->map(
+    'GET|POST', '/password/reset/[i:id]/[a:action]', function ($id,$action) {
+        (new PasswordController)->resetPassword($id, $action);
+    }
+);
+$router->map(
+    'GET|POST', '/admin/updatepassword', function () {
+        (new PasswordController)->updatePassword();
     }
 );
 
