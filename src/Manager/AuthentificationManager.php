@@ -4,21 +4,21 @@
  * 
  * PHP version 7.2.18
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  Manager
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\Model;
+namespace App\Manager;
 
-use App\Model\Connectmodel;
+use App\Manager\Connectmodel;
 use App\Entity\User;
 /**
  * Class for retrieve authentification information from the database
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  Manager
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/

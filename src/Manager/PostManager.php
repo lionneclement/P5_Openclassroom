@@ -4,24 +4,24 @@
  * 
  * PHP version 7.2.18
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  ModManagerel
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\Model;
+namespace App\Manager;
 
 use App\Entity\Article;
 use App\Entity\Commentaire;
-use App\Model\Connectmodel;
+use App\Manager\Connectmodel;
 /** 
  * The file is for retrieve post information from the database
  * 
  * PHP version 7.2.18
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  Manager
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/

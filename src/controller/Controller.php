@@ -12,9 +12,9 @@
  */
 namespace App\Controller;
 
-use App\Model\AuthentificationModel;
-use App\Model\Adminmodel;
-use App\Model\Postmodel;
+use App\Manager\AuthentificationModel;
+use App\Manager\Adminmodel;
+use App\Manager\Postmodel;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Flash\Flash;
@@ -30,7 +30,7 @@ use App\Flash\Flash;
 abstract class Controller
 {
     /**
-     * Init model and session
+     * Init manager and session
      */
     public function __construct()
     {

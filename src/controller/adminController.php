@@ -30,7 +30,7 @@ use App\Flash\Flash;
 class Admincontroller extends Controller
 {
     /**
-     * Init model and session
+     * Init manager and session
      */
     public function __construct()
     {
