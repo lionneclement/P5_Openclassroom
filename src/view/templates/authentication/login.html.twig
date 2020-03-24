@@ -1,0 +1,58 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class='pt-5 mt-5'> 
+  <div class="container">
+    {% if alert_resetpassword %}
+      <div class="alert alert-success" role="alert">
+        Votre mot de passe à étais modifier
+      </div>
+    {% endif %}
+    {% if alert_email %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un email valide
+      </div>
+    {% endif %}
+    {% if alert_mdp %}
+      <div class="alert alert-danger" role="alert">
+        Rentré un mot de passe de plus de 13 caractère
+      </div>
+    {% endif %}
+    {% if alert_mdperror %}
+      <div class="alert alert-danger" role="alert">
+        Vous avez fais une faute dans votre mot de passe
+      </div>
+    {% endif %}
+    {% if alert_emailerror %}
+      <div class="alert alert-danger" role="alert">
+        Ce compte n'existe pas
+      </div>
+    {% endif %}
+    <h1 class="text-center">Login</h1>
+    <form method="post" action="/auth/login" class="needs-validation" novalidate>
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">Email</label>
+        <input class="form-control" type="email" name="email" id="FormControlInput1" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">Mot de passe</label>
+        <input type="password" name="mdp" class="form-control" id="FormControlInput2" minlength="13" required> 
+        <div class="invalid-feedback">
+          Ce champ est obligatoire et doit comporter 13 caractères minimums.
+        </div>
+      </div>
+      <div class="col-6 text-center mt-4">
+        <button type="submit" class="btn btn-secondary">Confirmer</button>
+      </div>
+      <div class="col-6 text-center mt-4">
+        <a href="/auth/resetpassword" class="btn btn-secondary">Oublie de mot de passe</a>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,204 +1,153 @@
 <?php
-namespace App\controller;
+/** 
+ * The file is for managing connected users
+ * 
+ * PHP version 7.2.18
+ * 
+ * @category Controller
+ * @package  Controller
+ * @author   Clement <lionneclement@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://localhost/
+ */
+namespace App\Controller;
 
-use App\twig\twigenvi;
-use App\model\adminmodel;
-use App\model\postmodel;
-use App\model\entity;
+use App\Controller\Controller;
+use App\Entity\Article;
+use App\Entity\User;
+use App\Entity\Commentaire;
+use App\Flash\Flash;
 
-class admincontroller extends twigenvi
+/**
+ * Class for managing connected users
+ * 
+ * @category Controller
+ * @package  Controller
+ * @author   Clement <lionneclement@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://localhost/
+ */
+class Admincontroller extends Controller
 {
-  private $modelpost;
-  private $usercookie;
-  public function __construct()
-  {
-    parent::__construct();
-    $this->modelpost = new adminmodel;
-    if (isset($_COOKIE['id'])){
-      $this->usercookie['id'] = $_COOKIE['id'];
-      $this->usercookie['role'] = $_COOKIE['role'];
+    /**
+     * Init model and session
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-  }
-  public function register($post)
-  {
-    if(!isset($this->usercookie)){
-      if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/register.html.twig');
-      }else{
-        $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
-        $donnes = $con->fetchAll();
-        if(empty($donnes)){
-          $this->modelpost->register(new entity($post));
-          echo '<script language="javascript">alert("Votre compte vient d\'être créé, vous pouvez vous connecter !");window.location.replace("/login")</script>';
-        }else{
-          echo '<script language="javascript">alert("Votre compte existe déjà connecter vous !");window.location.replace("/login")</script>';
+    /**
+     * Role a user
+     * 
+     * @return void
+     */
+    public function roles()
+    {
+        if ($this->getSession('role') == 3) {
+            if (!empty($this->post)) {
+                $this->_modelAdmin->updateRole(new User($this->post, 'post'));
+            }
+            $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
+            return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
-      }
-    }else{
-      return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
-  }
-  public function login($post)
-  {
-    if(!isset($this->usercookie)){
-      if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/login.html.twig');
-      }else{
-        $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
-        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-        if(!empty($donnes) && password_verify($post['mdp'],$donnes['mdp'])){
-          $this->confcookie($donnes);
-          echo '<script language="javascript">alert("Vous êtes connecter !");window.location.replace("/")</script>';
-        }else{
-          echo '<script language="javascript">alert("L\'email ou le mot de passe est incorrect !");window.location.replace("/login")</script>';
+    /**
+     * Page admin
+     * 
+     * @return void
+     */
+    public function admin()
+    {
+        if ($this->getSession('role') == 3) {
+            return $this->render('/templates/user/admin.html.twig');
         }
-      }
-    }else{
-      return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
-  }
-  public function logout()
-  {
-    setcookie('id',$_COOKIE['id'],time() - 3600,'/');
-    setcookie('role',$_COOKIE['role'],time() - 3600,'/');
-    return header("LOCATION:/");
-  }
-  public function confcookie($user)
-  {
-    setcookie('id',$user['id'],time()+(60*60*24*30),'/');
-    setcookie('role',$user['role_id'],time()+(60*60*24*30),'/');
-  }
-  public function roles($post)
-  {
-    if($this->usercookie['role'] == 3){
-      if(empty($post)){
-        $con = $this->modelpost->roles(new entity(array('user_id'=>$this->usercookie['id'])));
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/user/user.html.twig',['user'=>$donnes,'access'=>$this->usercookie['role']]);
-      }else{
-        $this->modelpost->updaterole(new entity($post));
-        return header("LOCATION:/admin/roles");
-      }
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function admin()
-  {
-    if($this->usercookie['role'] == 3){
-        echo $this->twigenvi->render('/templates/user/admin.html.twig',['access'=>$this->usercookie['role']]);
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function comment($post,$type)
-  {
-    if($this->usercookie['role'] == 3){
-      if(empty($post)){
-        $con = $this->modelpost->$type();
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/user/comment.html.twig',['return'=>$type,'comment'=>$donnes,'access'=>$this->usercookie['role']]);
-      }else{
-        $this->modelpost->updatecomment(new entity($post));
-        return header("LOCATION:/admin/$type");
-      }
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function deletecomment($id,$url)
-  {
-    if($this->usercookie['role'] == 3 && !empty($id)){
-      $this->modelpost->deletecomment(new entity(array('id'=>$id)));
-      return header("LOCATION:/admin/$url");
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function deleteuser($id)
-  {
-    if($this->usercookie['role'] == 3 && !empty($id)){
-      $con = $this->modelpost->getpost(new entity(array('user_id'=>$id)));
-      $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-      foreach($donnes as $val){
-        $postmodel = new postmodel;
-        $postmodel->remove(new entity(array('article_id'=>$val['id'])));
-      }
-      $this->modelpost->deleteuser(new entity(array('id'=>$id)));
-      return header("LOCATION:/admin/roles");
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function resetpassword($post)
-  {
-    if(empty($post)){
-      echo $this->twigenvi->render('/templates/user/reset.html.twig');
-    }else{
-      $con = $this->modelpost->check(new entity(array('email'=>$post['email'])));
-      $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-      if(empty($donnes)){
-        echo '<script language="javascript">alert("L\'email est incorrect !");window.location.replace("/login")</script>';
-      }else{
-        $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-        shuffle($seed);
-        $rand = '';
-        foreach (array_rand($seed, 10) as $k) $rand .= $seed[$k];
-        $obj = password_hash($rand, PASSWORD_DEFAULT);
-        setcookie('reset',$obj,time()+(60*60),'/');
-        mail($post['email'],'Changement de mot de passe','Voici le lien pour changer de mot de passe: http://localhost/resetlink/'.$donnes['id'].'/'.$rand);
-        echo '<script language="javascript">alert("Vous allez recevoir un email.");window.location.replace("/resetpassword")</script>';
-      }
-    }
-  }
-  public function resetlink($id,$url,$post)
-  {
-    if(isset($_COOKIE['reset']) && password_verify($url,$_COOKIE['reset'])){
-      if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/resetpassword.html.twig',['url'=>$url,'id'=>$id,'access'=>$this->usercookie['role']]);
-      }else{
-        $password = new entity(array('mdp'=>$post['newpassword']));
-        $this->modelpost->resetpasswordwithid($password,$id);
-        setcookie('reset','',-1,'/');
-        return header("LOCATION:/login");
-      }
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function updateuser($post)
-  {
-    if(isset($this->usercookie['id'])){
-      if(empty($post)){
-        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
-        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/user/updateuser.html.twig',['user'=>$donnes,'access'=>$this->usercookie['role']]);
-      }else{
-        $this->modelpost->updateuser(new entity(array('nom'=>$post['nom'],'prenom'=>$post['prenom'],'email'=>$post['email'],'id'=>$this->usercookie['id'])));
-        return header("LOCATION:/updateuser");
-      }
-    }else{
-      return header("LOCATION:/");
-    }
-  }
-  public function updatepassword($post)
-  {
-    if(isset($this->usercookie['id'])){
-      if(empty($post)){
-        echo $this->twigenvi->render('/templates/user/updatepassword.html.twig',['access'=>$this->usercookie['role']]);
-      }else{
-        $con = $this->modelpost->getuser(new entity(array('id'=>$this->usercookie['id'])));
-        $donnes = $con->fetch(\PDO::FETCH_ASSOC);
-        if(password_verify($post['oldpassword'],$donnes['mdp'])){
-          var_dump(array('mdp'=>$post['oldpassword'],'id'=>$this->usercookie['id']));
-          $this->modelpost->updatepassword(new entity(array('mdp'=>$post['newpassword'],'id'=>$this->usercookie['id'])));
-          echo '<script language="javascript">alert("Votre mot de passe à bien été modifier");window.location.replace("/updateuser")</script>';
-        }else{
-          echo '<script language="javascript">alert("Erreur dans le mot de passe");window.location.replace("/updateuser")</script>';
+    /**
+     * Show comment valid and comment invalid
+     * 
+     * @param string $type The param is to know if the comment is to be created or modified
+     * 
+     * @return void
+     */
+    public function comment(string $type)
+    {
+        if ($this->getSession('role') == 3) {
+            if (!empty($this->post)) {
+                $this->_modelAdmin->updateComment(new Commentaire($this->post, 'post'));
+            }
+            $donnes = $this->_modelAdmin->$type();
+            return $this->render('/templates/user/comment.html.twig', ['return'=>$type,'comment'=>$donnes]);
         }
-      }
-    }else{
-      return header("LOCATION:/");
+        return $this->render("/templates/error.html.twig");
     }
-  }
+    /**
+     * Delete comment
+     * 
+     * @param integer $id  it's id comment
+     * @param string  $url the paramis here to find out in which url was doing the deletion
+     * 
+     * @return void
+     */
+    public function deleteComment(int $id,string $url)
+    {
+        if ($this->getSession('role') == 3 && !empty($id)) {
+            $this->_modelAdmin->deleteComment(new Commentaire(['id'=>$id]));
+            return $this->comment($url);
+        }
+        return $this->render("/templates/error.html.twig");
+    }
+    /**
+     * Delete user
+     * 
+     * @param integer $id it's user data
+     * 
+     * @return void
+     */
+    public function deleteUser(int $id)
+    {
+        if ($this->getSession('role') == 3 && !empty($id)) {
+            $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
+            return $this->roles();
+        }
+        return $this->render("/templates/error.html.twig");
+    }
+    /**
+     * Update user (name,email)
+     * 
+     * @return void
+     */
+    public function updateUser()
+    {
+        if (!empty($this->getSession('id'))) {
+            if (!empty($this->post)) {
+                $this->post['id']=$this->getSession('id');
+                $this->_modelAdmin->updateUser(new User(($this->post), 'post'));
+            }
+            $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
+            return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
+        }
+        return $this->render("/templates/error.html.twig");
+    }
+     /**
+      * Update the password with the old password
+      * 
+      * @return void
+      */
+    public function updatepassword()
+    {
+        if (!empty($this->getSession('id'))) {
+            if (!empty($this->post)) {
+                $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
+                if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
+                    $this->_modelAdmin->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
+                } else {
+                    (new Flash())->setFlash(['danger'=>'danger']);
+                }
+            }
+            return $this->render('/templates/user/updatepassword.html.twig');
+        }
+        return $this->render("/templates/error.html.twig");
+    }
 }

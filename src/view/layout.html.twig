@@ -30,27 +30,27 @@
               <a class="nav-link" href="/">Accueil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posts">Articles</a>
+              <a class="nav-link" href="/post/findAll">Articles</a>
             </li>
-            {% if not access %}
+            {% if not user_access %}
             <li class="nav-item">
-              <a class="nav-link" href="/login">Se connecter</a>
+              <a class="nav-link" href="/auth/login">Se connecter</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/register">S'inscrire</a>
+              <a class="nav-link" href="/auth/register">S'inscrire</a>
             </li>
             {% endif %}
-            {% if access %}
-              {% if access == 3 %}
+            {% if user_access %}
+              {% if user_access == 3 %}
                 <li class="nav-item">
                 <a class="nav-link" href="/admin">Admin</a>
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a class="nav-link" href="/updateuser">Profil</a>
+                <a class="nav-link" href="/admin/updateuser">Profil</a>
               </li>
               <li class="nav-item">
-              <a class="nav-link" href="/logout">Se deconnecter</a>
+              <a class="nav-link" href="/auth/logout">Se deconnecter</a>
               </li>
             {% endif %}
           </ul>

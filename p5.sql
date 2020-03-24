@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 09 mars 2020 à 10:56
+-- Généré le :  jeu. 12 mars 2020 à 22:16
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `auteur` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `article_id` (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `role`
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 INSERT INTO `role` (`id`, `nom`) VALUES
 (1, 'utilisateur'),
-(2, 'utilisateur valide'),
+(2, 'editeur'),
 (3, 'admin');
 
 -- --------------------------------------------------------
@@ -98,14 +98,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`id`, `nom`, `prenom`, `email`, `mdp`, `role_id`) VALUES
-(9, 'admin', 'admin', 'admin@gmail.com', '$2y$10$GY538Z2JBcCMCudx26fr2efUZz6Nk6n9PvGPxmLYdio8NktxlHkvG', 3);
+(1, 'admin', 'admin', 'admin@gmail.com', '$2y$10$T8vTqe8uKNsrZRbHzr5y7OTmgUu28ehsLK8A81wxR7PeghFWGD7Ry', 3);
 
 --
 -- Contraintes pour les tables déchargées

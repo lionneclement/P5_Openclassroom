@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class='container text-center pt-5'>
+      {% if alert_success %}
+        <div class="alert alert-success mt-4" role="alert">
+          L'utilisateur à étais modifier.
+        </div>
+      {% endif %}
       {% if user is empty %}
           <div class="alert alert-danger pt-5 mt-3" role="alert">
             <h4 class="alert-heading">Aucun utilisateur !</h4>
@@ -10,20 +15,23 @@
         {% endif %}
       <div class="row">
         {% for n in user %}
-          <div class="col-sm-6 pt-5">
+          <div class="col-sm-6 pt-3">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Nom: {{n.nom}}</h5>
                 <p class="card-text">Prenom: {{n.prenom}}</p>
                 <p class="card-text">Email: {{n.email}}</p>
-
                 <form method="post" action="roles">
-                  <label for="FormControlInput1">Role_id :</label>
-                  <input type="number" name="role_id" class="form-control" id="FormControlInput1" value='{{n.role_id}}' min=1 max=3>
+                  <label for="FormControlInput1">Role :</label>
+                  <select id="FormControlInput1"  name="roleId" class="form-control" required>
+                    <option value='1' {% if n.role_id == 1 %}selected{% endif %}>Utilisateur</option>
+                    <option value='2' {% if n.role_id == 2 %}selected{% endif %}>Editeur</option>
+                    <option value='3' {% if n.role_id == 3 %}selected{% endif %}>Admin</option>
+                  </select>
                   <input type="hidden" name="id" value="{{n.id}}">
                   <br>
                   <button type="submit" class='btn btn-secondary'>Modifier</button>
-                  <a href="deleteuser/{{n.id}}" class="btn btn-secondary">Supprimer</a>
+                  <a href="/admin/deleteuser/{{n.id}}" class="btn btn-secondary">Supprimer</a>
                 </form>
               </div>
             </div>

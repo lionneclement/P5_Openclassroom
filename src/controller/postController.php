@@ -1,111 +1,144 @@
 <?php
-namespace App\controller;
+/** 
+ * The file is for managing post
+ * 
+ * PHP version 7.2.18
+ * 
+ * @category Controller
+ * @package  Controller
+ * @author   Clement <lionneclement@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://localhost/
+ */
+namespace App\Controller;
 
-use App\twig\twigenvi;
-use App\model\postmodel;
-use App\model\entity;
+use App\Controller\Controller;
+use App\Entity\Contact;
+use App\Entity\Article;
+use App\Entity\Commentaire;
 
-class postcontroller extends twigenvi
+/**
+ * Class for managing post
+ * 
+ * @category Controller
+ * @package  Controller
+ * @author   Clement <lionneclement@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://localhost/
+ */
+class Postcontroller extends Controller
 {
-  private $modelpost;
-  private $usercookie;
-
-  public function __construct()
-  {
-    parent::__construct();
-    $this->modelpost = new postmodel;
-    if (isset($_COOKIE['id'])){
-      $this->usercookie['id'] = $_COOKIE['id'];
-      $this->usercookie['role'] = $_COOKIE['role'];
+    /**
+     * Init controller
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-  }
-  public function home($post)
-  {
-    if(empty($post)){
-      echo $this->twigenvi->render('/templates/home.html.twig',['access'=>$this->usercookie['role']]);
-    }else{
-      $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
-      $resp = $recaptcha->setExpectedHostname('localhost')
-                        ->verify($post['g-recaptcha-response'],$_SERVER['REMOTE_ADDR']);
-      if ($resp->isSuccess()) {
-        mail('nobody@gmail.com',$post['prenom'].$post['nom'],$post['message'],'From:'.$post['email']);
-        echo '<script language="javascript">alert("Votre message viens d\'être envoyer !");window.location.replace("/")</script>';
-      }else {
-        echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/")</script>';
-        $error = $resp->getErrorCodes();
-        throw new \Exception($error);
-      }
-    } 
-  }
-  public function update($id,$post)
-  {
-    if(isset($this->usercookie) && $this->usercookie['role'] >= 2){
-      if(empty($post)){
-        $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
-        $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-        echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'/updatepost/'.$id.'','donnes'=>$donnes,'access'=>$this->usercookie['role']]);
-      }else {
-        $post['id']=$id;
-        $this->modelpost->update(new entity($post));
-        return header("LOCATION:/posts");
-      }
-    }else{
-      return header("LOCATION:/");
+    /**
+     * Home page
+     * 
+     * @return void
+     */
+    public function home()
+    {
+        if (!empty($this->post)) {
+            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
+                unset($this->post['g-recaptcha-response']);
+                $checking = (new Contact($this->post, 'post'));
+                if (empty($checking->checking)) {
+                    mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
+                }
+            }
+        }
+        return $this->render('/templates/home.html.twig');
     }
-  }
-  public function add($post)
-  {
-    if(isset($this->usercookie) && $this->usercookie['role'] == 3){
-      if(empty($post)){
-        echo $this->twigenvi->render('/templates/post/postform.html.twig',['url'=>'addpost','access'=>$this->usercookie['role']]);
-      }else{
-        $this->modelpost->add(new entity($post));
-        return header("LOCATION:/posts");
-      }
+    /**
+     * Update and add post
+     * 
+     * @param integer $id it's id post
+     * 
+     * @return void
+     */
+    public function addUpdate(int $id=null)
+    {   
+        $donnesUser = $this->_modelPost->findAllUser();
+        if ($this->getSession('role') == 3 && $id==null) {
+            if (!empty($this->post)) {
+                $entitypost=new Article($this->post, 'post');
+                $this->_modelPost->add($entitypost);
+            }
+            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
+        } if ($this->getSession('role') >= 2) {
+            if (!empty($this->post)) {
+                $this->post['id']=$id;
+                $this->_modelPost->update(new Article($this->post, 'post'));
+            }
+            $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
+            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
+        }
+        return $this->render("/templates/error.html.twig");
     }
-    else{
-      return header("LOCATION:/");
+    /**
+     * Update post
+     * 
+     * @param int $id it's id post
+     * 
+     * @return void
+     */
+    public function onePost(int $id)
+    {
+        $post = $this->_modelPost->post(new Article(['id'=>$id]));
+        $comment = $this->_modelPost->getAllComment(new Article(['id'=>$id]));
+        return $this->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
     }
-  }
-  public function onepost($id)
-  {
-    $con = $this->modelpost->post(new entity(array('article_id'=>$id)));
-    $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-    $con1 = $this->modelpost->allcomment(new entity(array('article_id'=>$id)));
-    $donnes1 = $con1->fetchAll(\PDO::FETCH_ASSOC);
-    echo $this->twigenvi->render('/templates/post/onepost.html.twig',['nom'=>$donnes,'comment'=>$donnes1,'access'=>$this->usercookie['role']]);
-  }
-  public function allposts()
-  {
-    $con = $this->modelpost->posts();
-    $donnes = $con->fetchAll(\PDO::FETCH_ASSOC);
-    echo $this->twigenvi->render('/templates/post/blogposts.html.twig',['nom'=>$donnes,'access'=>$this->usercookie['role']]);
-  }
-  public function remove($id)
-  {
-    if(isset($this->usercookie) && $this->usercookie['role'] == 3){
-      $this->modelpost->remove(new entity(array('article_id'=>$id)));
-      return header("LOCATION:/posts");
-    }else{
-      return header("LOCATION:/");
+    /**
+     * Find all post
+     * 
+     * @return void
+     */
+    public function allPosts()
+    {
+        $donnes = $this->_modelPost->posts();
+        return $this->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
     }
-  }
-  public function comment($post)
-  {
-    if(isset($this->usercookie)){
-      $recaptcha = new \ReCaptcha\ReCaptcha('6Lcchd8UAAAAANvIG5v94AgBnvVlY_nCf0jIdR14');
-      $resp = $recaptcha->setExpectedHostname('localhost')
-                        ->verify($post['g-recaptcha-response'],$_SERVER['REMOTE_ADDR']);
-      if ($resp->isSuccess()) {
-        $this->modelpost->addcomment(new entity(array('message'=>$post['contenu'],'user_id'=>$this->usercookie['id'],'article_id'=>$post['id'])));
-        echo '<script language="javascript">alert("Votre message viens d\'être envoyer et doit être valider pas les administrateurs!");window.location.replace("/post/'.$post['id'].'")</script>';
-      }else {
-        echo '<script language="javascript">alert("Vous devez remplir le reCAPTCHA!");window.location.replace("/post/'.$post['id'].'")</script>';
-        $error = $resp->getErrorCodes();
-        throw new \Exception($error);
-      }
-    }else{
-      return header("LOCATION:/");
+    /**
+     * Remove one post
+     * 
+     * @param int $id it's id post
+     * 
+     * @return void
+     */
+    public function remove(int $id)
+    {
+        if ($this->getSession('role') == 3) {
+            $this->_modelPost->remove(new Article(['id'=>$id]));
+        }
+        return $this->allposts();
     }
-  }
+    /**
+     * Add comment in one post
+     * 
+     * @return void
+     */
+    public function commentPost()
+    {
+        if (!empty($this->getSession('id'))) {
+            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
+                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
+                $this->_modelPost->addComment($entitypost);
+                return $this->onepost($this->post['id']);
+            }
+            return $this->render("/templates/error.html.twig");
+        }
+    }
+    /**
+     * Return error 404 page
+     * 
+     * @return void
+     */
+    public function error404()
+    {
+        return $this->render("/templates/error.html.twig");
+    }
 }
