@@ -12,7 +12,9 @@
  * @link     http://localhost/
  */
 namespace App\Flash;
+
 use App\Controller\Controller;
+use App\Tools\Session;
 /** 
  * Class for managing flash notification
  * 
@@ -37,9 +39,9 @@ class Flash extends Controller
     public function setFlash(array $array)
     {
         if (empty($array)) {
-            $this->setSession('alert', ['success'=>'success']);
+            Session::setSession('alert', ['success'=>'success']);
         } else {
-            $this->setSession('alert', $array);
+            Session::setSession('alert', $array);
         }
     }
     /**
@@ -49,9 +51,9 @@ class Flash extends Controller
      */
     public function getFlash()
     {
-        if (!empty($this->getSession('alert'))) {
-            $flash=$this->getSession('alert');
-            $this->deleteSession('alert');   
+        if (!empty(Session::getSession('alert'))) {
+            $flash=Session::getSession('alert');
+            Session::deleteSession('alert');   
         }
         return $flash;
     }

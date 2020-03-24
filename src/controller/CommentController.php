@@ -15,6 +15,7 @@ namespace App\Controller;
 use App\Controller\Controller;
 use App\Entity\Commentaire;
 use App\Manager\CommentManager;
+use App\Tools\Session;
 
 /**
  * Class for CRUD comment
@@ -42,7 +43,7 @@ class CommentController extends Controller
      */
     public function findAllComment()
     {
-        if ($this->getSession('role') == 3) {
+        if (Session::getSession('role') == 3) {
             $donnes = (new CommentManager)->findAllComment();
             return $this->render('/templates/comment/comment.html.twig', ['url'=>'allcomment','comment'=>$donnes]);
         }
@@ -55,7 +56,7 @@ class CommentController extends Controller
      */
     public function findAllInvalideComment()
     {
-        if ($this->getSession('role') == 3) {
+        if (Session::getSession('role') == 3) {
             $donnes = (new CommentManager)->findAllInvalideComment();
             return $this->render('/templates/comment/comment.html.twig', ['url'=>'allinvalidecomment','comment'=>$donnes]);
         }
@@ -71,7 +72,7 @@ class CommentController extends Controller
      */
     public function updateComment(int $id,string $url)
     {
-        if ($this->getSession('role') == 3 && !empty($id)) {
+        if (Session::getSession('role') == 3 && !empty($id)) {
             (new CommentManager)->updateComment(new Commentaire($this->post, 'post'));
             header("Location: /admin/$url");
         }
@@ -87,7 +88,7 @@ class CommentController extends Controller
      */
     public function removeComment(int $id,string $url)
     {
-        if ($this->getSession('role') == 3 && !empty($id)) {
+        if (Session::getSession('role') == 3 && !empty($id)) {
             (new CommentManager)->removeComment(new Commentaire(['id'=>$id]));
             header("Location: /admin/$url");
         }
@@ -100,9 +101,9 @@ class CommentController extends Controller
      */
     public function addComment()
     {
-        if (!empty($this->getSession('id'))) {
+        if (!empty(Session::getSession('id'))) {
             if ($this->recaptcha($this->post['g-recaptcha-response'])) {
-                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>$this->getSession('id'),'articleId'=>$this->post['id']], 'post');
+                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>Session::getSession('id'),'articleId'=>$this->post['id']], 'post');
                 (new CommentManager)->addComment($entitypost);
                 header("Location: /post/findOne/".$this->post['id']."#addcomment");
             }

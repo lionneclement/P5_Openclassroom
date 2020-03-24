@@ -14,7 +14,7 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Entity\User;
-use App\Flash\Flash;
+use App\Tools\Session;
 
 /**
  * Class for managing connected users
@@ -41,11 +41,11 @@ class Admincontroller extends Controller
      */
     public function roles()
     {
-        if ($this->getSession('role') == 3) {
+        if (Session::getSession('role') == 3) {
             if (!empty($this->post)) {
                 $this->_modelAdmin->updateRole(new User($this->post, 'post'));
             }
-            $donnes = $this->_modelAdmin->roles(new User(['id'=>$this->getSession('id')]));
+            $donnes = $this->_modelAdmin->roles(new User(['id'=>Session::getSession('id')]));
             return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
         return $this->render("/templates/error.html.twig");
@@ -59,7 +59,7 @@ class Admincontroller extends Controller
      */
     public function deleteUser(int $id)
     {
-        if ($this->getSession('role') == 3 && !empty($id)) {
+        if (Session::getSession('role') == 3 && !empty($id)) {
             $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
             return $this->roles();
         }
@@ -72,12 +72,12 @@ class Admincontroller extends Controller
      */
     public function updateUser()
     {
-        if (!empty($this->getSession('id'))) {
+        if (!empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $this->post['id']=$this->getSession('id');
+                $this->post['id']=Session::getSession('id');
                 $this->_modelAdmin->updateUser(new User(($this->post), 'post'));
             }
-            $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
+            $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
             return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
         return $this->render("/templates/error.html.twig");

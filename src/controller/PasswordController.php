@@ -16,6 +16,7 @@ use App\Controller\Controller;
 use App\Entity\User;
 use App\Manager\PasswordManager;
 use App\Flash\Flash;
+use App\Tools\Session;
 /**
  * Class is for CRUD password
  * 
@@ -41,11 +42,11 @@ class PasswordController extends Controller
       */
     public function updatePassword()
     {
-        if (!empty($this->getSession('id'))) {
+        if (!empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAdmin->getUser(new User(['id'=>$this->getSession('id')]));
+                $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
                 if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    (new PasswordManager)->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>$this->getSession('id')], 'post'));
+                    (new PasswordManager)->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>Session::getSession('id')], 'post'));
                 } else {
                     (new Flash())->setFlash(['danger'=>'danger']);
                 }
@@ -68,7 +69,7 @@ class PasswordController extends Controller
             } else {
                 $rand = $this->randomWord(10);
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
-                $this->setSession('reset', $obj);
+                Session::setSession('reset', $obj);
                 $text = "<html><body>
                 Voici le lien pour changer de mot de passe:
                 <a href='http://localhost/password/reset/$donnes->id/$rand'
@@ -92,11 +93,11 @@ class PasswordController extends Controller
      */
     public function resetPassword(int $id,string $url)
     {
-        if (!empty($this->getSession('reset')) && password_verify($url, $this->getSession('reset'))) {
+        if (!empty(Session::getSession('reset')) && password_verify($url, Session::getSession('reset'))) {
             if (!empty($this->post)) {
                 $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id], 'post');
                 (new PasswordManager)->updatePassword($entitypost);
-                $this->deleteSession('reset');
+                Session::deleteSession('reset');
                 header("Location:/auth/login");
             }
             return $this->render('/templates/password/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);

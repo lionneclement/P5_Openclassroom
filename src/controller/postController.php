@@ -16,6 +16,7 @@ use App\Controller\Controller;
 use App\Entity\Contact;
 use App\Entity\Article;
 use App\Manager\CommentManager;
+use App\Tools\Session;
 
 /**
  * Class for managing post
@@ -63,13 +64,13 @@ class Postcontroller extends Controller
     public function addUpdate(int $id=null)
     {   
         $donnesUser = $this->_modelPost->findAllUser();
-        if ($this->getSession('role') == 3 && $id==null) {
+        if (Session::getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
                 $entitypost=new Article($this->post, 'post');
                 $this->_modelPost->add($entitypost);
             }
-            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$this->getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
-        } if ($this->getSession('role') >= 2) {
+            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
+        } if (Session::getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
                 $this->_modelPost->update(new Article($this->post, 'post'));
@@ -111,7 +112,7 @@ class Postcontroller extends Controller
      */
     public function remove(int $id)
     {
-        if ($this->getSession('role') == 3) {
+        if (Session::getSession('role') == 3) {
             $this->_modelPost->remove(new Article(['id'=>$id]));
         }
         return $this->allposts();

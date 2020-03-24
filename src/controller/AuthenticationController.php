@@ -15,6 +15,7 @@ namespace App\Controller;
 use App\Controller\Controller;
 use App\Entity\User;
 use App\Flash\Flash;
+use App\Tools\Session;
 /**
  * Class for authentification
  * 
@@ -40,7 +41,7 @@ class AuthentificationController extends Controller
      */
     public function register()
     {
-        if (empty($this->getSession('id'))) {
+        if (empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
                 $donnes = $this->_modelAuth->check(new User($this->post));
                 if (empty($donnes)) {
@@ -60,13 +61,14 @@ class AuthentificationController extends Controller
      */
     public function login()
     {
-        if (empty($this->getSession('id'))) {
+        if (empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
                 $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
                 if (empty($donnes)) {
                     (new Flash())->setFlash(['emailerror'=>'email']);
                 } elseif (password_verify($this->post['mdp'], $donnes->mdp)) {
-                    $this->confsession($donnes);
+                    Session::setSession('id', $donnes->id);
+                    Session::setSession('role', $donnes->role_id);
                     header("Location:/");
                 } else {
                     (new Flash())->setFlash(['mdperror'=>'mdp']);
@@ -83,19 +85,7 @@ class AuthentificationController extends Controller
      */
     public function logout()
     {
-        session_unset();
+        Session::deleteAllSession();
         header("Location:/");
-    }
-    /**
-     * Create session
-     * 
-     * @param array $user it's user id and user role
-     * 
-     * @return void
-     */
-    public function confSession(object $user)
-    {
-        $this->setSession('id', $user->id);
-        $this->setSession('role', $user->role_id);
     }
 }

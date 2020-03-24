@@ -18,6 +18,7 @@ use App\Manager\Postmodel;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Flash\Flash;
+use App\Tools\Session;
 /**
  * Class for managing all controller file
  * 
@@ -58,13 +59,13 @@ abstract class Controller
      */
     public function twigFlash()
     {
-        if (!empty($this->getSession('alert'))) {
+        if (!empty(Session::getSession('alert'))) {
             $alert = (new Flash())->getFlash();
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
         }
-        $sessionrole = $this->getSession('role');
+        $sessionrole = Session::getSession('role');
         if (!empty($sessionrole)) {
             $this->twigenvi->addGlobal('user_access', $sessionrole);
         }
@@ -114,43 +115,6 @@ abstract class Controller
         if ($this->post !== null) {
             $this->post = array_filter($this->post, 'strlen');
         }
-    }
-    /**
-     * Setter session
-     *
-     * @param string           $key   The key
-     * @param array|string|int $value The value
-     * 
-     * @return null
-     */
-    public function setSession(string $key, $value)
-    {
-        $_SESSION[$key]=$value;
-    }
-    /**
-     * Getter session
-     *
-     * @param string $key The key
-     * 
-     * @return null|array
-     */
-    public function getSession(string $key)
-    {
-        if (!empty($_SESSION[$key])) {
-            return $_SESSION[$key];
-        }
-        return null;   
-    }
-    /**
-     * Delete session
-     *
-     * @param string $key The key
-     * 
-     * @return null
-     */
-    public function deleteSession(string $key)
-    {
-        unset($_SESSION[$key]);
     }
     /**
      * Setup serverADDR
