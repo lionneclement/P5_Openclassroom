@@ -4,8 +4,8 @@
  * 
  * PHP version 7.2.18
  * 
- * @category Controller
- * @package  Controller
+ * @category Tools
+ * @package  Tools
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
@@ -15,8 +15,8 @@ namespace App\Tools;
 /**
  * Class for CRUD session
  * 
- * @category Controller
- * @package  Controller
+ * @category Tools
+ * @package  Tools
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/

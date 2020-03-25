@@ -15,10 +15,9 @@ namespace App\Controller;
 use App\Manager\AuthentificationModel;
 use App\Manager\Adminmodel;
 use App\Manager\Postmodel;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use App\Flash\Flash;
 use App\Tools\Session;
+use App\Tools\Twig;
 /**
  * Class for managing all controller file
  * 
@@ -31,26 +30,16 @@ use App\Tools\Session;
 abstract class Controller
 {
     /**
-     * Init manager and session
+     * Init manager
      */
     public function __construct()
     {
+        $this->twig = new Twig();
         $this->_modelPost = new Postmodel;
         $this->_modelAdmin = new Adminmodel;
         $this->_modelAuth = new AuthentificationModel;
         $this->superGlobal();
-        $this->twigEnvi();
         $this->filterPost();
-    }
-    /**
-     * Init twig
-     *
-     * @return void
-     */
-    public function twigEnvi()
-    {
-        $loader = new FilesystemLoader('../../src/view');
-        $this->twigenvi = new Environment($loader);
     }
     /**
      * AddGlobal in twig
@@ -64,27 +53,6 @@ abstract class Controller
             foreach ($alert as $key=>$value) {
                 $this->twigenvi->addGlobal('alert_'.$key, $value);
             }
-        }
-        $sessionrole = Session::getSession('role');
-        if (!empty($sessionrole)) {
-            $this->twigenvi->addGlobal('user_access', $sessionrole);
-        }
-    }
-    /**
-     * Render the twig file with the parameters
-     *
-     * @param string $twigFile   The twig file
-     * @param array  $parameters The parameters
-     *
-     * @return void
-     */
-    public function render(string $twigFile, array $parameters = [])
-    {
-        $this->twigFlash();
-        try {
-            print_r($this->twigenvi->render($twigFile, $parameters));
-        } catch (\Exception $e) {
-            return $e;
         }
     }
     /**

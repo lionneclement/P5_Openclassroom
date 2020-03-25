@@ -35,20 +35,20 @@ class Admincontroller extends Controller
         parent::__construct();
     }
     /**
-     * Role a user
+     * Find all user
      * 
      * @return void
      */
-    public function roles()
+    public function findAllUser()
     {
         if (Session::getSession('role') == 3) {
             if (!empty($this->post)) {
                 $this->_modelAdmin->updateRole(new User($this->post, 'post'));
             }
             $donnes = $this->_modelAdmin->roles(new User(['id'=>Session::getSession('id')]));
-            return $this->render('/templates/user/user.html.twig', ['user'=>$donnes]);
+            return $this->twig->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Delete user
@@ -61,9 +61,9 @@ class Admincontroller extends Controller
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
             $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
-            return $this->roles();
+            return $this->findAllUser();
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Update user (name,email)
@@ -78,8 +78,8 @@ class Admincontroller extends Controller
                 $this->_modelAdmin->updateUser(new User(($this->post), 'post'));
             }
             $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
-            return $this->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
+            return $this->twig->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
 }

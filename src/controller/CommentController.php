@@ -45,9 +45,9 @@ class CommentController extends Controller
     {
         if (Session::getSession('role') == 3) {
             $donnes = (new CommentManager)->findAllComment();
-            return $this->render('/templates/comment/comment.html.twig', ['url'=>'allcomment','comment'=>$donnes]);
+            return $this->twig->render('/templates/comment/comment.html.twig', ['url'=>'allcomment','comment'=>$donnes]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Find all invalide comment
@@ -58,9 +58,9 @@ class CommentController extends Controller
     {
         if (Session::getSession('role') == 3) {
             $donnes = (new CommentManager)->findAllInvalideComment();
-            return $this->render('/templates/comment/comment.html.twig', ['url'=>'allinvalidecomment','comment'=>$donnes]);
+            return $this->twig->render('/templates/comment/comment.html.twig', ['url'=>'allinvalidecomment','comment'=>$donnes]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Update comment
@@ -76,7 +76,7 @@ class CommentController extends Controller
             (new CommentManager)->updateComment(new Commentaire($this->post, 'post'));
             header("Location: /admin/$url");
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Remove comment
@@ -92,7 +92,7 @@ class CommentController extends Controller
             (new CommentManager)->removeComment(new Commentaire(['id'=>$id]));
             header("Location: /admin/$url");
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Add comment in contact form
@@ -107,7 +107,7 @@ class CommentController extends Controller
                 (new CommentManager)->addComment($entitypost);
                 header("Location: /post/findOne/".$this->post['id']."#addcomment");
             }
-            return $this->render("/templates/error.html.twig");
+            return $this->twig->render("/templates/error.html.twig");
         }
     }
 }

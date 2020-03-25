@@ -52,7 +52,7 @@ class Postcontroller extends Controller
                 }
             }
         }
-        return $this->render('/templates/home.html.twig');
+        return $this->twig->render('/templates/home.html.twig');
     }
     /**
      * Update and add post
@@ -69,16 +69,16 @@ class Postcontroller extends Controller
                 $entitypost=new Article($this->post, 'post');
                 $this->_modelPost->add($entitypost);
             }
-            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
+            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
         } if (Session::getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
                 $this->_modelPost->update(new Article($this->post, 'post'));
             }
             $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
-            return $this->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
+            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * One post
@@ -91,7 +91,7 @@ class Postcontroller extends Controller
     {
         $post = $this->_modelPost->post(new Article(['id'=>$id]));
         $comment = (new CommentManager)->findAllArticleComment(new Article(['id'=>$id]));
-        return $this->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
+        return $this->twig->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
     }
     /**
      * Find all post
@@ -101,7 +101,7 @@ class Postcontroller extends Controller
     public function allPosts()
     {
         $donnes = $this->_modelPost->posts();
-        return $this->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
+        return $this->twig->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
     }
     /**
      * Remove one post
@@ -124,6 +124,6 @@ class Postcontroller extends Controller
      */
     public function error404()
     {
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
 }

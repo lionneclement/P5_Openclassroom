@@ -51,9 +51,9 @@ class PasswordController extends Controller
                     (new Flash())->setFlash(['danger'=>'danger']);
                 }
             }
-            return $this->render('/templates/password/updatepassword.html.twig');
+            return $this->twig->render('/templates/password/updatepassword.html.twig');
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Send an email to be sure the user has the email and create a session
@@ -81,7 +81,7 @@ class PasswordController extends Controller
                 (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
             }
         }
-        return $this->render('/templates/password/sendlink.html.twig');
+        return $this->twig->render('/templates/password/sendlink.html.twig');
     }
     /**
      * Check if session and the url match, if it's good reset password and delete session
@@ -100,8 +100,8 @@ class PasswordController extends Controller
                 Session::deleteSession('reset');
                 header("Location:/auth/login");
             }
-            return $this->render('/templates/password/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
+            return $this->twig->render('/templates/password/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
 }

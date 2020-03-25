@@ -72,7 +72,7 @@ $router->map(
 );
 $router->map(
     'GET|POST', '/admin/roles', function () {
-        (new Admincontroller)->roles();
+        (new Admincontroller)->findAllUser();
     }
 );
 $router->map(

@@ -50,9 +50,9 @@ class AuthentificationController extends Controller
                     (new Flash())->setFlash(['already'=>'already']);
                 }
             }
-            return $this->render('/templates/authentication/register.html.twig');
+            return $this->twig->render('/templates/authentication/register.html.twig');
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Login a user
@@ -74,9 +74,9 @@ class AuthentificationController extends Controller
                     (new Flash())->setFlash(['mdperror'=>'mdp']);
                 }
             }
-            return $this->render('/templates/authentication/login.html.twig');
+            return $this->twig->render('/templates/authentication/login.html.twig');
         }
-        return $this->render("/templates/error.html.twig");
+        return $this->twig->render("/templates/error.html.twig");
     }
     /**
      * Logout a user
