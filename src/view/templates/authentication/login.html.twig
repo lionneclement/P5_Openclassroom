@@ -13,12 +13,12 @@
         Rentré un email valide
       </div>
     {% endif %}
-    {% if alert_mdp %}
+    {% if password %}
       <div class="alert alert-danger" role="alert">
         Rentré un mot de passe de plus de 13 caractère
       </div>
     {% endif %}
-    {% if alert_mdperror %}
+    {% if alert_passworderror %}
       <div class="alert alert-danger" role="alert">
         Vous avez fais une faute dans votre mot de passe
       </div>
@@ -40,7 +40,7 @@
       </div>
       <div class="col-6">
         <label for="FormControlInput2">Mot de passe</label>
-        <input type="password" name="mdp" class="form-control" id="FormControlInput2" minlength="13" required> 
+        <input type="password" name="password" class="form-control" id="FormControlInput2" minlength="13" required> 
         <div class="invalid-feedback">
           Ce champ est obligatoire et doit comporter 13 caractères minimums.
         </div>

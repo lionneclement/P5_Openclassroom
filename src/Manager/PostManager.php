@@ -12,8 +12,7 @@
  */
 namespace App\Manager;
 
-use App\Entity\Article;
-use App\Entity\Commentaire;
+use App\Entity\Post;
 use App\Manager\Connectmodel;
 /** 
  * The file is for retrieve post information from the database
@@ -35,7 +34,7 @@ class Postmodel extends Connectmodel
      */
     public function posts()
     {
-        $sql = $this->bdd->query('SELECT * FROM article ORDER BY date DESC');
+        $sql = $this->bdd->query('SELECT * FROM post ORDER BY date DESC');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -45,11 +44,11 @@ class Postmodel extends Connectmodel
      * 
      * @return object
      */
-    public function post(Article $post)
+    public function post(Post $post)
     {
-        $sql = 'SELECT article.*, user.nom FROM article
+        $sql = 'SELECT post.*, user.lastName FROM post
         INNER JOIN user ON 
-        article.user_id=user.id AND article.id=?';
+        post.userId=user.id AND post.id=?';
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getId()]);
         return $dbb->fetch(\PDO::FETCH_OBJ);
@@ -61,12 +60,12 @@ class Postmodel extends Connectmodel
      * 
      * @return null
      */
-    public function add(Article $post)
+    public function add(Post $post)
     {
-        $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id)
+        $sql = 'INSERT INTO post (id, title, extract, content, date, userId)
         VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getTitre(),$post->getChapo(),$post->getContenu(),$post->getUserId()]);
+        $dbb->execute([$post->getTitle(),$post->getExtract(),$post->getContent(),$post->getUserId()]);
     }
     /**
      * Update post
@@ -75,11 +74,11 @@ class Postmodel extends Connectmodel
      * 
      * @return null
      */
-    public function update(Article $post)
+    public function update(Post $post)
     {
-        $sql = 'UPDATE article SET titre=?,chapo=?,contenu=?,date=CURRENT_TIMESTAMP,user_id=? WHERE id=?';
+        $sql = 'UPDATE post SET title=?,extract=?,content=?,date=CURRENT_TIMESTAMP,userId=? WHERE id=?';
         $dbb =$this->bdd->prepare($sql);
-        $dbb->execute([$post->getTitre(),$post->getChapo(),$post->getContenu(),$post->getUserId(),$post->getId()]);
+        $dbb->execute([$post->getTitle(),$post->getExtract(),$post->getContent(),$post->getUserId(),$post->getId()]);
     }
     /**
      * Remove post
@@ -88,11 +87,11 @@ class Postmodel extends Connectmodel
      * 
      * @return null
      */
-    public function remove(Article $post)
+    public function remove(Post $post)
     {
-        $sql = 'DELETE FROM commentaire WHERE article_id=?';
+        $sql = 'DELETE FROM comment WHERE postId=?';
         $this->bdd->prepare($sql)->execute([$post->getId()]);
-        $sql1 = 'DELETE FROM article WHERE id=?';
+        $sql1 = 'DELETE FROM post WHERE id=?';
         $this->bdd->prepare($sql1)->execute([$post->getId()]);
     }
     /**
@@ -102,7 +101,7 @@ class Postmodel extends Connectmodel
      * 
      * @return null
      */
-    public function findUser(Article $post)
+    public function findUser(Post $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
         $sql->execute([$post->getId()]);

@@ -64,19 +64,19 @@ abstract class Controller
     {
         $args = [
             'id' =>FILTER_SANITIZE_NUMBER_INT,
-            'oldpassword'=>FILTER_SANITIZE_STRING,
-            'newpassword'=>FILTER_SANITIZE_STRING,
-            'mdp'=>FILTER_SANITIZE_STRING,
+            'oldPassword'=>FILTER_SANITIZE_STRING,
+            'newPassword'=>FILTER_SANITIZE_STRING,
+            'password'=>FILTER_SANITIZE_STRING,
             'email'=> FILTER_SANITIZE_EMAIL,
-            'nom'=>FILTER_SANITIZE_STRING,
-            'prenom'=>FILTER_SANITIZE_STRING,
+            'firstName'=>FILTER_SANITIZE_STRING,
+            'lastName'=>FILTER_SANITIZE_STRING,
             'g-recaptcha-response'=>FILTER_SANITIZE_STRING,
             'message'=>FILTER_SANITIZE_STRING,
-            'contenu'=>FILTER_SANITIZE_STRING,
-            'titre'=>FILTER_SANITIZE_STRING,
-            'chapo'=>FILTER_SANITIZE_STRING,
+            'content'=>FILTER_SANITIZE_STRING,
+            'title'=>FILTER_SANITIZE_STRING,
+            'extract'=>FILTER_SANITIZE_STRING,
             'userId'=>FILTER_SANITIZE_NUMBER_INT,
-            'statut'=>FILTER_SANITIZE_NUMBER_INT,
+            'status'=>FILTER_SANITIZE_NUMBER_INT,
             'roleId'=>FILTER_SANITIZE_NUMBER_INT
         ];
         $this->post = filter_input_array(INPUT_POST, $args);

@@ -14,7 +14,7 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Entity\Contact;
-use App\Entity\Article;
+use App\Entity\Post;
 use App\Manager\CommentManager;
 use App\Tools\Session;
 
@@ -48,7 +48,7 @@ class Postcontroller extends Controller
                 unset($this->post['g-recaptcha-response']);
                 $checking = (new Contact($this->post, 'post'));
                 if (empty($checking->checking)) {
-                    mail('nobody@gmail.com', $this->post['prenom'].' '.$this->post['nom'], $this->post['message'], 'From:'.$this->post['email']);
+                    mail('nobody@gmail.com', $this->post['firstName'].' '.$this->post['lastName'], $this->post['message'], 'From:'.$this->post['email']);
                 }
             }
         }
@@ -66,17 +66,17 @@ class Postcontroller extends Controller
         $donnesUser = $this->_modelPost->findAllUser();
         if (Session::getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
-                $entitypost=new Article($this->post, 'post');
+                $entitypost=new Post($this->post, 'post');
                 $this->_modelPost->add($entitypost);
             }
             return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
         } if (Session::getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
-                $this->_modelPost->update(new Article($this->post, 'post'));
+                $this->_modelPost->update(new Post($this->post, 'post'));
             }
-            $donnes = $this->_modelPost->post(new Article(['id'=>$id]));
-            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->user_id,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
+            $donnes = $this->_modelPost->post(new Post(['id'=>$id]));
+            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->userId,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");
     }
@@ -89,9 +89,9 @@ class Postcontroller extends Controller
      */
     public function onePost(int $id)
     {
-        $post = $this->_modelPost->post(new Article(['id'=>$id]));
-        $comment = (new CommentManager)->findAllArticleComment(new Article(['id'=>$id]));
-        return $this->twig->render('/templates/post/onepost.html.twig', ['nom'=>$post,'comment'=>$comment]);
+        $post = $this->_modelPost->post(new Post(['id'=>$id]));
+        $comment = (new CommentManager)->findAllPostComment(new Post(['id'=>$id]));
+        return $this->twig->render('/templates/post/onepost.html.twig', ['post'=>$post,'comment'=>$comment]);
     }
     /**
      * Find all post
@@ -101,7 +101,7 @@ class Postcontroller extends Controller
     public function allPosts()
     {
         $donnes = $this->_modelPost->posts();
-        return $this->twig->render('/templates/post/blogposts.html.twig', ['nom'=>$donnes]);
+        return $this->twig->render('/templates/post/blogposts.html.twig', ['post'=>$donnes]);
     }
     /**
      * Remove one post
@@ -113,7 +113,7 @@ class Postcontroller extends Controller
     public function remove(int $id)
     {
         if (Session::getSession('role') == 3) {
-            $this->_modelPost->remove(new Article(['id'=>$id]));
+            $this->_modelPost->remove(new Post(['id'=>$id]));
         }
         return $this->allposts();
     }

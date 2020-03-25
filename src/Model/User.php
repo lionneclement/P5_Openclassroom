@@ -26,10 +26,10 @@ use App\Entity\Valide;
 class User extends Valide
 {
     private $_id;
-    private $_nom;
-    private $_prenom;
+    private $_lastName;
+    private $_firstName;
     private $_email;
-    private $_mdp;
+    private $_password;
     private $_roleId;
     /**
      * Call hydrate
@@ -72,22 +72,22 @@ class User extends Valide
         return $this->_id;
     }
     /**
-     * Get nom
+     * Get lastName
      * 
      * @return string
      */
-    public function getNom()
+    public function getLastName()
     {
-        return $this->_nom;
+        return $this->_lastName;
     }
     /**
-     * Get prenom
+     * Get firstName
      * 
      * @return string
      */
-    public function getPrenom()
+    public function getFirstName()
     {
-        return $this->_prenom;
+        return $this->_firstName;
     }
     /**
      * Get email
@@ -99,13 +99,13 @@ class User extends Valide
         return $this->_email;
     }
     /**
-     * Get mdp
+     * Get password
      * 
      * @return string
      */
-    public function getMdp()
+    public function getPassword()
     {
-        return $this->_mdp;
+        return $this->_password;
     }
     /**
      * Get role id
@@ -132,29 +132,29 @@ class User extends Valide
         }
     }
     /**
-     * Set nom
+     * Set lastName
      * 
-     * @param String $nom data
+     * @param String $lastName data
      * 
      * @return null
      */
-    public function setNom($nom)
+    public function setLastName($lastName)
     {
-        if (is_string($nom) && strlen($nom) <= 30) {
-            $this->_nom = $nom;
+        if (is_string($lastName) && strlen($lastName) <= 30) {
+            $this->_lastName = $lastName;
         }
     }
     /**
-     * Set prenom
+     * Set firstName
      * 
-     * @param String $prenom data
+     * @param String $firstName data
      * 
      * @return null
      */
-    public function setPrenom($prenom)
+    public function setFirstName($firstName)
     {
-        if (is_string($prenom) && strlen($prenom) <= 30) {
-            $this->_prenom = $prenom;
+        if (is_string($firstName) && strlen($firstName) <= 30) {
+            $this->_firstName = $firstName;
         }
     }
     /**
@@ -171,16 +171,16 @@ class User extends Valide
         }
     }
     /**
-     * Set mdp
+     * Set password
      * 
-     * @param Strign $mdp data
+     * @param Strign $password data
      * 
      * @return null
      */
-    public function setMdp($mdp)
+    public function setPassword($password)
     {
-        if (is_string($mdp) && strlen($mdp)>=13) {
-              $this->_mdp = password_hash($mdp, PASSWORD_DEFAULT);
+        if (is_string($password) && strlen($password)>=13) {
+              $this->_password = password_hash($password, PASSWORD_DEFAULT);
         }
     }
     /**

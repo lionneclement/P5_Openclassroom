@@ -47,9 +47,9 @@ class AuthentificationModel extends Connectmodel
      */
     public function register(User $post)
     {
-        $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
+        $sql = 'INSERT INTO user (id, lastName, firstName, email, password, roleId) 
     VALUES (NULL,?,?,?,?,1)';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getNom(),$post->getPrenom(),$post->getEmail(),$post->getMdp()]);
+        $dbb->execute([$post->getLastName(),$post->getFirstName(),$post->getEmail(),$post->getPassword()]);
     }
 }

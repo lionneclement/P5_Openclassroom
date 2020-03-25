@@ -12,8 +12,8 @@
  */
 namespace App\Manager;
 
-use App\Entity\Article;
-use App\Entity\Commentaire;
+use App\Entity\Post;
+use App\Entity\Comment;
 use App\Manager\Connectmodel;
 /** 
  * The file is for CRUD comment in the database
@@ -30,18 +30,18 @@ use App\Manager\Connectmodel;
 class CommentManager extends Connectmodel
 {
     /**
-     * Find all article comment
+     * Find all post comment
      * 
      * @param array $post it's user data
      * 
      * @return object
      */
-    public function findAllArticleComment(Article $post)
+    public function findAllPostComment(Post $post)
     {
-        $sql='SELECT commentaire.*,user.nom FROM article 
-        INNER JOIN commentaire ON article.id=commentaire.article_id 
-        AND commentaire.article_id=? AND commentaire.statut=1
-        INNER JOIN user ON user.id=commentaire.user_id';
+        $sql='SELECT comment.*,user.lastName FROM post 
+        INNER JOIN comment ON post.id=comment.postId 
+        AND comment.postId=? AND comment.status=1
+        INNER JOIN user ON user.id=comment.userId';
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getId()]);
         return $dbb->fetchAll(\PDO::FETCH_OBJ);
@@ -53,7 +53,7 @@ class CommentManager extends Connectmodel
      */
     public function findAllInvalideComment()
     {
-        $sql = $this->bdd->query('SELECT * FROM commentaire WHERE statut=0');
+        $sql = $this->bdd->query('SELECT * FROM comment WHERE status=0');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -63,7 +63,7 @@ class CommentManager extends Connectmodel
      */
     public function findAllComment()
     {
-        $sql = $this->bdd->query('SELECT * FROM commentaire');
+        $sql = $this->bdd->query('SELECT * FROM comment');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -73,12 +73,12 @@ class CommentManager extends Connectmodel
      * 
      * @return null
      */
-    public function addComment(Commentaire $post)
+    public function addComment(Comment $post)
     {
-        $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
+        $sql = 'INSERT INTO comment (id,message,status,date,userId,postId) 
     VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
         $dbb =$this->bdd->prepare($sql);
-        $dbb->execute([$post->getMessage(),$post->getUserId(),$post->getArticleId()]);
+        $dbb->execute([$post->getMessage(),$post->getUserId(),$post->getPostId()]);
     }
     /**
      * Update comment
@@ -87,10 +87,10 @@ class CommentManager extends Connectmodel
      * 
      * @return null
      */
-    public function updateComment(Commentaire $post)
+    public function updateComment(Comment $post)
     {
-        $sql = 'UPDATE commentaire SET statut=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getStatut(),$post->getId()]);
+        $sql = 'UPDATE comment SET status=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getStatus(),$post->getId()]);
     }
     /**
      * Remove comment
@@ -99,9 +99,9 @@ class CommentManager extends Connectmodel
      * 
      * @return null
      */
-    public function removeComment(Commentaire $post)
+    public function removeComment(Comment $post)
     {
-        $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE id=?');
+        $sql = $this->bdd->prepare('DELETE FROM comment WHERE id=?');
         $sql->execute([$post->getId()]);
     }
 }

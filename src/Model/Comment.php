@@ -1,6 +1,6 @@
 <?php
 /** 
- * Getter and Setter for article
+ * Getter and Setter for comment
  * 
  * PHP version 7.2.18
  * 
@@ -13,7 +13,7 @@
 namespace App\Entity;
 use App\Entity\Valide;
 /** 
- * Getter and Setter for article
+ * Getter and Setter for comment
  * 
  * PHP version 7.2.18
  * 
@@ -23,13 +23,13 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Article extends Valide
+class Comment extends Valide
 {
     private $_id;
-    private $_titre;
-    private $_chapo;
-    private $_contenu;
+    private $_message;
+    private $_status;
     private $_userId;
+    private $_postId;
     /**
      * Call hydrate
      * 
@@ -71,30 +71,22 @@ class Article extends Valide
         return $this->_id;
     }
     /**
-     * Get title
+     * Get message
      * 
      * @return string
      */
-    public function getTitre()
+    public function getMessage()
     {
-        return $this->_titre;
+        return $this->_message;
     }
     /**
-     * Get chapo
+     * Get status
      * 
-     * @return string
+     * @return int
      */
-    public function getChapo()
+    public function getStatus()
     {
-        return $this->_chapo;
-    }/**
-      * Get content
-      * 
-      * @return string
-      */
-    public function getContenu()
-    {
-        return $this->_contenu;
+        return $this->_status;
     }
     /**
      * Get user id
@@ -106,9 +98,18 @@ class Article extends Valide
         return $this->_userId;
     }
     /**
+     * Get post id
+     * 
+     * @return int
+     */
+    public function getPostId()
+    {
+        return $this->_postId;
+    }
+    /**
      * Set id
      * 
-     * @param integer $id data
+     * @param Integer $id data
      * 
      * @return null
      */
@@ -120,48 +121,36 @@ class Article extends Valide
         }
     }
     /**
-     * Set title
+     * Set Message
      * 
-     * @param String $titre data
+     * @param String $message data
      * 
      * @return null
      */
-    public function setTitre($titre)
+    public function setMessage($message)
     {
-        if (is_string($titre) && strlen($titre) <= 30) {
-            $this->_titre = $titre;
+        if (is_string($message) && strlen($message) <= 250) {
+            $this->_message = $message;
         }
     }
     /**
-     * Set chapo
+     * Set status
      * 
-     * @param String $chapo data
-     * 
-     * @return null
-     */
-    public function setChapo($chapo)
-    {
-        if (is_string($chapo) && strlen($chapo) <= 255) {
-            $this->_chapo = $chapo;
-        }
-    }
-    /**
-     * Set Contenu
-     * 
-     * @param String $contenu data
+     * @param String $status data
      * 
      * @return null
      */
-    public function setContenu($contenu)
+    public function setStatus($status)
     {
-        if (is_string($contenu)) {
-            $this->_contenu = $contenu;
+        $status = (int) $status;
+        if ($status == 0 || $status == 1) {
+            $this->_status = $status;
         }
     }
     /**
      * Set user id
      * 
-     * @param integer $userId data
+     * @param Integer $userId data
      * 
      * @return null
      */
@@ -170,6 +159,20 @@ class Article extends Valide
         $userId = (int) $userId;
         if ($userId > 0) {
             $this->_userId = $userId;
+        }
+    }
+    /**
+     * Set post id
+     * 
+     * @param Integer $postId data
+     * 
+     * @return null
+     */
+    public function setPostId($postId)
+    {
+        $postId = (int) $postId;
+        if ($postId > 0) {
+            $this->_postId = $postId;
         }
     }
 }

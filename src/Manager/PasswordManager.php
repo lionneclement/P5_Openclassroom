@@ -34,7 +34,7 @@ class PasswordManager extends Connectmodel
      */
     public function updatePassword(User $post)
     {
-        $sql = 'UPDATE user SET mdp=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getMdp(),$post->getId()]);
+        $sql = 'UPDATE user SET password=? WHERE id=?';
+        $this->bdd->prepare($sql)->execute([$post->getPassword(),$post->getId()]);
     }
 }

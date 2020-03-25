@@ -13,7 +13,7 @@
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\Entity\Commentaire;
+use App\Entity\Comment;
 use App\Manager\CommentManager;
 use App\Tools\Session;
 
@@ -73,7 +73,7 @@ class CommentController extends Controller
     public function updateComment(int $id,string $url)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            (new CommentManager)->updateComment(new Commentaire($this->post, 'post'));
+            (new CommentManager)->updateComment(new Comment($this->post, 'post'));
             header("Location: /admin/$url");
         }
         return $this->twig->render("/templates/error.html.twig");
@@ -89,7 +89,7 @@ class CommentController extends Controller
     public function removeComment(int $id,string $url)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            (new CommentManager)->removeComment(new Commentaire(['id'=>$id]));
+            (new CommentManager)->removeComment(new Comment(['id'=>$id]));
             header("Location: /admin/$url");
         }
         return $this->twig->render("/templates/error.html.twig");
@@ -103,7 +103,7 @@ class CommentController extends Controller
     {
         if (!empty(Session::getSession('id'))) {
             if ($this->recaptcha($this->post['g-recaptcha-response'])) {
-                $entitypost=new Commentaire(['message'=>$this->post['contenu'],'userId'=>Session::getSession('id'),'articleId'=>$this->post['id']], 'post');
+                $entitypost=new Comment(['message'=>$this->post['content'],'userId'=>Session::getSession('id'),'postId'=>$this->post['id']], 'post');
                 (new CommentManager)->addComment($entitypost);
                 header("Location: /post/findOne/".$this->post['id']."#addcomment");
             }

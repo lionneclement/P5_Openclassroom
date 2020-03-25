@@ -1,6 +1,6 @@
 <?php
 /** 
- * Getter and Setter for commentaire
+ * Getter and Setter for post
  * 
  * PHP version 7.2.18
  * 
@@ -13,7 +13,7 @@
 namespace App\Entity;
 use App\Entity\Valide;
 /** 
- * Getter and Setter for commentaire
+ * Getter and Setter for post
  * 
  * PHP version 7.2.18
  * 
@@ -23,13 +23,13 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Commentaire extends Valide
+class Post extends Valide
 {
     private $_id;
-    private $_message;
-    private $_statut;
+    private $_title;
+    private $_extract;
+    private $_content;
     private $_userId;
-    private $_articleId;
     /**
      * Call hydrate
      * 
@@ -71,22 +71,30 @@ class Commentaire extends Valide
         return $this->_id;
     }
     /**
-     * Get message
+     * Get title
      * 
      * @return string
      */
-    public function getMessage()
+    public function getTitle()
     {
-        return $this->_message;
+        return $this->_title;
     }
     /**
-     * Get statut
+     * Get extract
      * 
-     * @return int
+     * @return string
      */
-    public function getStatut()
+    public function getExtract()
     {
-        return $this->_statut;
+        return $this->_extract;
+    }/**
+      * Get content
+      * 
+      * @return string
+      */
+    public function getContent()
+    {
+        return $this->_content;
     }
     /**
      * Get user id
@@ -98,18 +106,9 @@ class Commentaire extends Valide
         return $this->_userId;
     }
     /**
-     * Get article id
-     * 
-     * @return int
-     */
-    public function getArticleId()
-    {
-        return $this->_articleId;
-    }
-    /**
      * Set id
      * 
-     * @param Integer $id data
+     * @param integer $id data
      * 
      * @return null
      */
@@ -121,36 +120,48 @@ class Commentaire extends Valide
         }
     }
     /**
-     * Set Message
+     * Set title
      * 
-     * @param String $message data
+     * @param String $title data
      * 
      * @return null
      */
-    public function setMessage($message)
+    public function setTitle($title)
     {
-        if (is_string($message) && strlen($message) <= 250) {
-            $this->_message = $message;
+        if (is_string($title) && strlen($title) <= 30) {
+            $this->_title = $title;
         }
     }
     /**
-     * Set statut
+     * Set extract
      * 
-     * @param String $statut data
+     * @param String $extract data
      * 
      * @return null
      */
-    public function setStatut($statut)
+    public function setExtract($extract)
     {
-        $statut = (int) $statut;
-        if ($statut == 0 || $statut == 1) {
-            $this->_statut = $statut;
+        if (is_string($extract) && strlen($extract) <= 255) {
+            $this->_extract = $extract;
+        }
+    }
+    /**
+     * Set content
+     * 
+     * @param String $content data
+     * 
+     * @return null
+     */
+    public function setContent($content)
+    {
+        if (is_string($content)) {
+            $this->_content = $content;
         }
     }
     /**
      * Set user id
      * 
-     * @param Integer $userId data
+     * @param integer $userId data
      * 
      * @return null
      */
@@ -159,20 +170,6 @@ class Commentaire extends Valide
         $userId = (int) $userId;
         if ($userId > 0) {
             $this->_userId = $userId;
-        }
-    }
-    /**
-     * Set article id
-     * 
-     * @param Integer $articleId data
-     * 
-     * @return null
-     */
-    public function setArticleId($articleId)
-    {
-        $articleId = (int) $articleId;
-        if ($articleId > 0) {
-            $this->_articleId = $articleId;
         }
     }
 }

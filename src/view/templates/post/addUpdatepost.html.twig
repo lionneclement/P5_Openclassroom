@@ -13,17 +13,17 @@
         {% endif %}
       </div>
     {% endif %}
-    {% if alert_titre %}
+    {% if alert_title %}
       <div class="alert alert-danger" role="alert">
         Rentré un titre valide
       </div>
     {% endif %}
-    {% if alert_chapo %}
+    {% if alert_extract %}
       <div class="alert alert-danger" role="alert">
         Rentré un chapo valide
       </div>
     {% endif %}
-    {% if alert_contenu %}
+    {% if alert_content %}
       <div class="alert alert-danger" role="alert">
         Rentré un contenu valide
       </div>
@@ -37,21 +37,21 @@
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Titre</label>
-        <input type="nom" name="titre" class="form-control" id="FormControlInput1" value='{{donnes.titre}}' required>
+        <input type="text" name="title" class="form-control" id="FormControlInput1" value='{{donnes.title}}' required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput2">Chapo</label>
-        <input type="prenom" name="chapo" class="form-control" id="FormControlInput2" value='{{donnes.chapo}}' required>
+        <input type="text" name="extract" class="form-control" id="FormControlInput2" value='{{donnes.extract}}' required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput3">Contenu</label>
-        <textarea class="form-control" type="contenu" name="contenu" id="FormControlInput3" required>{{donnes.contenu}}</textarea>
+        <textarea class="form-control" type="text" name="content" id="FormControlInput3" required>{{donnes.content}}</textarea>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
@@ -61,9 +61,9 @@
         <select class="custom-select" id="FormControlInput4" name="userId" required>
           {% for user in Auteur %}
             {% if select == user.id %}
-              <option value={{user.id}} selected>{{user.nom}}</option>
+              <option value={{user.id}} selected>{{user.lastName}}</option>
             {% else %}
-              <option value={{user.id}}>{{user.nom}}</option>
+              <option value={{user.id}}>{{user.lastName}}</option>
             {% endif %}
           {% endfor %}
         </select>

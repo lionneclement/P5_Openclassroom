@@ -47,7 +47,7 @@ class Adminmodel extends Connectmodel
      */
     public function updateRole(User $post)
     {
-        $sql = 'UPDATE user SET role_id=? WHERE id=?';
+        $sql = 'UPDATE user SET roleId=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getRoleId(),$post->getId()]);
     }
     /**
@@ -59,13 +59,13 @@ class Adminmodel extends Connectmodel
      */
     public function deleteUser(User $post)
     {
-        $sql = 'DELETE commentaire.* FROM commentaire INNER JOIN article
-        ON article.user_id=? AND commentaire.article_id=article.id';
+        $sql = 'DELETE comment.* FROM comment INNER JOIN post
+        ON post.userId=? AND comment.postId=post.id';
         $dbb = $this->bdd->prepare($sql);
         $dbb->execute([$post->getId()]);
-        $sql0 = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
+        $sql0 = $this->bdd->prepare('DELETE FROM comment WHERE userId=?');
         $sql0->execute([$post->getId()]);
-        $sql1 =$this->bdd->prepare('DELETE FROM article WHERE user_id=?');
+        $sql1 =$this->bdd->prepare('DELETE FROM post WHERE userId=?');
         $sql1->execute([$post->getId()]);
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getId()]);
@@ -92,8 +92,8 @@ class Adminmodel extends Connectmodel
      */
     public function updateUser(User $post)
     {
-        $sql = 'UPDATE user SET nom=?, prenom=?, email=?  WHERE id=?';
+        $sql = 'UPDATE user SET lastName=?, firstName=?, email=?  WHERE id=?';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getNom(),$post->getPrenom(),$post->getEmail(),$post->getId()]);
+        $dbb->execute([$post->getLastName(),$post->getFirstName(),$post->getEmail(),$post->getId()]);
     }
 }

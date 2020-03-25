@@ -22,15 +22,15 @@
                 <p class="card-text">Date: {{n.date}}</p>
                 <form method="post" action="/admin/updatecomment/{{n.id}}/{{url}}">
                   <label for="FormControlInput1">Statut :</label>
-                  <select id="inputState"  name="statut" class="form-control" required>
-                    <option value='1' {% if n.statut == 1 %}selected{% endif %}>Valide</option>
-                    <option value='0' {% if n.statut == 0 %}selected{% endif %}>Invalide</option>
+                  <select id="inputState"  name="status" class="form-control" required>
+                    <option value='1' {% if n.status == 1 %}selected{% endif %}>Valide</option>
+                    <option value='0' {% if n.status == 0 %}selected{% endif %}>Invalide</option>
                   </select>
                   <input type="hidden" name="id" value="{{n.id}}">
                   <br>
                   <button type="submit" class='btn btn-secondary'>Modifier</button>
                   <a href="/admin/deletecomment/{{n.id}}/{{url}}" class='btn btn-secondary'>Supprimer</a>
-                  <a href="/post/findOne/{{n.article_id}}" class="btn btn-secondary">Lien de l'article</a>
+                  <a href="/post/findOne/{{n.postId}}" class="btn btn-secondary">Lien de l'article</a>
                 </form>
               </div>
             </div>

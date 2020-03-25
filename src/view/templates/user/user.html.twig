@@ -18,15 +18,15 @@
           <div class="col-sm-6 pt-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Nom: {{n.nom}}</h5>
-                <p class="card-text">Prenom: {{n.prenom}}</p>
+                <h5 class="card-title">Nom: {{n.lastName}}</h5>
+                <p class="card-text">Prenom: {{n.firstName}}</p>
                 <p class="card-text">Email: {{n.email}}</p>
                 <form method="post" action="roles">
                   <label for="FormControlInput1">Role :</label>
                   <select id="FormControlInput1"  name="roleId" class="form-control" required>
-                    <option value='1' {% if n.role_id == 1 %}selected{% endif %}>Utilisateur</option>
-                    <option value='2' {% if n.role_id == 2 %}selected{% endif %}>Editeur</option>
-                    <option value='3' {% if n.role_id == 3 %}selected{% endif %}>Admin</option>
+                    <option value='1' {% if n.roleId == 1 %}selected{% endif %}>Utilisateur</option>
+                    <option value='2' {% if n.roleId == 2 %}selected{% endif %}>Editeur</option>
+                    <option value='3' {% if n.roleId == 3 %}selected{% endif %}>Admin</option>
                   </select>
                   <input type="hidden" name="id" value="{{n.id}}">
                   <br>

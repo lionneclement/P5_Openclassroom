@@ -45,8 +45,8 @@ class PasswordController extends Controller
         if (!empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
                 $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
-                if (password_verify($this->post['oldpassword'], $donnes->mdp)) {
-                    (new PasswordManager)->updatePassword(new User(['mdp'=>$this->post['newpassword'],'id'=>Session::getSession('id')], 'post'));
+                if (password_verify($this->post['oldPassword'], $donnes->password)) {
+                    (new PasswordManager)->updatePassword(new User(['password'=>$this->post['newPassword'],'id'=>Session::getSession('id')], 'post'));
                 } else {
                     (new Flash())->setFlash(['danger'=>'danger']);
                 }
@@ -95,7 +95,7 @@ class PasswordController extends Controller
     {
         if (!empty(Session::getSession('reset')) && password_verify($url, Session::getSession('reset'))) {
             if (!empty($this->post)) {
-                $entitypost=new User(['mdp'=>$this->post['newpassword'],'id'=>$id], 'post');
+                $entitypost=new User(['password'=>$this->post['newPassword'],'id'=>$id], 'post');
                 (new PasswordManager)->updatePassword($entitypost);
                 Session::deleteSession('reset');
                 header("Location:/auth/login");
