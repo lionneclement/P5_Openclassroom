@@ -32,7 +32,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/post/findAll">Articles</a>
             </li>
-            {% if not user_access %}
+            {% if not role %}
             <li class="nav-item">
               <a class="nav-link" href="/auth/login">Se connecter</a>
             </li>
@@ -40,8 +40,8 @@
               <a class="nav-link" href="/auth/register">S'inscrire</a>
             </li>
             {% endif %}
-            {% if user_access %}
-              {% if user_access == 3 %}
+            {% if role %}
+              {% if role == 3 %}
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">
                     Admin

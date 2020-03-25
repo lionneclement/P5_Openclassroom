@@ -13,7 +13,6 @@
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\Entity\Contact;
 use App\Entity\Post;
 use App\Manager\CommentManager;
 use App\Tools\Session;
@@ -44,12 +43,11 @@ class Postcontroller extends Controller
     public function home()
     {
         if (!empty($this->post)) {
-            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
-                unset($this->post['g-recaptcha-response']);
-                $checking = (new Contact($this->post, 'post'));
-                if (empty($checking->checking)) {
-                    mail('nobody@gmail.com', $this->post['firstName'].' '.$this->post['lastName'], $this->post['message'], 'From:'.$this->post['email']);
-                }
+            if (!empty($this->post['g-recaptcha-response']) && $this->recaptcha($this->post['g-recaptcha-response'])) {
+                mail('nobody@gmail.com', $this->post['firstName'].' '.$this->post['lastName'], $this->post['message'], 'From:'.$this->post['email']);
+                Session::setSession('alert', 'success');
+            } else {
+                Session::setSession('alert', 'reCAPTCHA');
             }
         }
         return $this->twig->render('/templates/home.html.twig');
@@ -66,14 +64,15 @@ class Postcontroller extends Controller
         $donnesUser = $this->_modelPost->findAllUser();
         if (Session::getSession('role') == 3 && $id==null) {
             if (!empty($this->post)) {
-                $entitypost=new Post($this->post, 'post');
-                $this->_modelPost->add($entitypost);
+                $this->_modelPost->add(new Post($this->post));
+                Session::setSession('alert', 'success_add');
             }
             return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
         } if (Session::getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
-                $this->_modelPost->update(new Post($this->post, 'post'));
+                $this->_modelPost->update(new Post($this->post));
+                Session::setSession('alert', 'success_update');
             }
             $donnes = $this->_modelPost->post(new Post(['id'=>$id]));
             return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->userId,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
@@ -114,8 +113,10 @@ class Postcontroller extends Controller
     {
         if (Session::getSession('role') == 3) {
             $this->_modelPost->remove(new Post(['id'=>$id]));
+            Session::setSession('alert', 'remove');
         }
-        return $this->allposts();
+        header("Location:/post/findAll");
+        exit;
     }
     /**
      * Return error 404 page

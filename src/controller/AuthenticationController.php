@@ -14,7 +14,6 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Entity\User;
-use App\Flash\Flash;
 use App\Tools\Session;
 /**
  * Class for authentification
@@ -45,9 +44,10 @@ class AuthentificationController extends Controller
             if (!empty($this->post)) {
                 $donnes = $this->_modelAuth->check(new User($this->post));
                 if (empty($donnes)) {
-                    $this->_modelAuth->register(new User($this->post, 'post'));
+                    $this->_modelAuth->register(new User($this->post));
+                    Session::setSession('alert', 'success');
                 } else {
-                    (new Flash())->setFlash(['already'=>'already']);
+                    Session::setSession('alert', 'already');
                 }
             }
             return $this->twig->render('/templates/authentication/register.html.twig');
@@ -63,15 +63,16 @@ class AuthentificationController extends Controller
     {
         if (empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAuth->check(new User($this->post, 'post'));
+                $donnes = $this->_modelAuth->check(new User($this->post));
                 if (empty($donnes)) {
-                    (new Flash())->setFlash(['emailerror'=>'email']);
+                    Session::setSession('alert', 'email');
                 } elseif (password_verify($this->post['password'], $donnes->password)) {
                     Session::setSession('id', $donnes->id);
                     Session::setSession('role', $donnes->roleId);
                     header("Location:/");
+                    exit;
                 } else {
-                    (new Flash())->setFlash(['passworderror'=>'password']);
+                    Session::setSession('alert', 'password');
                 }
             }
             return $this->twig->render('/templates/authentication/login.html.twig');
@@ -87,5 +88,6 @@ class AuthentificationController extends Controller
     {
         Session::deleteAllSession();
         header("Location:/");
+        exit;
     }
 }

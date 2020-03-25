@@ -4,33 +4,14 @@
 <section class='pt-5 mt-5'> 
   <div class="container">
     <div class='text-center'>
-      {% if alert_success %}
+      {% if alert == "success" %}
       <div class="alert alert-success" role="alert">
         Votre compte viens d'être crée vous pouvez vous connecter.
       </div
-      {% elseif alert_already %}
+      {% endif %}
+      {% if alert == "already" %}
         <div class="alert alert-danger" role="alert">
           Ce compte exite déjà.
-        </div>
-      {% endif %}
-      {% if alert_email %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un email valide
-        </div>
-      {% endif %}
-      {% if alert_password %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un mot de passe de plus de 13 caractère
-        </div>
-      {% endif %}
-      {% if alert_lastName %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un nom valide
-        </div>
-      {% endif %}
-      {% if alert_firstName %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un prénom valide
         </div>
       {% endif %}
     </div>

@@ -11,7 +11,6 @@
  * @link     http://localhost/
  */
 namespace App\Entity;
-use App\Entity\Valide;
 /** 
  * Getter and Setter for comment
  * 
@@ -23,7 +22,7 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Comment extends Valide
+class Comment
 {
     private $_id;
     private $_message;
@@ -33,16 +32,12 @@ class Comment extends Valide
     /**
      * Call hydrate
      * 
-     * @param array  $data all data
-     * @param string $post just an string 
+     * @param array $data all data
      */
-    public function __construct(array $data =[],string $post=null)
+    public function __construct(array $data =[])
     {
         if (!empty($data)) {
             $this->hydrate($data);
-            if ($post) {
-                $this->isValid($data);
-            }
         }
     }
     /**

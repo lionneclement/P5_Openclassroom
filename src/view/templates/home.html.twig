@@ -34,34 +34,14 @@
 <section> 
   <div class="container py-5" id="contact">
     <h1 class="text-center">Contact</h1>
-    {% if alert_reCAPTCHA %}
+    {% if alert == "reCAPTCHA" %}
       <div class="alert alert-danger" role="alert">
         Vous devez remplir le reCAPTCHA!
       </div>
     {% endif %}
-    {% if alert_success %}
+    {% if alert == "success" %}
       <div class="alert alert-success" role="alert">
           Votre message viens d'être envoyer.
-      </div>
-    {% endif %}
-    {% if alert_lastName %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un nom valide
-      </div>
-    {% endif %}
-    {% if alert_firstName %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un prenom valide
-      </div>
-    {% endif %}
-    {% if alert_email %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un email valide
-      </div>
-    {% endif %}
-    {% if alert_message %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un message valide
       </div>
     {% endif %}
     <form method="post" class="needs-validation" novalidate action="/#contact">

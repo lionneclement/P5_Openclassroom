@@ -15,8 +15,6 @@ namespace App\Controller;
 use App\Manager\AuthentificationModel;
 use App\Manager\Adminmodel;
 use App\Manager\Postmodel;
-use App\Flash\Flash;
-use App\Tools\Session;
 use App\Tools\Twig;
 /**
  * Class for managing all controller file
@@ -40,20 +38,6 @@ abstract class Controller
         $this->_modelAuth = new AuthentificationModel;
         $this->superGlobal();
         $this->filterPost();
-    }
-    /**
-     * AddGlobal in twig
-     *
-     * @return void
-     */
-    public function twigFlash()
-    {
-        if (!empty(Session::getSession('alert'))) {
-            $alert = (new Flash())->getFlash();
-            foreach ($alert as $key=>$value) {
-                $this->twigenvi->addGlobal('alert_'.$key, $value);
-            }
-        }
     }
     /**
      * Render post secure
@@ -105,7 +89,6 @@ abstract class Controller
         $recaptcha = new \ReCaptcha\ReCaptcha(getenv('RECAPTCHA'));
         $resp = $recaptcha->setExpectedHostname('localhost')
             ->verify($parameters, $this->serverADDR);
-        (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
         return $resp->isSuccess();
     }
     /**

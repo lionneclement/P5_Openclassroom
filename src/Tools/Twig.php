@@ -53,7 +53,8 @@ class Twig
      */
     public function render(string $twigFile, array $parameters = [])
     {
-        $this->userAccess();
+        $this->addGlobal('role', false);
+        $this->addGlobal('alert', true);
         try {
             print_r($this->twigenvi->render($twigFile, $parameters));
         } catch (\Exception $e) {
@@ -61,15 +62,21 @@ class Twig
         }
     }
     /**
-     * Init Twig access
+     * Create global variable
      *
+     * @param string $keySession The session key
+     * @param bool   $delete     If delete session or not
+     * 
      * @return void
      */
-    public function userAccess()
+    public function addGlobal(string $keySession, bool $delete)
     {
-        $sessionrole = Session::getSession('role');
-        if (!empty($sessionrole)) {
-            $this->twigenvi->addGlobal('user_access', $sessionrole);
+        $session = Session::getSession($keySession);
+        if ($delete) {
+            Session::deleteSession($keySession);
+        }
+        if (!empty($session)) {
+            $this->twigenvi->addGlobal($keySession, $session);
         }
     }
 }

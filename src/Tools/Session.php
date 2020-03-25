@@ -29,7 +29,7 @@ class Session
      * @param string           $key   The key
      * @param array|string|int $value The value
      * 
-     * @return null
+     * @return void
      */
     public static function setSession(string $key, $value)
     {
@@ -54,7 +54,7 @@ class Session
      *
      * @param string $key The key
      * 
-     * @return null
+     * @return void
      */
     public static function deleteSession(string $key)
     {
@@ -63,7 +63,7 @@ class Session
     /**
      * Delete session
      * 
-     * @return null
+     * @return void
      */
     public static function deleteAllSession()
     {

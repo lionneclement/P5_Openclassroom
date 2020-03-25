@@ -15,7 +15,6 @@ namespace App\Controller;
 use App\Controller\Controller;
 use App\Entity\User;
 use App\Manager\PasswordManager;
-use App\Flash\Flash;
 use App\Tools\Session;
 /**
  * Class is for CRUD password
@@ -46,9 +45,10 @@ class PasswordController extends Controller
             if (!empty($this->post)) {
                 $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
                 if (password_verify($this->post['oldPassword'], $donnes->password)) {
-                    (new PasswordManager)->updatePassword(new User(['password'=>$this->post['newPassword'],'id'=>Session::getSession('id')], 'post'));
+                    (new PasswordManager)->updatePassword(new User(['password'=>$this->post['newPassword'],'id'=>Session::getSession('id')]));
+                    Session::setSession('alert', 'success');
                 } else {
-                    (new Flash())->setFlash(['danger'=>'danger']);
+                    Session::setSession('alert', 'password');
                 }
             }
             return $this->twig->render('/templates/password/updatepassword.html.twig');
@@ -65,7 +65,7 @@ class PasswordController extends Controller
         if (!empty($this->post)) {
             $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
             if (empty($donnes)) {
-                (new Flash())->setFlash(['emailfalse'=>'emailfalse']);
+                Session::setSession('alert', 'emailError');
             } else {
                 $rand = $this->randomWord(10);
                 $obj = password_hash($rand, PASSWORD_DEFAULT);
@@ -78,7 +78,7 @@ class PasswordController extends Controller
                 $headers  = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
                 mail($this->post['email'], 'Changement de mot de passe', $text, $headers);
-                (new Flash())->setFlash(['emailtrue'=>'emailtrue']);
+                Session::setSession('alert', 'success');
             }
         }
         return $this->twig->render('/templates/password/sendlink.html.twig');
@@ -95,10 +95,12 @@ class PasswordController extends Controller
     {
         if (!empty(Session::getSession('reset')) && password_verify($url, Session::getSession('reset'))) {
             if (!empty($this->post)) {
-                $entitypost=new User(['password'=>$this->post['newPassword'],'id'=>$id], 'post');
+                $entitypost=new User(['password'=>$this->post['newPassword'],'id'=>$id]);
                 (new PasswordManager)->updatePassword($entitypost);
                 Session::deleteSession('reset');
+                Session::setSession('alert', 'changePassword');
                 header("Location:/auth/login");
+                exit;
             }
             return $this->twig->render('/templates/password/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }

@@ -3,29 +3,19 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
-    {% if alert_resetpassword %}
+    {% if alert == 'changePassword' %}
       <div class="alert alert-success" role="alert">
-        Votre mot de passe à étais modifier
+        Votre mot de passe à étais modifier, vous pouvez maintenant vous connecter.
       </div>
     {% endif %}
-    {% if alert_email %}
+    {% if alert == "email" %}
       <div class="alert alert-danger" role="alert">
-        Rentré un email valide
+        Rentré un email valide.
       </div>
     {% endif %}
-    {% if password %}
+    {% if alert == "password" %}
       <div class="alert alert-danger" role="alert">
-        Rentré un mot de passe de plus de 13 caractère
-      </div>
-    {% endif %}
-    {% if alert_passworderror %}
-      <div class="alert alert-danger" role="alert">
-        Vous avez fais une faute dans votre mot de passe
-      </div>
-    {% endif %}
-    {% if alert_emailerror %}
-      <div class="alert alert-danger" role="alert">
-        Ce compte n'existe pas
+        Il y a une erreur dans le mot de passe.
       </div>
     {% endif %}
     <h1 class="text-center">Login</h1>

@@ -73,8 +73,10 @@ class CommentController extends Controller
     public function updateComment(int $id,string $url)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            (new CommentManager)->updateComment(new Comment($this->post, 'post'));
+            (new CommentManager)->updateComment(new Comment($this->post));
+            Session::setSession('alert', 'update');
             header("Location: /admin/$url");
+            exit;
         }
         return $this->twig->render("/templates/error.html.twig");
     }
@@ -90,7 +92,9 @@ class CommentController extends Controller
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
             (new CommentManager)->removeComment(new Comment(['id'=>$id]));
+            Session::setSession('alert', 'remove');
             header("Location: /admin/$url");
+            exit;
         }
         return $this->twig->render("/templates/error.html.twig");
     }
@@ -102,12 +106,16 @@ class CommentController extends Controller
     public function addComment()
     {
         if (!empty(Session::getSession('id'))) {
-            if ($this->recaptcha($this->post['g-recaptcha-response'])) {
-                $entitypost=new Comment(['message'=>$this->post['content'],'userId'=>Session::getSession('id'),'postId'=>$this->post['id']], 'post');
+            if (!empty($this->post['g-recaptcha-response']) && $this->recaptcha($this->post['g-recaptcha-response'])) {
+                $entitypost=new Comment(['message'=>$this->post['content'],'userId'=>Session::getSession('id'),'postId'=>$this->post['id']]);
                 (new CommentManager)->addComment($entitypost);
-                header("Location: /post/findOne/".$this->post['id']."#addcomment");
+                Session::setSession('alert', 'success');
+            } else {
+                Session::setSession('alert', 'reCAPTCHA');   
             }
-            return $this->twig->render("/templates/error.html.twig");
+            header("Location: /post/findOne/".$this->post['id']."#addcomment");
+            exit;
         }
+        return $this->twig->render("/templates/error.html.twig");
     }
 }

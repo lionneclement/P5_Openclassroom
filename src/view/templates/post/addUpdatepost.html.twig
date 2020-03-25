@@ -4,33 +4,14 @@
 <section> 
   <div class="container py-5 mt-5">
     <h1 class="text-center">Article</h1>
-    {% if alert_success %}
+    {% if alert == "success_add" %}
       <div class="alert alert-success" role="alert">
-        {% if url == 'addpost' %}
-          L'article viens d'être créer
-        {% else %}
-          La modification à été faite
-        {% endif %}
+          L'article viens d'être créer.
       </div>
     {% endif %}
-    {% if alert_title %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un titre valide
-      </div>
-    {% endif %}
-    {% if alert_extract %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un chapo valide
-      </div>
-    {% endif %}
-    {% if alert_content %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un contenu valide
-      </div>
-    {% endif %}
-    {% if alert_userId %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un userid valide
+    {% if alert == "success_update" %}
+      <div class="alert alert-success" role="alert">
+          La modification à été faite.
       </div>
     {% endif %}
     <form method="post" action="/post/{{url}}" class="needs-validation" novalidate>

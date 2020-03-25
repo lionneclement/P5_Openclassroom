@@ -10,11 +10,8 @@
                 <p class="card-text"><i>{{post.extract}}</i></p>
                 <p class="card-text">{{post.content}}</p>
                 <p class="card-text">{{post.lastName}}</p>
-                {% if user_access >= 2 %}
+                {% if role >= 2 %}
                   <a href="/post/updatepost/{{post.id}}" class="btn btn-secondary">Modifier</a>
-                  {% if user_access == 3 %}  
-                    <a href="/post/removepost/{{post.id}}" class="btn btn-secondary">Supprimer</a>
-                  {% endif %}
                 {% endif %}
               </div>
               <div class="card-footer text-muted">Dernière modification: {{post.date}}</div>
@@ -37,22 +34,17 @@
       {% endfor %}
     </div>
     {% endif %}
-  {% if user_access >= 1 %}
+  {% if role >= 1 %}
     <div class="container text-center py-5" id='addcomment'>
       <h2>Ajouter un commentaire</h2>
-      {% if alert_success %}
+      {% if alert == "success" %}
         <div class="alert alert-success" role="alert">
           Votre commentaire viens d'être envoyer et doit être valider pas les administrateurs!
         </div>
       {% endif %}
-      {% if alert_reCAPTCHA %}
+      {% if alert == "reCAPTCHA" %}
         <div class="alert alert-danger" role="alert">
           Vous devez remplir le reCAPTCHA!
-        </div>
-      {% endif %}
-      {% if alert_message %}
-        <div class="alert alert-danger" role="alert">
-          Votre commentaire n'est pas valide
         </div>
       {% endif %}
       <form method="post" class="needs-validation" novalidate action="/post/addcomment">
