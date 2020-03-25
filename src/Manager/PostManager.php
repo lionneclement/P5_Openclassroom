@@ -89,8 +89,6 @@ class Postmodel extends Connectmodel
      */
     public function remove(Post $post)
     {
-        $sql = 'DELETE FROM comment WHERE postId=?';
-        $this->bdd->prepare($sql)->execute([$post->getId()]);
         $sql1 = 'DELETE FROM post WHERE id=?';
         $this->bdd->prepare($sql1)->execute([$post->getId()]);
     }

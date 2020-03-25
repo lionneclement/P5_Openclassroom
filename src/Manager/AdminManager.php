@@ -59,14 +59,6 @@ class Adminmodel extends Connectmodel
      */
     public function deleteUser(User $post)
     {
-        $sql = 'DELETE comment.* FROM comment INNER JOIN post
-        ON post.userId=? AND comment.postId=post.id';
-        $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getId()]);
-        $sql0 = $this->bdd->prepare('DELETE FROM comment WHERE userId=?');
-        $sql0->execute([$post->getId()]);
-        $sql1 =$this->bdd->prepare('DELETE FROM post WHERE userId=?');
-        $sql1->execute([$post->getId()]);
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getId()]);
     }
