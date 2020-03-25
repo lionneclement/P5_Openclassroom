@@ -43,7 +43,7 @@ class CommentManager extends Connectmodel
         AND commentaire.article_id=? AND commentaire.statut=1
         INNER JOIN user ON user.id=commentaire.user_id';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getid()]);
+        $dbb->execute([$post->getId()]);
         return $dbb->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -78,7 +78,7 @@ class CommentManager extends Connectmodel
         $sql = 'INSERT INTO commentaire (id,message,statut,date,user_id,article_id) 
     VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
         $dbb =$this->bdd->prepare($sql);
-        $dbb->execute([$post->getmessage(),$post->getuserId(),$post->getarticleId()]);
+        $dbb->execute([$post->getMessage(),$post->getUserId(),$post->getArticleId()]);
     }
     /**
      * Update comment
@@ -90,7 +90,7 @@ class CommentManager extends Connectmodel
     public function updateComment(Commentaire $post)
     {
         $sql = 'UPDATE commentaire SET statut=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getstatut(),$post->getid()]);
+        $this->bdd->prepare($sql)->execute([$post->getStatut(),$post->getId()]);
     }
     /**
      * Remove comment
@@ -102,6 +102,6 @@ class CommentManager extends Connectmodel
     public function removeComment(Commentaire $post)
     {
         $sql = $this->bdd->prepare('DELETE FROM commentaire WHERE id=?');
-        $sql->execute([$post->getid()]);
+        $sql->execute([$post->getId()]);
     }
 }

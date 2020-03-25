@@ -35,7 +35,7 @@ class AuthentificationModel extends Connectmodel
     public function check(User $post)
     {
         $sql = $this->bdd->prepare("SELECT * FROM user WHERE email=?");
-        $sql->execute([$post->getemail()]);
+        $sql->execute([$post->getEmail()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -50,6 +50,6 @@ class AuthentificationModel extends Connectmodel
         $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
     VALUES (NULL,?,?,?,?,1)';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getmdp()]);
+        $dbb->execute([$post->getNom(),$post->getPrenom(),$post->getEmail(),$post->getMdp()]);
     }
 }

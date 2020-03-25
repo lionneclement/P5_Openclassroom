@@ -66,7 +66,7 @@ class Commentaire extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId()
     {
         return $this->_id;
     }
@@ -75,7 +75,7 @@ class Commentaire extends Valide
      * 
      * @return string
      */
-    public function getmessage()
+    public function getMessage()
     {
         return $this->_message;
     }
@@ -84,7 +84,7 @@ class Commentaire extends Valide
      * 
      * @return int
      */
-    public function getstatut()
+    public function getStatut()
     {
         return $this->_statut;
     }
@@ -93,7 +93,7 @@ class Commentaire extends Valide
      * 
      * @return int
      */
-    public function getuserId()
+    public function getUserId()
     {
         return $this->_userId;
     }
@@ -102,7 +102,7 @@ class Commentaire extends Valide
      * 
      * @return int
      */
-    public function getarticleId()
+    public function getArticleId()
     {
         return $this->_articleId;
     }

@@ -51,7 +51,7 @@ class Postmodel extends Connectmodel
         INNER JOIN user ON 
         article.user_id=user.id AND article.id=?';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getid()]);
+        $dbb->execute([$post->getId()]);
         return $dbb->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -66,7 +66,7 @@ class Postmodel extends Connectmodel
         $sql = 'INSERT INTO article (id, titre, chapo, contenu, date, user_id)
         VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId()]);
+        $dbb->execute([$post->getTitre(),$post->getChapo(),$post->getContenu(),$post->getUserId()]);
     }
     /**
      * Update post
@@ -79,7 +79,7 @@ class Postmodel extends Connectmodel
     {
         $sql = 'UPDATE article SET titre=?,chapo=?,contenu=?,date=CURRENT_TIMESTAMP,user_id=? WHERE id=?';
         $dbb =$this->bdd->prepare($sql);
-        $dbb->execute([$post->gettitre(),$post->getchapo(),$post->getcontenu(),$post->getuserId(),$post->getid()]);
+        $dbb->execute([$post->getTitre(),$post->getChapo(),$post->getContenu(),$post->getUserId(),$post->getId()]);
     }
     /**
      * Remove post
@@ -91,9 +91,9 @@ class Postmodel extends Connectmodel
     public function remove(Article $post)
     {
         $sql = 'DELETE FROM commentaire WHERE article_id=?';
-        $this->bdd->prepare($sql)->execute([$post->getid()]);
+        $this->bdd->prepare($sql)->execute([$post->getId()]);
         $sql1 = 'DELETE FROM article WHERE id=?';
-        $this->bdd->prepare($sql1)->execute([$post->getid()]);
+        $this->bdd->prepare($sql1)->execute([$post->getId()]);
     }
     /**
      * Find one user
@@ -105,7 +105,7 @@ class Postmodel extends Connectmodel
     public function findUser(Article $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
-        $sql->execute([$post->getid()]);
+        $sql->execute([$post->getId()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**

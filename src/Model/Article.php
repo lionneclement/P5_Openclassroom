@@ -66,7 +66,7 @@ class Article extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId()
     {
         return $this->_id;
     }
@@ -75,7 +75,7 @@ class Article extends Valide
      * 
      * @return string
      */
-    public function gettitre()
+    public function getTitre()
     {
         return $this->_titre;
     }
@@ -84,7 +84,7 @@ class Article extends Valide
      * 
      * @return string
      */
-    public function getchapo()
+    public function getChapo()
     {
         return $this->_chapo;
     }/**
@@ -92,7 +92,7 @@ class Article extends Valide
       * 
       * @return string
       */
-    public function getcontenu()
+    public function getContenu()
     {
         return $this->_contenu;
     }
@@ -101,7 +101,7 @@ class Article extends Valide
      * 
      * @return int
      */
-    public function getuserId()
+    public function getUserId()
     {
         return $this->_userId;
     }

@@ -14,7 +14,6 @@ namespace App\Manager;
 
 use App\Manager\Connectmodel;
 use App\Entity\User;
-use App\Entity\Commentaire;
 /**
  * Class for retrieve admin information from the database
  * 
@@ -36,7 +35,7 @@ class Adminmodel extends Connectmodel
     public function roles(User $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE NOT id=?');
-        $sql->execute([$post->getid()]);
+        $sql->execute([$post->getId()]);
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
     /**
@@ -49,7 +48,7 @@ class Adminmodel extends Connectmodel
     public function updateRole(User $post)
     {
         $sql = 'UPDATE user SET role_id=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getroleId(),$post->getid()]);
+        $this->bdd->prepare($sql)->execute([$post->getRoleId(),$post->getId()]);
     }
     /**
      * Delete user
@@ -63,13 +62,13 @@ class Adminmodel extends Connectmodel
         $sql = 'DELETE commentaire.* FROM commentaire INNER JOIN article
         ON article.user_id=? AND commentaire.article_id=article.id';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getid()]);
+        $dbb->execute([$post->getId()]);
         $sql0 = $this->bdd->prepare('DELETE FROM commentaire WHERE user_id=?');
-        $sql0->execute([$post->getid()]);
+        $sql0->execute([$post->getId()]);
         $sql1 =$this->bdd->prepare('DELETE FROM article WHERE user_id=?');
-        $sql1->execute([$post->getid()]);
+        $sql1->execute([$post->getId()]);
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
-        $sql2->execute([$post->getid()]);
+        $sql2->execute([$post->getId()]);
     }
     /**
      * Get one user
@@ -81,7 +80,7 @@ class Adminmodel extends Connectmodel
     public function getUser(User $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
-        $sql->execute([$post->getid()]);
+        $sql->execute([$post->getId()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -95,6 +94,6 @@ class Adminmodel extends Connectmodel
     {
         $sql = 'UPDATE user SET nom=?, prenom=?, email=?  WHERE id=?';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getid()]);
+        $dbb->execute([$post->getNom(),$post->getPrenom(),$post->getEmail(),$post->getId()]);
     }
 }

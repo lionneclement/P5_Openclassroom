@@ -65,7 +65,7 @@ class Contact extends Valide
      * 
      * @return string
      */
-    public function getnom()
+    public function getNom()
     {
         return $this->_nom;
     }
@@ -74,7 +74,7 @@ class Contact extends Valide
      * 
      * @return string
      */
-    public function getprenom()
+    public function getPrenom()
     {
         return $this->_prenom;
     }
@@ -83,7 +83,7 @@ class Contact extends Valide
      * 
      * @return string
      */
-    public function getemail()
+    public function getEmail()
     {
         return $this->_email;
     }
@@ -92,7 +92,7 @@ class Contact extends Valide
      * 
      * @return string
      */
-    public function getmessage()
+    public function getMessage()
     {
         return $this->_message;
     }

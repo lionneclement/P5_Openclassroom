@@ -67,7 +67,7 @@ class User extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId()
     {
         return $this->_id;
     }
@@ -76,7 +76,7 @@ class User extends Valide
      * 
      * @return string
      */
-    public function getnom()
+    public function getNom()
     {
         return $this->_nom;
     }
@@ -85,7 +85,7 @@ class User extends Valide
      * 
      * @return string
      */
-    public function getprenom()
+    public function getPrenom()
     {
         return $this->_prenom;
     }
@@ -94,7 +94,7 @@ class User extends Valide
      * 
      * @return string
      */
-    public function getemail()
+    public function getEmail()
     {
         return $this->_email;
     }
@@ -103,7 +103,7 @@ class User extends Valide
      * 
      * @return string
      */
-    public function getmdp()
+    public function getMdp()
     {
         return $this->_mdp;
     }
@@ -112,7 +112,7 @@ class User extends Valide
      * 
      * @return int
      */
-    public function getroleId()
+    public function getRoleId()
     {
         return $this->_roleId;
     }
