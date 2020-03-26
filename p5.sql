@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 12 mars 2020 à 22:16
+-- Généré le :  jeu. 26 mars 2020 à 14:32
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -25,39 +25,39 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `article`
+-- Structure de la table `comment`
 --
 
-DROP TABLE IF EXISTS `article`;
-CREATE TABLE IF NOT EXISTS `article` (
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE IF NOT EXISTS `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` varchar(255) NOT NULL,
-  `chapo` varchar(255) NOT NULL,
-  `contenu` text NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `date` datetime NOT NULL,
+  `userId` int(11) NOT NULL,
+  `postId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `auteur` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+  KEY `user_id` (`userId`),
+  KEY `article_id` (`postId`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaire`
+-- Structure de la table `post`
 --
 
-DROP TABLE IF EXISTS `commentaire`;
-CREATE TABLE IF NOT EXISTS `commentaire` (
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE IF NOT EXISTS `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `message` text NOT NULL,
-  `statut` tinyint(1) NOT NULL,
-  `date` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `article_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `extract` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `article_id` (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+  KEY `auteur` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -68,17 +68,17 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `role`
 --
 
-INSERT INTO `role` (`id`, `nom`) VALUES
-(1, 'utilisateur'),
-(2, 'editeur'),
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'user'),
+(2, 'editor'),
 (3, 'admin');
 
 -- --------------------------------------------------------
@@ -90,45 +90,45 @@ INSERT INTO `role` (`id`, `nom`) VALUES
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prenom` varchar(255) NOT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `mdp` text NOT NULL,
-  `role_id` int(11) NOT NULL,
+  `password` text NOT NULL,
+  `roleId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `role_id` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+  KEY `role_id` (`roleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `nom`, `prenom`, `email`, `mdp`, `role_id`) VALUES
-(1, 'admin', 'admin', 'admin@gmail.com', '$2y$10$T8vTqe8uKNsrZRbHzr5y7OTmgUu28ehsLK8A81wxR7PeghFWGD7Ry', 3);
+INSERT INTO `user` (`id`, `firstName`, `lastName`, `email`, `password`, `roleId`) VALUES
+(1, 'admin', 'admin', 'admin@gmail.com', '$2y$10$ZA1sDrblM9ccGeLKafk/UemIC1I.DJMpWUJbWW6VrHZtOyrP8MaFS', 3);
 
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `article`
+-- Contraintes pour la table `comment`
 --
-ALTER TABLE `article`
-  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `commentaire`
+-- Contraintes pour la table `post`
 --
-ALTER TABLE `commentaire`
-  ADD CONSTRAINT `commentaire_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `commentaire_ibfk_2` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`);
+ALTER TABLE `post`
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
