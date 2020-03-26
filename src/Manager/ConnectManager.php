@@ -20,7 +20,7 @@ namespace App\Manager;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Connectmodel
+class ConnectManager
 {
     protected $bdd;
     /**

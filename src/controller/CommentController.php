@@ -14,7 +14,6 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Entity\Comment;
-use App\Manager\CommentManager;
 use App\Tools\Session;
 
 /**
@@ -44,7 +43,7 @@ class CommentController extends Controller
     public function findAllComment()
     {
         if (Session::getSession('role') == 3) {
-            $donnes = (new CommentManager)->findAllComment();
+            $donnes = $this->_manaComment->findAllComment();
             return $this->twig->render('/templates/comment/comment.html.twig', ['url'=>'allcomment','comment'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");
@@ -57,7 +56,7 @@ class CommentController extends Controller
     public function findAllInvalideComment()
     {
         if (Session::getSession('role') == 3) {
-            $donnes = (new CommentManager)->findAllInvalideComment();
+            $donnes = $this->_manaComment->findAllInvalideComment();
             return $this->twig->render('/templates/comment/comment.html.twig', ['url'=>'allinvalidecomment','comment'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");
@@ -73,7 +72,7 @@ class CommentController extends Controller
     public function updateComment(int $id,string $url)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            (new CommentManager)->updateComment(new Comment($this->post));
+            $this->_manaComment->updateComment(new Comment($this->post));
             Session::setSession('alert', 'update');
             header("Location: /admin/$url");
             exit;
@@ -91,7 +90,7 @@ class CommentController extends Controller
     public function removeComment(int $id,string $url)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            (new CommentManager)->removeComment(new Comment(['id'=>$id]));
+            $this->_manaComment->removeComment(new Comment(['id'=>$id]));
             Session::setSession('alert', 'remove');
             header("Location: /admin/$url");
             exit;
@@ -108,7 +107,7 @@ class CommentController extends Controller
         if (!empty(Session::getSession('id'))) {
             if (!empty($this->post['g-recaptcha-response']) && $this->recaptcha($this->post['g-recaptcha-response'])) {
                 $entitypost=new Comment(['message'=>$this->post['content'],'userId'=>Session::getSession('id'),'postId'=>$this->post['id']]);
-                (new CommentManager)->addComment($entitypost);
+                $this->_manaComment->addComment($entitypost);
                 Session::setSession('alert', 'success');
             } else {
                 Session::setSession('alert', 'reCAPTCHA');   

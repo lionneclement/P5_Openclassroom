@@ -25,7 +25,7 @@ use App\Tools\Session;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Admincontroller extends Controller
+class UserController extends Controller
 {
     /**
      * Init manager and session
@@ -35,18 +35,18 @@ class Admincontroller extends Controller
         parent::__construct();
     }
     /**
-     * Find all user
+     * Find all user and update role
      * 
      * @return void
      */
-    public function findAllUser()
+    public function findAllandUpdateRoleUser()
     {
         if (Session::getSession('role') == 3) {
             if (!empty($this->post)) {
-                $this->_modelAdmin->updateRole(new User($this->post));
+                $this->_manaUser->updateRole(new User($this->post));
                 Session::setSession('alert', 'update');
             }
-            $donnes = $this->_modelAdmin->roles(new User(['id'=>Session::getSession('id')]));
+            $donnes = $this->_manaUser->findAllUserWithoutUs(new User(['id'=>Session::getSession('id')]));
             return $this->twig->render('/templates/user/user.html.twig', ['user'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");
@@ -61,7 +61,7 @@ class Admincontroller extends Controller
     public function deleteUser(int $id)
     {
         if (Session::getSession('role') == 3 && !empty($id)) {
-            $this->_modelAdmin->deleteUser(new User(['id'=>$id]));
+            $this->_manaUser->deleteUser(new User(['id'=>$id]));
             Session::setSession('alert', 'delete');
             header("Location:/admin/roles");
             exit;
@@ -78,10 +78,10 @@ class Admincontroller extends Controller
         if (!empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
                 $this->post['id']=Session::getSession('id');
-                $this->_modelAdmin->updateUser(new User(($this->post)));
+                $this->_manaUser->updateUser(new User(($this->post)));
                 Session::setSession('alert', 'update');
             }
-            $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
+            $donnes = $this->_manaUser->findUserWithId(new User(['id'=>Session::getSession('id')]));
             return $this->twig->render('/templates/user/updateuser.html.twig', ['user'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");

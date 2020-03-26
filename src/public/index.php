@@ -14,11 +14,12 @@ require '../../vendor/autoload.php';
 
 session_start();
 
-use App\Controller\Admincontroller;
+use App\Controller\UserController;
 use App\Controller\Postcontroller;
 use App\Controller\AuthentificationController;
 use App\Controller\CommentController;
 use App\Controller\PasswordController;
+use App\Controller\HomeController;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../');
@@ -27,7 +28,7 @@ $router = new AltoRouter();
 
 $router->map(
     'GET|POST', '/', function () {
-        (new Postcontroller)->home();
+        (new HomeController)->home();
     }
 );
 $router->map(
@@ -52,7 +53,7 @@ $router->map(
 );
 $router->map(
     'GET', '/post/removepost/[i:id]', function ($id) {
-        (new Postcontroller)->remove($id);
+        (new Postcontroller)->removePost($id);
     }
 );
 $router->map(
@@ -72,17 +73,17 @@ $router->map(
 );
 $router->map(
     'GET|POST', '/admin/roles', function () {
-        (new Admincontroller)->findAllUser();
+        (new UserController)->findAllandUpdateRoleUser();
     }
 );
 $router->map(
     'GET', '/admin/deleteuser/[i:id]', function ($id) {
-        (new Admincontroller)->deleteUser($id);
+        (new UserController)->deleteUser($id);
     }
 );
 $router->map(
     'GET|POST', '/admin/updateuser', function () {
-        (new Admincontroller)->updateUser();
+        (new UserController)->updateUser();
     }
 );
 //Route for comment

@@ -12,9 +12,12 @@
  */
 namespace App\Controller;
 
-use App\Manager\AuthentificationModel;
-use App\Manager\Adminmodel;
-use App\Manager\Postmodel;
+use App\Manager\AuthentificationManager;
+use App\Manager\UserManager;
+use App\Manager\PostManager;
+use App\Manager\CommentManager;
+use App\Manager\PasswordManager;
+use App\Manager\ConnectManager;
 use App\Tools\Twig;
 /**
  * Class for managing all controller file
@@ -33,9 +36,12 @@ abstract class Controller
     public function __construct()
     {
         $this->twig = new Twig();
-        $this->_modelPost = new Postmodel;
-        $this->_modelAdmin = new Adminmodel;
-        $this->_modelAuth = new AuthentificationModel;
+        $this->_manaPost = new PostManager;
+        $this->_manaUser = new UserManager;
+        $this->_manaAuth = new AuthentificationManager;
+        $this->_manaComment = new CommentManager;
+        $this->_manaPassword = new PasswordManager;
+        $this->_manaConnect = new ConnectManager;
         $this->post = $this->filterPost();
     }
     /**

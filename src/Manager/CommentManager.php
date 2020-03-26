@@ -14,7 +14,7 @@ namespace App\Manager;
 
 use App\Entity\Post;
 use App\Entity\Comment;
-use App\Manager\Connectmodel;
+use App\Manager\ConnectManager;
 /** 
  * The file is for CRUD comment in the database
  * 
@@ -27,7 +27,7 @@ use App\Manager\Connectmodel;
  * @link     http://localhost/
  */
 
-class CommentManager extends Connectmodel
+class CommentManager extends ConnectManager
 {
     /**
      * Find all post comment

@@ -42,9 +42,9 @@ class AuthentificationController extends Controller
     {
         if (empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAuth->check(new User($this->post));
+                $donnes = $this->_manaAuth->check(new User($this->post));
                 if (empty($donnes)) {
-                    $this->_modelAuth->register(new User($this->post));
+                    $this->_manaAuth->register(new User($this->post));
                     Session::setSession('alert', 'success');
                 } else {
                     Session::setSession('alert', 'already');
@@ -63,7 +63,7 @@ class AuthentificationController extends Controller
     {
         if (empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAuth->check(new User($this->post));
+                $donnes = $this->_manaAuth->check(new User($this->post));
                 if (empty($donnes)) {
                     Session::setSession('alert', 'email');
                 } elseif (password_verify($this->post['password'], $donnes->password)) {

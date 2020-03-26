@@ -12,7 +12,7 @@
  */
 namespace App\Manager;
 
-use App\Manager\Connectmodel;
+use App\Manager\ConnectManager;
 use App\Entity\User;
 /**
  * Class for retrieve admin information from the database
@@ -23,7 +23,7 @@ use App\Entity\User;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Adminmodel extends Connectmodel
+class UserManager extends ConnectManager
 {
     /**
      * Get all user without us
@@ -32,11 +32,34 @@ class Adminmodel extends Connectmodel
      * 
      * @return object
      */
-    public function roles(User $post)
+    public function findAllUserWithoutUs(User $post)
     {
         $sql = $this->bdd->prepare('SELECT * FROM user WHERE NOT id=?');
         $sql->execute([$post->getId()]);
         return $sql->fetchAll(\PDO::FETCH_OBJ);
+    }
+    /**
+     * Find all user
+     * 
+     * @return object
+     */
+    public function findAllUser()
+    {
+        $sql = $this->bdd->query('SELECT * FROM user');
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
+    }
+    /**
+     * Find one user
+     * 
+     * @param array $post it's user data
+     * 
+     * @return object
+     */
+    public function findUserWithId(User $post)
+    {
+        $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
+        $sql->execute([$post->getId()]);
+        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Update role
@@ -61,19 +84,6 @@ class Adminmodel extends Connectmodel
     {
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getId()]);
-    }
-    /**
-     * Get one user
-     * 
-     * @param array $post it's user data
-     * 
-     * @return object
-     */
-    public function getUser(User $post)
-    {
-        $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
-        $sql->execute([$post->getId()]);
-        return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
      * Update user

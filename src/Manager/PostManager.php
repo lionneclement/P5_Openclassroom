@@ -13,7 +13,7 @@
 namespace App\Manager;
 
 use App\Entity\Post;
-use App\Manager\Connectmodel;
+use App\Manager\ConnectManager;
 /** 
  * The file is for retrieve post information from the database
  * 
@@ -25,14 +25,14 @@ use App\Manager\Connectmodel;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Postmodel extends Connectmodel
+class PostManager extends ConnectManager
 {
     /**
      * Get all posts
      * 
      * @return object
      */
-    public function posts()
+    public function findAllpost()
     {
         $sql = $this->bdd->query('SELECT * FROM post ORDER BY date DESC');
         return $sql->fetchAll(\PDO::FETCH_OBJ);
@@ -44,7 +44,7 @@ class Postmodel extends Connectmodel
      * 
      * @return object
      */
-    public function post(Post $post)
+    public function findOnePost(Post $post)
     {
         $sql = 'SELECT post.*, user.lastName FROM post
         INNER JOIN user ON 
@@ -60,7 +60,7 @@ class Postmodel extends Connectmodel
      * 
      * @return void
      */
-    public function add(Post $post):void
+    public function addPost(Post $post):void
     {
         $sql = 'INSERT INTO post (id, title, extract, content, date, userId)
         VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
@@ -74,7 +74,7 @@ class Postmodel extends Connectmodel
      * 
      * @return void
      */
-    public function update(Post $post):void
+    public function updatePost(Post $post):void
     {
         $sql = 'UPDATE post SET title=?,extract=?,content=?,date=CURRENT_TIMESTAMP,userId=? WHERE id=?';
         $dbb =$this->bdd->prepare($sql);
@@ -87,32 +87,9 @@ class Postmodel extends Connectmodel
      * 
      * @return void
      */
-    public function remove(Post $post):void
+    public function removePost(Post $post):void
     {
         $sql1 = 'DELETE FROM post WHERE id=?';
         $this->bdd->prepare($sql1)->execute([$post->getId()]);
-    }
-    /**
-     * Find one user
-     * 
-     * @param array $post it's user data
-     * 
-     * @return object
-     */
-    public function findUser(Post $post)
-    {
-        $sql = $this->bdd->prepare('SELECT * FROM user WHERE id=?');
-        $sql->execute([$post->getId()]);
-        return $sql->fetch(\PDO::FETCH_OBJ);
-    }
-    /**
-     * Find all user
-     * 
-     * @return object
-     */
-    public function findAllUser()
-    {
-        $sql = $this->bdd->query('SELECT * FROM user');
-        return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
 }

@@ -12,7 +12,7 @@
  */
 namespace App\Manager;
 
-use App\Manager\Connectmodel;
+use App\Manager\ConnectManager;
 use App\Entity\User;
 /**
  * Class is for update password for the database
@@ -23,7 +23,7 @@ use App\Entity\User;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class PasswordManager extends Connectmodel
+class PasswordManager extends ConnectManager
 {
     /**
      * Update password

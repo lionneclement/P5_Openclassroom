@@ -14,7 +14,6 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Entity\User;
-use App\Manager\PasswordManager;
 use App\Tools\Session;
 /**
  * Class is for CRUD password
@@ -43,9 +42,9 @@ class PasswordController extends Controller
     {
         if (!empty(Session::getSession('id'))) {
             if (!empty($this->post)) {
-                $donnes = $this->_modelAdmin->getUser(new User(['id'=>Session::getSession('id')]));
+                $donnes = $this->_manaUser->findUserWithId(new User(['id'=>Session::getSession('id')]));
                 if (password_verify($this->post['oldPassword'], $donnes->password)) {
-                    (new PasswordManager)->updatePassword(new User(['password'=>$this->post['newPassword'],'id'=>Session::getSession('id')]));
+                    $this->_manaPassword->updatePassword(new User(['password'=>$this->post['newPassword'],'id'=>Session::getSession('id')]));
                     Session::setSession('alert', 'success');
                 } else {
                     Session::setSession('alert', 'password');
@@ -63,7 +62,7 @@ class PasswordController extends Controller
     public function sendLinkForResetPassword()
     {
         if (!empty($this->post)) {
-            $donnes = $this->_modelAuth->check(new User(['email'=>$this->post['email']]));
+            $donnes = $this->_manaAuth->check(new User(['email'=>$this->post['email']]));
             if (empty($donnes)) {
                 Session::setSession('alert', 'emailError');
             } else {
@@ -96,7 +95,7 @@ class PasswordController extends Controller
         if (!empty(Session::getSession('reset')) && password_verify($url, Session::getSession('reset'))) {
             if (!empty($this->post)) {
                 $entitypost=new User(['password'=>$this->post['newPassword'],'id'=>$id]);
-                (new PasswordManager)->updatePassword($entitypost);
+                $this->_manaPassword->updatePassword($entitypost);
                 Session::deleteSession('reset');
                 Session::setSession('alert', 'changePassword');
                 header("Location:/auth/login");

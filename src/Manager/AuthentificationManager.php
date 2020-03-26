@@ -12,7 +12,7 @@
  */
 namespace App\Manager;
 
-use App\Manager\Connectmodel;
+use App\Manager\ConnectManager;
 use App\Entity\User;
 /**
  * Class for retrieve authentification information from the database
@@ -23,7 +23,7 @@ use App\Entity\User;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class AuthentificationModel extends Connectmodel
+class AuthentificationManager extends ConnectManager
 {
     /**
      * Check if the user exist
