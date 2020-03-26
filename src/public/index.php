@@ -20,6 +20,7 @@ use App\Controller\AuthentificationController;
 use App\Controller\CommentController;
 use App\Controller\PasswordController;
 use App\Controller\HomeController;
+use App\Controller\ErrorController;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../');
@@ -134,5 +135,5 @@ $router->map(
 if (is_array($match) && is_callable($match['target'])) {
     call_user_func_array($match['target'], $match['params']); 
 } else {
-    return (new Postcontroller)->error404();
+    return (new ErrorController)->error404();
 }
