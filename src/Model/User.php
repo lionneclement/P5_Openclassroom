@@ -11,7 +11,6 @@
  * @link     http://localhost/
  */
 namespace App\Entity;
-use App\Entity\Valide;
 /** 
  * Getter and Setter for user
  * 
@@ -23,27 +22,23 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class User extends Valide
+class User
 {
     private $_id;
-    private $_nom;
-    private $_prenom;
+    private $_lastName;
+    private $_firstName;
     private $_email;
-    private $_mdp;
+    private $_password;
     private $_roleId;
     /**
      * Call hydrate
      * 
-     * @param array  $data all data
-     * @param string $post just an string 
+     * @param array $data all data
      */
-    public function __construct(array $data =[],string $post=null)
+    public function __construct(array $data =[])
     {
         if (!empty($data)) {
             $this->hydrate($data);
-            if ($post) {
-                $this->isValid($data);
-            }
         }
     }
     /**
@@ -51,9 +46,9 @@ class User extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -67,52 +62,52 @@ class User extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId():int
     {
         return $this->_id;
     }
     /**
-     * Get nom
+     * Get lastName
      * 
      * @return string
      */
-    public function getnom()
+    public function getLastName():string
     {
-        return $this->_nom;
+        return $this->_lastName;
     }
     /**
-     * Get prenom
+     * Get firstName
      * 
      * @return string
      */
-    public function getprenom()
+    public function getFirstName():string
     {
-        return $this->_prenom;
+        return $this->_firstName;
     }
     /**
      * Get email
      * 
      * @return string
      */
-    public function getemail()
+    public function getEmail():string
     {
         return $this->_email;
     }
     /**
-     * Get mdp
+     * Get password
      * 
      * @return string
      */
-    public function getmdp()
+    public function getPassword():string
     {
-        return $this->_mdp;
+        return $this->_password;
     }
     /**
      * Get role id
      * 
      * @return int
      */
-    public function getroleId()
+    public function getRoleId():int
     {
         return $this->_roleId;
     }
@@ -122,9 +117,9 @@ class User extends Valide
      * 
      * @param Integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -132,29 +127,29 @@ class User extends Valide
         }
     }
     /**
-     * Set nom
+     * Set lastName
      * 
-     * @param String $nom data
+     * @param String $lastName data
      * 
-     * @return null
+     * @return void
      */
-    public function setNom($nom)
+    public function setLastName($lastName):void
     {
-        if (is_string($nom) && strlen($nom) <= 30) {
-            $this->_nom = $nom;
+        if (is_string($lastName) && strlen($lastName) <= 30) {
+            $this->_lastName = $lastName;
         }
     }
     /**
-     * Set prenom
+     * Set firstName
      * 
-     * @param String $prenom data
+     * @param String $firstName data
      * 
-     * @return null
+     * @return void
      */
-    public function setPrenom($prenom)
+    public function setFirstName($firstName):void
     {
-        if (is_string($prenom) && strlen($prenom) <= 30) {
-            $this->_prenom = $prenom;
+        if (is_string($firstName) && strlen($firstName) <= 30) {
+            $this->_firstName = $firstName;
         }
     }
     /**
@@ -162,25 +157,25 @@ class User extends Valide
      * 
      * @param String $email data
      * 
-     * @return null
+     * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email):void
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
               $this->_email = $email;
         }
     }
     /**
-     * Set mdp
+     * Set password
      * 
-     * @param Strign $mdp data
+     * @param Strign $password data
      * 
-     * @return null
+     * @return void
      */
-    public function setMdp($mdp)
+    public function setPassword($password):void
     {
-        if (is_string($mdp) && strlen($mdp)>=13) {
-              $this->_mdp = password_hash($mdp, PASSWORD_DEFAULT);
+        if (is_string($password) && strlen($password)>=13) {
+              $this->_password = password_hash($password, PASSWORD_DEFAULT);
         }
     }
     /**
@@ -188,9 +183,9 @@ class User extends Valide
      * 
      * @param String $roleId data
      * 
-     * @return null
+     * @return void
      */
-    public function setRoleId($roleId)
+    public function setRoleId($roleId):void
     {
         $roleId = (int) $roleId;
         if ($roleId >= 1 && $roleId <= 3) {

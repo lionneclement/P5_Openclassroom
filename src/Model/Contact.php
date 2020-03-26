@@ -11,7 +11,6 @@
  * @link     http://localhost/
  */
 namespace App\Entity;
-use App\Entity\Valide;
 /** 
  * Getter and Setter for contact
  * 
@@ -23,25 +22,21 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Contact extends Valide
+class Contact
 {
-    private $_nom;
-    private $_prenom;
+    private $_lastName;
+    private $_firstName;
     private $_email;
     private $_message;
     /**
      * Call hydrate
      * 
-     * @param array  $data all data
-     * @param string $post just an string 
+     * @param array $data all data
      */
-    public function __construct(array $data =[],string $post=null)
+    public function __construct(array $data =[])
     {
         if (!empty($data)) {
             $this->hydrate($data);
-            if ($post) {
-                $this->isValid($data);
-            }
         }
     }
     /**
@@ -49,9 +44,9 @@ class Contact extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -61,29 +56,29 @@ class Contact extends Valide
         }
     }
     /**
-     * Get nom
+     * Get lastName
      * 
      * @return string
      */
-    public function getnom()
+    public function getLastName():string
     {
-        return $this->_nom;
+        return $this->_lastName;
     }
     /**
-     * Get prenom
+     * Get firstName
      * 
      * @return string
      */
-    public function getprenom()
+    public function getFirstName():string
     {
-        return $this->_prenom;
+        return $this->_firstName;
     }
     /**
      * Get email
      * 
      * @return string
      */
-    public function getemail()
+    public function getEmail():string
     {
         return $this->_email;
     }
@@ -92,36 +87,36 @@ class Contact extends Valide
      * 
      * @return string
      */
-    public function getmessage()
+    public function getMessage():string
     {
         return $this->_message;
     }
 
     
     /**
-     * Set nom
+     * Set lastName
      * 
-     * @param String $nom data
+     * @param String $lastName data
      * 
-     * @return null
+     * @return void
      */
-    public function setNom($nom)
+    public function setLastName($lastName):void
     {
-        if (is_string($nom) && strlen($nom) <= 30) {
-            $this->_nom = $nom;
+        if (is_string($lastName) && strlen($lastName) <= 30) {
+            $this->_lastName = $lastName;
         }
     }
     /**
-     * Set prenom
+     * Set firstName
      * 
-     * @param String $prenom data
+     * @param String $firstName data
      * 
-     * @return null
+     * @return void
      */
-    public function setPrenom($prenom)
+    public function setFirstName($firstName):void
     {
-        if (is_string($prenom) && strlen($prenom) <= 30) {
-            $this->_prenom = $prenom;
+        if (is_string($firstName) && strlen($firstName) <= 30) {
+            $this->_firstName = $firstName;
         }
     }
     /**
@@ -129,9 +124,9 @@ class Contact extends Valide
      * 
      * @param String $email data
      * 
-     * @return null
+     * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email):void
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
               $this->_email = $email;
@@ -142,9 +137,9 @@ class Contact extends Valide
      * 
      * @param String $message data
      * 
-     * @return null
+     * @return void
      */
-    public function setMessage($message)
+    public function setMessage($message):void
     {
         if (is_string($message)) {
             $this->_message = $message;

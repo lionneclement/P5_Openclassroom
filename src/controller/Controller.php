@@ -12,12 +12,13 @@
  */
 namespace App\Controller;
 
-use App\Model\AuthentificationModel;
-use App\Model\Adminmodel;
-use App\Model\Postmodel;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use App\Flash\Flash;
+use App\Manager\AuthentificationManager;
+use App\Manager\UserManager;
+use App\Manager\PostManager;
+use App\Manager\CommentManager;
+use App\Manager\PasswordManager;
+use App\Manager\ConnectManager;
+use App\Tools\Twig;
 /**
  * Class for managing all controller file
  * 
@@ -30,136 +31,57 @@ use App\Flash\Flash;
 abstract class Controller
 {
     /**
-     * Init model and session
+     * Init manager
      */
     public function __construct()
     {
-        $this->_modelPost = new Postmodel;
-        $this->_modelAdmin = new Adminmodel;
-        $this->_modelAuth = new AuthentificationModel;
-        $this->superGlobal();
-        $this->twigEnvi();
-        $this->filterPost();
-    }
-    /**
-     * Init twig
-     *
-     * @return void
-     */
-    public function twigEnvi()
-    {
-        $loader = new FilesystemLoader('../../src/view');
-        $this->twigenvi = new Environment($loader);
-    }
-    /**
-     * AddGlobal in twig
-     *
-     * @return void
-     */
-    public function twigFlash()
-    {
-        if (!empty($this->getSession('alert'))) {
-            $alert = (new Flash())->getFlash();
-            foreach ($alert as $key=>$value) {
-                $this->twigenvi->addGlobal('alert_'.$key, $value);
-            }
-        }
-        $sessionrole = $this->getSession('role');
-        if (!empty($sessionrole)) {
-            $this->twigenvi->addGlobal('user_access', $sessionrole);
-        }
-    }
-    /**
-     * Render the twig file with the parameters
-     *
-     * @param string $twigFile   The twig file
-     * @param array  $parameters The parameters
-     *
-     * @return void
-     */
-    public function render(string $twigFile, array $parameters = [])
-    {
-        $this->twigFlash();
-        try {
-            print_r($this->twigenvi->render($twigFile, $parameters));
-        } catch (\Exception $e) {
-            return $e;
-        }
+        $this->twig = new Twig();
+        $this->_manaPost = new PostManager;
+        $this->_manaUser = new UserManager;
+        $this->_manaAuth = new AuthentificationManager;
+        $this->_manaComment = new CommentManager;
+        $this->_manaPassword = new PasswordManager;
+        $this->_manaConnect = new ConnectManager;
+        $this->post = $this->filterPost();
     }
     /**
      * Render post secure
      *
-     * @return array
+     * @return array|null
      */
     public function filterPost()
     {
         $args = [
             'id' =>FILTER_SANITIZE_NUMBER_INT,
-            'oldpassword'=>FILTER_SANITIZE_STRING,
-            'newpassword'=>FILTER_SANITIZE_STRING,
-            'mdp'=>FILTER_SANITIZE_STRING,
+            'oldPassword'=>FILTER_SANITIZE_STRING,
+            'newPassword'=>FILTER_SANITIZE_STRING,
+            'password'=>FILTER_SANITIZE_STRING,
             'email'=> FILTER_SANITIZE_EMAIL,
-            'nom'=>FILTER_SANITIZE_STRING,
-            'prenom'=>FILTER_SANITIZE_STRING,
+            'firstName'=>FILTER_SANITIZE_STRING,
+            'lastName'=>FILTER_SANITIZE_STRING,
             'g-recaptcha-response'=>FILTER_SANITIZE_STRING,
             'message'=>FILTER_SANITIZE_STRING,
-            'contenu'=>FILTER_SANITIZE_STRING,
-            'titre'=>FILTER_SANITIZE_STRING,
-            'chapo'=>FILTER_SANITIZE_STRING,
+            'content'=>FILTER_SANITIZE_STRING,
+            'title'=>FILTER_SANITIZE_STRING,
+            'extract'=>FILTER_SANITIZE_STRING,
             'userId'=>FILTER_SANITIZE_NUMBER_INT,
-            'statut'=>FILTER_SANITIZE_NUMBER_INT,
+            'status'=>FILTER_SANITIZE_NUMBER_INT,
             'roleId'=>FILTER_SANITIZE_NUMBER_INT
         ];
         $this->post = filter_input_array(INPUT_POST, $args);
         if ($this->post !== null) {
             $this->post = array_filter($this->post, 'strlen');
         }
-    }
-    /**
-     * Setter session
-     *
-     * @param string           $key   The key
-     * @param array|string|int $value The value
-     * 
-     * @return null
-     */
-    public function setSession(string $key, $value)
-    {
-        $_SESSION[$key]=$value;
-    }
-    /**
-     * Getter session
-     *
-     * @param string $key The key
-     * 
-     * @return null|array
-     */
-    public function getSession(string $key)
-    {
-        if (!empty($_SESSION[$key])) {
-            return $_SESSION[$key];
-        }
-        return null;   
-    }
-    /**
-     * Delete session
-     *
-     * @param string $key The key
-     * 
-     * @return null
-     */
-    public function deleteSession(string $key)
-    {
-        unset($_SESSION[$key]);
+        return $this->post;
     }
     /**
      * Setup serverADDR
      *
-     * @return null
+     * @return string
      */
-    public function superGlobal()
+    public function superGlobal():string
     {
-        $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
+        return filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
     /**
      * Init recaptcha
@@ -168,12 +90,11 @@ abstract class Controller
      * 
      * @return bool
      */
-    public function recaptcha(string $parameters)
+    public function recaptcha(string $parameters):bool
     {
         $recaptcha = new \ReCaptcha\ReCaptcha(getenv('RECAPTCHA'));
         $resp = $recaptcha->setExpectedHostname('localhost')
-            ->verify($parameters, $this->serverADDR);
-        (new Flash())->setFlash(['reCAPTCHA'=>'reCAPTCHA']);
+            ->verify($parameters, $this->superGlobal());
         return $resp->isSuccess();
     }
     /**
@@ -183,7 +104,7 @@ abstract class Controller
      * 
      * @return string
      */
-    public function randomWord(int $numberCharacter)
+    public function randomWord(int $numberCharacter):string
     {
         $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
         shuffle($seed);
@@ -192,5 +113,17 @@ abstract class Controller
             $rand .= $seed[$k];
         }
         return $rand;
+    }
+    /**
+     * Use header function
+     * 
+     * @param string $url the url
+     * 
+     * @return void
+     */
+    public function redirect(string $url)
+    {
+        header("Location:$url");
+        exit;
     }
 }

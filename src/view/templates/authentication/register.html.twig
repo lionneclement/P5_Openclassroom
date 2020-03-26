@@ -4,33 +4,14 @@
 <section class='pt-5 mt-5'> 
   <div class="container">
     <div class='text-center'>
-      {% if alert_success %}
+      {% if alert == "success" %}
       <div class="alert alert-success" role="alert">
         Votre compte viens d'être crée vous pouvez vous connecter.
       </div
-      {% elseif alert_already %}
+      {% endif %}
+      {% if alert == "already" %}
         <div class="alert alert-danger" role="alert">
           Ce compte exite déjà.
-        </div>
-      {% endif %}
-      {% if alert_email %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un email valide
-        </div>
-      {% endif %}
-      {% if alert_mdp %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un mot de passe de plus de 13 caractère
-        </div>
-      {% endif %}
-      {% if alert_nom %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un nom valide
-        </div>
-      {% endif %}
-      {% if alert_prenom %}
-        <div class="alert alert-danger" role="alert">
-          Rentré un prénom valide
         </div>
       {% endif %}
     </div>
@@ -39,14 +20,14 @@
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Nom</label>
-        <input type="name" name="nom" class="form-control" id="FormControlInput1" required>
+        <input type="name" name="lastName" class="form-control" id="FormControlInput1" required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput2">Prénom</label>
-        <input type="name" name="prenom" class="form-control" id="FormControlInput2" required>
+        <input type="name" name="firstName" class="form-control" id="FormControlInput2" required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
@@ -60,7 +41,7 @@
       </div>
       <div class="col-6">
         <label for="FormControlInput4">Mot de passe</label>
-        <input type="password" name="mdp" class="form-control" id="FormControlInput4" minlength="13" required>
+        <input type="password" name="password" class="form-control" id="FormControlInput4" minlength="13" required>
         <div class="invalid-feedback">
           Ce champ est obligatoire et doit comporter 13 caractères minimums.
         </div>

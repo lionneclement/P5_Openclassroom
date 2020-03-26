@@ -1,6 +1,6 @@
 <?php
 /** 
- * Getter and Setter for article
+ * Getter and Setter for post
  * 
  * PHP version 7.2.18
  * 
@@ -11,9 +11,8 @@
  * @link     http://localhost/
  */
 namespace App\Entity;
-use App\Entity\Valide;
 /** 
- * Getter and Setter for article
+ * Getter and Setter for post
  * 
  * PHP version 7.2.18
  * 
@@ -23,26 +22,22 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Article extends Valide
+class Post
 {
     private $_id;
-    private $_titre;
-    private $_chapo;
-    private $_contenu;
+    private $_title;
+    private $_extract;
+    private $_content;
     private $_userId;
     /**
      * Call hydrate
      * 
-     * @param array  $data all data
-     * @param string $post just an string 
+     * @param array $data all data
      */
-    public function __construct(array $data =[],string $post=null)
+    public function __construct(array $data =[])
     {
         if (!empty($data)) {
             $this->hydrate($data);
-            if ($post) {
-                $this->isValid($data);
-            }
         }
     }
     /**
@@ -50,9 +45,9 @@ class Article extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -66,7 +61,7 @@ class Article extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId():int
     {
         return $this->_id;
     }
@@ -75,33 +70,33 @@ class Article extends Valide
      * 
      * @return string
      */
-    public function gettitre()
+    public function getTitle():string
     {
-        return $this->_titre;
+        return $this->_title;
     }
     /**
-     * Get chapo
+     * Get extract
      * 
      * @return string
      */
-    public function getchapo()
+    public function getExtract():string
     {
-        return $this->_chapo;
+        return $this->_extract;
     }/**
       * Get content
       * 
       * @return string
       */
-    public function getcontenu()
+    public function getContent():string
     {
-        return $this->_contenu;
+        return $this->_content;
     }
     /**
      * Get user id
      * 
      * @return int
      */
-    public function getuserId()
+    public function getUserId():int
     {
         return $this->_userId;
     }
@@ -110,9 +105,9 @@ class Article extends Valide
      * 
      * @param integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -122,40 +117,40 @@ class Article extends Valide
     /**
      * Set title
      * 
-     * @param String $titre data
+     * @param String $title data
      * 
-     * @return null
+     * @return void
      */
-    public function setTitre($titre)
+    public function setTitle($title):void
     {
-        if (is_string($titre) && strlen($titre) <= 30) {
-            $this->_titre = $titre;
+        if (is_string($title) && strlen($title) <= 30) {
+            $this->_title = $title;
         }
     }
     /**
-     * Set chapo
+     * Set extract
      * 
-     * @param String $chapo data
+     * @param String $extract data
      * 
-     * @return null
+     * @return void
      */
-    public function setChapo($chapo)
+    public function setExtract($extract):void
     {
-        if (is_string($chapo) && strlen($chapo) <= 255) {
-            $this->_chapo = $chapo;
+        if (is_string($extract) && strlen($extract) <= 255) {
+            $this->_extract = $extract;
         }
     }
     /**
-     * Set Contenu
+     * Set content
      * 
-     * @param String $contenu data
+     * @param String $content data
      * 
-     * @return null
+     * @return void
      */
-    public function setContenu($contenu)
+    public function setContent($content):void
     {
-        if (is_string($contenu)) {
-            $this->_contenu = $contenu;
+        if (is_string($content)) {
+            $this->_content = $content;
         }
     }
     /**
@@ -163,9 +158,9 @@ class Article extends Valide
      * 
      * @param integer $userId data
      * 
-     * @return null
+     * @return void
      */
-    public function setUserId($userId)
+    public function setUserId($userId):void
     {
         $userId = (int) $userId;
         if ($userId > 0) {

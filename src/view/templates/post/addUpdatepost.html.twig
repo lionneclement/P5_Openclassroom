@@ -4,54 +4,35 @@
 <section> 
   <div class="container py-5 mt-5">
     <h1 class="text-center">Article</h1>
-    {% if alert_success %}
+    {% if alert == "success_add" %}
       <div class="alert alert-success" role="alert">
-        {% if url == 'addpost' %}
-          L'article viens d'être créer
-        {% else %}
-          La modification à été faite
-        {% endif %}
+          L'article viens d'être créer.
       </div>
     {% endif %}
-    {% if alert_titre %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un titre valide
-      </div>
-    {% endif %}
-    {% if alert_chapo %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un chapo valide
-      </div>
-    {% endif %}
-    {% if alert_contenu %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un contenu valide
-      </div>
-    {% endif %}
-    {% if alert_userId %}
-      <div class="alert alert-danger" role="alert">
-        Rentré un userid valide
+    {% if alert == "success_update" %}
+      <div class="alert alert-success" role="alert">
+          La modification à été faite.
       </div>
     {% endif %}
     <form method="post" action="/post/{{url}}" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Titre</label>
-        <input type="nom" name="titre" class="form-control" id="FormControlInput1" value='{{donnes.titre}}' required>
+        <input type="text" name="title" class="form-control" id="FormControlInput1" value='{{donnes.title}}' required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput2">Chapo</label>
-        <input type="prenom" name="chapo" class="form-control" id="FormControlInput2" value='{{donnes.chapo}}' required>
+        <input type="text" name="extract" class="form-control" id="FormControlInput2" value='{{donnes.extract}}' required>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
       </div>
       <div class="col-6">
         <label for="FormControlInput3">Contenu</label>
-        <textarea class="form-control" type="contenu" name="contenu" id="FormControlInput3" required>{{donnes.contenu}}</textarea>
+        <textarea class="form-control" type="text" name="content" id="FormControlInput3" required>{{donnes.content}}</textarea>
         <div class="invalid-feedback">
           Ce champ est obligatoire.
         </div>
@@ -59,11 +40,11 @@
       <div class="col-6">
         <label for="FormControlInput4">Auteur</label>
         <select class="custom-select" id="FormControlInput4" name="userId" required>
-          {% for user in Auteur %}
+          {% for user in users %}
             {% if select == user.id %}
-              <option value={{user.id}} selected>{{user.nom}}</option>
+              <option value={{user.id}} selected>{{user.lastName}}</option>
             {% else %}
-              <option value={{user.id}}>{{user.nom}}</option>
+              <option value={{user.id}}>{{user.lastName}}</option>
             {% endif %}
           {% endfor %}
         </select>

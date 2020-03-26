@@ -4,26 +4,26 @@
  * 
  * PHP version 7.2.18
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  Manager
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-namespace App\Model;
+namespace App\Manager;
 
-use App\Model\Connectmodel;
+use App\Manager\ConnectManager;
 use App\Entity\User;
 /**
  * Class for retrieve authentification information from the database
  * 
- * @category Model
- * @package  Model
+ * @category Manager
+ * @package  Manager
  * @author   Clement <lionneclement@gmail.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class AuthentificationModel extends Connectmodel
+class AuthentificationManager extends ConnectManager
 {
     /**
      * Check if the user exist
@@ -35,7 +35,7 @@ class AuthentificationModel extends Connectmodel
     public function check(User $post)
     {
         $sql = $this->bdd->prepare("SELECT * FROM user WHERE email=?");
-        $sql->execute([$post->getemail()]);
+        $sql->execute([$post->getEmail()]);
         return $sql->fetch(\PDO::FETCH_OBJ);
     }
     /**
@@ -43,25 +43,13 @@ class AuthentificationModel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function register(User $post)
+    public function register(User $post):void
     {
-        $sql = 'INSERT INTO user (id, nom, prenom, email, mdp, role_id) 
+        $sql = 'INSERT INTO user (id, lastName, firstName, email, password, roleId) 
     VALUES (NULL,?,?,?,?,1)';
         $dbb = $this->bdd->prepare($sql);
-        $dbb->execute([$post->getnom(),$post->getprenom(),$post->getemail(),$post->getmdp()]);
-    }
-    /**
-     * Update password
-     * 
-     * @param array $post it's user data
-     * 
-     * @return null
-     */
-    public function updatePassword(User $post)
-    {
-        $sql = 'UPDATE user SET mdp=? WHERE id=?';
-        $this->bdd->prepare($sql)->execute([$post->getmdp(),$post->getid()]);
+        $dbb->execute([$post->getLastName(),$post->getFirstName(),$post->getEmail(),$post->getPassword()]);
     }
 }

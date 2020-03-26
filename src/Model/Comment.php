@@ -1,6 +1,6 @@
 <?php
 /** 
- * Getter and Setter for commentaire
+ * Getter and Setter for comment
  * 
  * PHP version 7.2.18
  * 
@@ -11,9 +11,8 @@
  * @link     http://localhost/
  */
 namespace App\Entity;
-use App\Entity\Valide;
 /** 
- * Getter and Setter for commentaire
+ * Getter and Setter for comment
  * 
  * PHP version 7.2.18
  * 
@@ -23,26 +22,22 @@ use App\Entity\Valide;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/
  */
-class Commentaire extends Valide
+class Comment
 {
     private $_id;
     private $_message;
-    private $_statut;
+    private $_status;
     private $_userId;
-    private $_articleId;
+    private $_postId;
     /**
      * Call hydrate
      * 
-     * @param array  $data all data
-     * @param string $post just an string 
+     * @param array $data all data
      */
-    public function __construct(array $data =[],string $post=null)
+    public function __construct(array $data =[])
     {
         if (!empty($data)) {
             $this->hydrate($data);
-            if ($post) {
-                $this->isValid($data);
-            }
         }
     }
     /**
@@ -50,9 +45,9 @@ class Commentaire extends Valide
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -66,7 +61,7 @@ class Commentaire extends Valide
      * 
      * @return int
      */
-    public function getid()
+    public function getId():int
     {
         return $this->_id;
     }
@@ -75,45 +70,45 @@ class Commentaire extends Valide
      * 
      * @return string
      */
-    public function getmessage()
+    public function getMessage():string
     {
         return $this->_message;
     }
     /**
-     * Get statut
+     * Get status
      * 
      * @return int
      */
-    public function getstatut()
+    public function getStatus():int
     {
-        return $this->_statut;
+        return $this->_status;
     }
     /**
      * Get user id
      * 
      * @return int
      */
-    public function getuserId()
+    public function getUserId():int
     {
         return $this->_userId;
     }
     /**
-     * Get article id
+     * Get post id
      * 
      * @return int
      */
-    public function getarticleId()
+    public function getPostId():int
     {
-        return $this->_articleId;
+        return $this->_postId;
     }
     /**
      * Set id
      * 
      * @param Integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -125,26 +120,26 @@ class Commentaire extends Valide
      * 
      * @param String $message data
      * 
-     * @return null
+     * @return void
      */
-    public function setMessage($message)
+    public function setMessage($message):void
     {
         if (is_string($message) && strlen($message) <= 250) {
             $this->_message = $message;
         }
     }
     /**
-     * Set statut
+     * Set status
      * 
-     * @param String $statut data
+     * @param String $status data
      * 
-     * @return null
+     * @return void
      */
-    public function setStatut($statut)
+    public function setStatus($status):void
     {
-        $statut = (int) $statut;
-        if ($statut == 0 || $statut == 1) {
-            $this->_statut = $statut;
+        $status = (int) $status;
+        if ($status == 0 || $status == 1) {
+            $this->_status = $status;
         }
     }
     /**
@@ -152,9 +147,9 @@ class Commentaire extends Valide
      * 
      * @param Integer $userId data
      * 
-     * @return null
+     * @return void
      */
-    public function setUserId($userId)
+    public function setUserId($userId):void
     {
         $userId = (int) $userId;
         if ($userId > 0) {
@@ -162,17 +157,17 @@ class Commentaire extends Valide
         }
     }
     /**
-     * Set article id
+     * Set post id
      * 
-     * @param Integer $articleId data
+     * @param Integer $postId data
      * 
-     * @return null
+     * @return void
      */
-    public function setArticleId($articleId)
+    public function setPostId($postId):void
     {
-        $articleId = (int) $articleId;
-        if ($articleId > 0) {
-            $this->_articleId = $articleId;
+        $postId = (int) $postId;
+        if ($postId > 0) {
+            $this->_postId = $postId;
         }
     }
 }

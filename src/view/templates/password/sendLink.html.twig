@@ -3,18 +3,18 @@
 {% block content %}
 <section class='pt-5 mt-5'> 
   <div class="container">
-    {% if alert_emailfalse %}
+    {% if alert == "emailError" %}
       <div class="alert alert-danger" role="alert">
-        Rentré un email valide
+        Ce compte n'existe pas.
       </div>
     {% endif %}
-    {% if alert_emailtrue %}
+    {% if alert == "success" %}
       <div class="alert alert-success" role="alert">
-        Vous allez recevoir un email
+        Vous allez recevoir un email.
       </div>
     {% endif %}
     <h1 class="text-center">Mot de passe oublier</h1>
-    <form method="post" action="/auth/resetpassword" class="needs-validation" novalidate>
+    <form method="post" action="/password/sendlink" class="needs-validation" novalidate>
       <div class="row">
       <div class="col-6">
         <label for="FormControlInput1">Email</label>
