@@ -21,7 +21,7 @@ Create your first blog in php
    Default password and user: 'root','' or 'root','root'
 
    For the Recaptcha i use v2 Checkbox.
-   https://developers.google.com/recaptcha/docs/display#automatically_render_the_recaptcha_widget
+   [Recaptcha documentation](https://developers.google.com/recaptcha/docs/display#automatically_render_the_recaptcha_widget)
 
    Don't forget to change the code to html.
 
