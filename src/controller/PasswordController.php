@@ -98,8 +98,7 @@ class PasswordController extends Controller
                 $this->_manaPassword->updatePassword($entitypost);
                 Session::deleteSession('reset');
                 Session::setSession('alert', 'changePassword');
-                header("Location:/auth/login");
-                exit;
+                $this->redirect('/auth/login');
             }
             return $this->twig->render('/templates/password/resetpassword.html.twig', ['url'=>$url,'id'=>$id]);
         }

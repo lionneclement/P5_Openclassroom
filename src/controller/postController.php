@@ -126,7 +126,6 @@ class PostController extends Controller
             $this->_manaPost->removePost(new Post(['id'=>$id]));
             Session::setSession('alert', 'remove');
         }
-        header("Location:/post/findAll");
-        exit;
+        $this->redirect('/post/findAll');
     }
 }

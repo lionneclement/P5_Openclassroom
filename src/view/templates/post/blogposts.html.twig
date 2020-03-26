@@ -2,10 +2,12 @@
 
 {% block content %}
 <section class="pb-5"> 
-    <div class='container text-center py-5'>
+    <div class='container text-center pt-5'>
       {% if alert == 'remove' %}
-        <div class="alert alert-success" role="alert">
-          L'article viens d'etre supprimer.
+        <div class="pt-4">
+          <div class="alert alert-success" role="alert">
+            L'article viens d'etre supprimer.
+          </div>
         </div>
       {% endif %}
       {% if post is empty %}
@@ -16,7 +18,7 @@
         {% endif %}
       <div class="row">
         {% for n in post %}
-          <div class="col-sm-6 pt-5">
+          <div class="col-sm-6 pt-4">
             <div class="card text-center">
               <div class="card-body">
                 <h5 class="card-title">{{n.title}}</h5>

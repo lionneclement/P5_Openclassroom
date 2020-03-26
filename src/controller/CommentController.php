@@ -74,8 +74,7 @@ class CommentController extends Controller
         if (Session::getSession('role') == 3 && !empty($id)) {
             $this->_manaComment->updateComment(new Comment($this->post));
             Session::setSession('alert', 'update');
-            header("Location: /admin/$url");
-            exit;
+            $this->redirect('/admin/'.$url);
         }
         return $this->twig->render("/templates/error.html.twig");
     }
@@ -92,8 +91,7 @@ class CommentController extends Controller
         if (Session::getSession('role') == 3 && !empty($id)) {
             $this->_manaComment->removeComment(new Comment(['id'=>$id]));
             Session::setSession('alert', 'remove');
-            header("Location: /admin/$url");
-            exit;
+            $this->redirect('/admin/'.$url);
         }
         return $this->twig->render("/templates/error.html.twig");
     }
@@ -112,8 +110,7 @@ class CommentController extends Controller
             } else {
                 Session::setSession('alert', 'reCAPTCHA');   
             }
-            header("Location: /post/findOne/".$this->post['id']."#addcomment");
-            exit;
+            $this->redirect("/post/findOne/".$this->post['id']."#addcomment");
         }
         return $this->twig->render("/templates/error.html.twig");
     }

@@ -63,8 +63,7 @@ class UserController extends Controller
         if (Session::getSession('role') == 3 && !empty($id)) {
             $this->_manaUser->deleteUser(new User(['id'=>$id]));
             Session::setSession('alert', 'delete');
-            header("Location:/admin/roles");
-            exit;
+            $this->redirect('/admin/roles');
         }
         return $this->twig->render("/templates/error.html.twig");
     }

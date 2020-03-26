@@ -69,8 +69,7 @@ class AuthentificationController extends Controller
                 } elseif (password_verify($this->post['password'], $donnes->password)) {
                     Session::setSession('id', $donnes->id);
                     Session::setSession('role', $donnes->roleId);
-                    header("Location:/");
-                    exit;
+                    $this->redirect('/');
                 } else {
                     Session::setSession('alert', 'password');
                 }
@@ -87,7 +86,6 @@ class AuthentificationController extends Controller
     public function logout()
     {
         Session::deleteAllSession();
-        header("Location:/");
-        exit;
+        $this->redirect('/');
     }
 }

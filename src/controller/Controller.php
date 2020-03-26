@@ -114,4 +114,16 @@ abstract class Controller
         }
         return $rand;
     }
+    /**
+     * Use header function
+     * 
+     * @param string $url the url
+     * 
+     * @return void
+     */
+    public function redirect(string $url)
+    {
+        header("Location:$url");
+        exit;
+    }
 }
