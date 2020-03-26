@@ -1,7 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class='container text-center pt-5'>
+<section class="pb-5"> 
+    <div class='container text-center py-5'>
       {% if alert == 'remove' %}
         <div class="alert alert-success" role="alert">
           L'article viens d'etre supprimer.
@@ -36,4 +37,5 @@
         {% endfor %}
       </div>
     </div>
+  </section> 
 {% endblock %}

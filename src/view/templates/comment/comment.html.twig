@@ -1,7 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class='container text-center pt-5'>
+<section class="pb-5"> 
+    <div class='container text-center py-5'>
       {% if alert == "update" %}
         <div class="alert alert-success mt-4" role="alert">
           Le commentaire à étais modifier.
@@ -43,4 +44,5 @@
         {% endfor %}
       </div>
     </div>
+  </section>     
 {% endblock %}
