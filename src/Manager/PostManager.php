@@ -58,9 +58,9 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function add(Post $post)
+    public function add(Post $post):void
     {
         $sql = 'INSERT INTO post (id, title, extract, content, date, userId)
         VALUES (NULL,?,?,?, CURRENT_TIMESTAMP,?)';
@@ -72,9 +72,9 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function update(Post $post)
+    public function update(Post $post):void
     {
         $sql = 'UPDATE post SET title=?,extract=?,content=?,date=CURRENT_TIMESTAMP,userId=? WHERE id=?';
         $dbb =$this->bdd->prepare($sql);
@@ -85,9 +85,9 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function remove(Post $post)
+    public function remove(Post $post):void
     {
         $sql1 = 'DELETE FROM post WHERE id=?';
         $this->bdd->prepare($sql1)->execute([$post->getId()]);
@@ -97,7 +97,7 @@ class Postmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return object
      */
     public function findUser(Post $post)
     {

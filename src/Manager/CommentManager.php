@@ -71,9 +71,9 @@ class CommentManager extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function addComment(Comment $post)
+    public function addComment(Comment $post):void
     {
         $sql = 'INSERT INTO comment (id,message,status,date,userId,postId) 
     VALUES (NULL,?,0,CURRENT_TIMESTAMP,?,?)';
@@ -85,9 +85,9 @@ class CommentManager extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function updateComment(Comment $post)
+    public function updateComment(Comment $post):void
     {
         $sql = 'UPDATE comment SET status=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getStatus(),$post->getId()]);
@@ -97,9 +97,9 @@ class CommentManager extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function removeComment(Comment $post)
+    public function removeComment(Comment $post):void
     {
         $sql = $this->bdd->prepare('DELETE FROM comment WHERE id=?');
         $sql->execute([$post->getId()]);

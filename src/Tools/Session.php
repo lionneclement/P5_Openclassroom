@@ -31,7 +31,7 @@ class Session
      * 
      * @return void
      */
-    public static function setSession(string $key, $value)
+    public static function setSession(string $key, $value):void
     {
         $_SESSION[$key]=$value;
     }
@@ -40,14 +40,14 @@ class Session
      *
      * @param string $key The key
      * 
-     * @return null|array
+     * @return string|null
      */
     public static function getSession(string $key)
     {
         if (!empty($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        return null;   
+        return null;
     }
     /**
      * Delete session
@@ -56,7 +56,7 @@ class Session
      * 
      * @return void
      */
-    public static function deleteSession(string $key)
+    public static function deleteSession(string $key):void
     {
         unset($_SESSION[$key]);
     }
@@ -65,7 +65,7 @@ class Session
      * 
      * @return void
      */
-    public static function deleteAllSession()
+    public static function deleteAllSession():void
     {
         session_unset();
     }

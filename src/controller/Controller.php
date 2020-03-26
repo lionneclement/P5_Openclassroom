@@ -36,13 +36,12 @@ abstract class Controller
         $this->_modelPost = new Postmodel;
         $this->_modelAdmin = new Adminmodel;
         $this->_modelAuth = new AuthentificationModel;
-        $this->superGlobal();
-        $this->filterPost();
+        $this->post = $this->filterPost();
     }
     /**
      * Render post secure
      *
-     * @return array
+     * @return array|null
      */
     public function filterPost()
     {
@@ -67,15 +66,16 @@ abstract class Controller
         if ($this->post !== null) {
             $this->post = array_filter($this->post, 'strlen');
         }
+        return $this->post;
     }
     /**
      * Setup serverADDR
      *
-     * @return null
+     * @return string
      */
-    public function superGlobal()
+    public function superGlobal():string
     {
-        $this->serverADDR = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
+        return filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_SPECIAL_CHARS);
     }
     /**
      * Init recaptcha
@@ -84,11 +84,11 @@ abstract class Controller
      * 
      * @return bool
      */
-    public function recaptcha(string $parameters)
+    public function recaptcha(string $parameters):bool
     {
         $recaptcha = new \ReCaptcha\ReCaptcha(getenv('RECAPTCHA'));
         $resp = $recaptcha->setExpectedHostname('localhost')
-            ->verify($parameters, $this->serverADDR);
+            ->verify($parameters, $this->superGlobal());
         return $resp->isSuccess();
     }
     /**
@@ -98,7 +98,7 @@ abstract class Controller
      * 
      * @return string
      */
-    public function randomWord(int $numberCharacter)
+    public function randomWord(int $numberCharacter):string
     {
         $seed = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
         shuffle($seed);

@@ -45,9 +45,9 @@ class Post
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -61,7 +61,7 @@ class Post
      * 
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->_id;
     }
@@ -70,7 +70,7 @@ class Post
      * 
      * @return string
      */
-    public function getTitle()
+    public function getTitle():string
     {
         return $this->_title;
     }
@@ -79,7 +79,7 @@ class Post
      * 
      * @return string
      */
-    public function getExtract()
+    public function getExtract():string
     {
         return $this->_extract;
     }/**
@@ -87,7 +87,7 @@ class Post
       * 
       * @return string
       */
-    public function getContent()
+    public function getContent():string
     {
         return $this->_content;
     }
@@ -96,7 +96,7 @@ class Post
      * 
      * @return int
      */
-    public function getUserId()
+    public function getUserId():int
     {
         return $this->_userId;
     }
@@ -105,9 +105,9 @@ class Post
      * 
      * @param integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -119,9 +119,9 @@ class Post
      * 
      * @param String $title data
      * 
-     * @return null
+     * @return void
      */
-    public function setTitle($title)
+    public function setTitle($title):void
     {
         if (is_string($title) && strlen($title) <= 30) {
             $this->_title = $title;
@@ -132,9 +132,9 @@ class Post
      * 
      * @param String $extract data
      * 
-     * @return null
+     * @return void
      */
-    public function setExtract($extract)
+    public function setExtract($extract):void
     {
         if (is_string($extract) && strlen($extract) <= 255) {
             $this->_extract = $extract;
@@ -145,9 +145,9 @@ class Post
      * 
      * @param String $content data
      * 
-     * @return null
+     * @return void
      */
-    public function setContent($content)
+    public function setContent($content):void
     {
         if (is_string($content)) {
             $this->_content = $content;
@@ -158,9 +158,9 @@ class Post
      * 
      * @param integer $userId data
      * 
-     * @return null
+     * @return void
      */
-    public function setUserId($userId)
+    public function setUserId($userId):void
     {
         $userId = (int) $userId;
         if ($userId > 0) {

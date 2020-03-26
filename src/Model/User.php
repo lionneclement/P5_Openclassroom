@@ -46,9 +46,9 @@ class User
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -62,7 +62,7 @@ class User
      * 
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->_id;
     }
@@ -71,7 +71,7 @@ class User
      * 
      * @return string
      */
-    public function getLastName()
+    public function getLastName():string
     {
         return $this->_lastName;
     }
@@ -80,7 +80,7 @@ class User
      * 
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName():string
     {
         return $this->_firstName;
     }
@@ -89,7 +89,7 @@ class User
      * 
      * @return string
      */
-    public function getEmail()
+    public function getEmail():string
     {
         return $this->_email;
     }
@@ -98,7 +98,7 @@ class User
      * 
      * @return string
      */
-    public function getPassword()
+    public function getPassword():string
     {
         return $this->_password;
     }
@@ -107,7 +107,7 @@ class User
      * 
      * @return int
      */
-    public function getRoleId()
+    public function getRoleId():int
     {
         return $this->_roleId;
     }
@@ -117,9 +117,9 @@ class User
      * 
      * @param Integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -131,9 +131,9 @@ class User
      * 
      * @param String $lastName data
      * 
-     * @return null
+     * @return void
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName):void
     {
         if (is_string($lastName) && strlen($lastName) <= 30) {
             $this->_lastName = $lastName;
@@ -144,9 +144,9 @@ class User
      * 
      * @param String $firstName data
      * 
-     * @return null
+     * @return void
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName):void
     {
         if (is_string($firstName) && strlen($firstName) <= 30) {
             $this->_firstName = $firstName;
@@ -157,9 +157,9 @@ class User
      * 
      * @param String $email data
      * 
-     * @return null
+     * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email):void
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
               $this->_email = $email;
@@ -170,9 +170,9 @@ class User
      * 
      * @param Strign $password data
      * 
-     * @return null
+     * @return void
      */
-    public function setPassword($password)
+    public function setPassword($password):void
     {
         if (is_string($password) && strlen($password)>=13) {
               $this->_password = password_hash($password, PASSWORD_DEFAULT);
@@ -183,9 +183,9 @@ class User
      * 
      * @param String $roleId data
      * 
-     * @return null
+     * @return void
      */
-    public function setRoleId($roleId)
+    public function setRoleId($roleId):void
     {
         $roleId = (int) $roleId;
         if ($roleId >= 1 && $roleId <= 3) {

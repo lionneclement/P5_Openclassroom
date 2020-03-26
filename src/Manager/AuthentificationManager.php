@@ -43,9 +43,9 @@ class AuthentificationModel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function register(User $post)
+    public function register(User $post):void
     {
         $sql = 'INSERT INTO user (id, lastName, firstName, email, password, roleId) 
     VALUES (NULL,?,?,?,?,1)';

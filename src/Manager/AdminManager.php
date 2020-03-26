@@ -43,9 +43,9 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function updateRole(User $post)
+    public function updateRole(User $post):void
     {
         $sql = 'UPDATE user SET roleId=? WHERE id=?';
         $this->bdd->prepare($sql)->execute([$post->getRoleId(),$post->getId()]);
@@ -55,9 +55,9 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function deleteUser(User $post)
+    public function deleteUser(User $post):void
     {
         $sql2 =$this->bdd->prepare('DELETE FROM user WHERE id=?');
         $sql2->execute([$post->getId()]);
@@ -80,9 +80,9 @@ class Adminmodel extends Connectmodel
      * 
      * @param array $post it's user data
      * 
-     * @return null
+     * @return void
      */
-    public function updateUser(User $post)
+    public function updateUser(User $post):void
     {
         $sql = 'UPDATE user SET lastName=?, firstName=?, email=?  WHERE id=?';
         $dbb = $this->bdd->prepare($sql);

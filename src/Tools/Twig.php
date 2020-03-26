@@ -38,7 +38,7 @@ class Twig
      *
      * @return void
      */
-    public function twigEnvi()
+    public function twigEnvi():void
     {
         $loader = new FilesystemLoader('../../src/view');
         $this->twigenvi = new Environment($loader);
@@ -69,7 +69,7 @@ class Twig
      * 
      * @return void
      */
-    public function addGlobal(string $keySession, bool $delete)
+    public function addGlobal(string $keySession, bool $delete):void
     {
         $session = Session::getSession($keySession);
         if ($delete) {

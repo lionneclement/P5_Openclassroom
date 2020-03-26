@@ -44,9 +44,9 @@ class Contact
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -60,7 +60,7 @@ class Contact
      * 
      * @return string
      */
-    public function getLastName()
+    public function getLastName():string
     {
         return $this->_lastName;
     }
@@ -69,7 +69,7 @@ class Contact
      * 
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName():string
     {
         return $this->_firstName;
     }
@@ -78,7 +78,7 @@ class Contact
      * 
      * @return string
      */
-    public function getEmail()
+    public function getEmail():string
     {
         return $this->_email;
     }
@@ -87,7 +87,7 @@ class Contact
      * 
      * @return string
      */
-    public function getMessage()
+    public function getMessage():string
     {
         return $this->_message;
     }
@@ -98,9 +98,9 @@ class Contact
      * 
      * @param String $lastName data
      * 
-     * @return null
+     * @return void
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName):void
     {
         if (is_string($lastName) && strlen($lastName) <= 30) {
             $this->_lastName = $lastName;
@@ -111,9 +111,9 @@ class Contact
      * 
      * @param String $firstName data
      * 
-     * @return null
+     * @return void
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName):void
     {
         if (is_string($firstName) && strlen($firstName) <= 30) {
             $this->_firstName = $firstName;
@@ -124,9 +124,9 @@ class Contact
      * 
      * @param String $email data
      * 
-     * @return null
+     * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email):void
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
               $this->_email = $email;
@@ -137,9 +137,9 @@ class Contact
      * 
      * @param String $message data
      * 
-     * @return null
+     * @return void
      */
-    public function setMessage($message)
+    public function setMessage($message):void
     {
         if (is_string($message)) {
             $this->_message = $message;

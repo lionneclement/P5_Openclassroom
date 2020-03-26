@@ -45,9 +45,9 @@ class Comment
      * 
      * @param array $donnees all data
      * 
-     * @return null
+     * @return void
      */
-    public function hydrate(array $donnees)
+    public function hydrate(array $donnees):void
     {
         foreach ($donnees as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -61,7 +61,7 @@ class Comment
      * 
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->_id;
     }
@@ -70,7 +70,7 @@ class Comment
      * 
      * @return string
      */
-    public function getMessage()
+    public function getMessage():string
     {
         return $this->_message;
     }
@@ -79,7 +79,7 @@ class Comment
      * 
      * @return int
      */
-    public function getStatus()
+    public function getStatus():int
     {
         return $this->_status;
     }
@@ -88,7 +88,7 @@ class Comment
      * 
      * @return int
      */
-    public function getUserId()
+    public function getUserId():int
     {
         return $this->_userId;
     }
@@ -97,7 +97,7 @@ class Comment
      * 
      * @return int
      */
-    public function getPostId()
+    public function getPostId():int
     {
         return $this->_postId;
     }
@@ -106,9 +106,9 @@ class Comment
      * 
      * @param Integer $id data
      * 
-     * @return null
+     * @return void
      */
-    public function setId($id)
+    public function setId($id):void
     {
         $id = (int) $id;
         if ($id > 0) {
@@ -120,9 +120,9 @@ class Comment
      * 
      * @param String $message data
      * 
-     * @return null
+     * @return void
      */
-    public function setMessage($message)
+    public function setMessage($message):void
     {
         if (is_string($message) && strlen($message) <= 250) {
             $this->_message = $message;
@@ -133,9 +133,9 @@ class Comment
      * 
      * @param String $status data
      * 
-     * @return null
+     * @return void
      */
-    public function setStatus($status)
+    public function setStatus($status):void
     {
         $status = (int) $status;
         if ($status == 0 || $status == 1) {
@@ -147,9 +147,9 @@ class Comment
      * 
      * @param Integer $userId data
      * 
-     * @return null
+     * @return void
      */
-    public function setUserId($userId)
+    public function setUserId($userId):void
     {
         $userId = (int) $userId;
         if ($userId > 0) {
@@ -161,9 +161,9 @@ class Comment
      * 
      * @param Integer $postId data
      * 
-     * @return null
+     * @return void
      */
-    public function setPostId($postId)
+    public function setPostId($postId):void
     {
         $postId = (int) $postId;
         if ($postId > 0) {
