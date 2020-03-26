@@ -42,12 +42,12 @@ $router->map(
 );
 $router->map(
     'GET|POST', '/post/addpost', function () {
-        (new Postcontroller)->addUpdate();
+        (new Postcontroller)->addPost();
     }
 );
 $router->map(
     'GET|POST', '/post/updatepost/[i:id]', function ($id) {
-        (new Postcontroller)->addUpdate($id); 
+        (new Postcontroller)->updatePost($id); 
     }
 );
 $router->map(

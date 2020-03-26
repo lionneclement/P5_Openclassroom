@@ -53,29 +53,41 @@ class Postcontroller extends Controller
         return $this->twig->render('/templates/home.html.twig');
     }
     /**
-     * Update and add post
+     * Add post
+     * 
+     * @return void
+     */
+    public function addPost()
+    {
+        if (Session::getSession('role') == 3) {
+            if (!empty($this->post)) {
+                $this->_modelPost->add(new Post($this->post));
+                Session::setSession('alert', 'success_add');
+            }
+            $donnesUser = $this->_modelPost->findAllUser();
+            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'users'=>$donnesUser,'url'=>'addpost']);
+        }
+        return $this->twig->render("/templates/error.html.twig");
+    }
+    /**
+     * Update post
      * 
      * @param integer $id it's id post
      * 
      * @return void
      */
-    public function addUpdate(int $id=null)
+    public function updatePost(int $id)
     {   
-        $donnesUser = $this->_modelPost->findAllUser();
-        if (Session::getSession('role') == 3 && $id==null) {
-            if (!empty($this->post)) {
-                $this->_modelPost->add(new Post($this->post));
-                Session::setSession('alert', 'success_add');
-            }
-            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>Session::getSession('id'),'Auteur'=>$donnesUser,'url'=>'addpost']);
-        } if (Session::getSession('role') >= 2) {
+        
+        if (Session::getSession('role') >= 2) {
             if (!empty($this->post)) {
                 $this->post['id']=$id;
                 $this->_modelPost->update(new Post($this->post));
                 Session::setSession('alert', 'success_update');
             }
             $donnes = $this->_modelPost->post(new Post(['id'=>$id]));
-            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->userId,'Auteur'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
+            $donnesUser = $this->_modelPost->findAllUser();
+            return $this->twig->render('/templates/post/addUpdatepost.html.twig', ['select'=>$donnes->userId,'users'=>$donnesUser,'url'=>'updatepost/'.$id.'','donnes'=>$donnes]);
         }
         return $this->twig->render("/templates/error.html.twig");
     }

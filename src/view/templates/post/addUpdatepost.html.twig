@@ -40,7 +40,7 @@
       <div class="col-6">
         <label for="FormControlInput4">Auteur</label>
         <select class="custom-select" id="FormControlInput4" name="userId" required>
-          {% for user in Auteur %}
+          {% for user in users %}
             {% if select == user.id %}
               <option value={{user.id}} selected>{{user.lastName}}</option>
             {% else %}
