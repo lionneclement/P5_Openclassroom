@@ -1,4 +1,7 @@
 # P5_Openclassroom
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/44ba56a099a5428f96e22bcefa2c00c1)](https://app.codacy.com/manual/lionneclement/P5_Openclassroom?utm_source=github.com&utm_medium=referral&utm_content=lionneclement/P5_Openclassroom&utm_campaign=Badge_Grade_Settings)
+
 Create your first blog in php
 ## Prerequisite 
 1) Download Wamp, Xampp or Lamp
@@ -21,7 +24,7 @@ Create your first blog in php
    Default password and user: 'root','' or 'root','root'
 
    For the Recaptcha i use v2 Checkbox.
-   https://developers.google.com/recaptcha/docs/display#automatically_render_the_recaptcha_widget
+   [Recaptcha documentation](https://developers.google.com/recaptcha/docs/display#automatically_render_the_recaptcha_widget)
 
    Don't forget to change the code to html.
 
