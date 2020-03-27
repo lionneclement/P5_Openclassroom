@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class="py-5"> 
+    <div class='container text-center py-5'>
+      <div class='row'>
+          <div class='col-12'>
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">{{post.title}}</h5>
+                <p class="card-text"><i>{{post.extract}}</i></p>
+                <p class="card-text">{{post.content}}</p>
+                <p class="card-text">{{post.lastName}}</p>
+                {% if role >= 2 %}
+                  <a href="/post/updatepost/{{post.id}}" class="btn btn-secondary">Modifier</a>
+                {% endif %}
+              </div>
+              <div class="card-footer text-muted">Dernière modification: {{post.date}}</div>
+            </div>
+          </div>
+      </div>
+    </div>
+    {% if comment %}
+    <div class="container text-center py-5">
+      <h2>Commentaire</h2>
+      {% for c in comment %}
+        <div class="card text-center">
+          <div class="card-header">
+            Auteur: {{c.lastName}}
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{c.message}}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% if role >= 1 %}
+    <div class="container text-center py-5" id='addcomment'>
+      <h2>Ajouter un commentaire</h2>
+      {% if alert == "success" %}
+        <div class="alert alert-success" role="alert">
+          Votre commentaire viens d'être envoyer et doit être valider pas les administrateurs!
+        </div>
+      {% endif %}
+      {% if alert == "reCAPTCHA" %}
+        <div class="alert alert-danger" role="alert">
+          Vous devez remplir le reCAPTCHA!
+        </div>
+      {% endif %}
+      <form method="post" class="needs-validation" novalidate action="/post/addcomment">
+        <div class="row">
+        <div class="col-12">
+          <textarea class="form-control" type="text" name="content" id="FormControlInput3" required></textarea>
+          <div class="invalid-feedback">
+            Ce champ est obligatoire.
+          </div>
+          <input type="hidden" name="id" value="{{post.id}}">
+        </div>
+        <div class=" col-12 text-center mt-4">
+          <div class="g-recaptcha" style="display: inline-block;" data-sitekey="6Lcchd8UAAAAAGGYJk2Va2WRULZIRGdYMc3rclaL"></div>
+        </div>
+        <div class="col text-center mt-4">
+        <button type="submit" class="btn btn-secondary">Confirm identity</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  {% else %}
+  <div class="container text-center">
+    <h3>Connecter vous pour pourvoir commenter</h3>
+    <a class="btn btn-secondary" href="/auth/login">Se connecter</a>
+  </div>
+  {% endif %}
+</section> 
+{% endblock %}

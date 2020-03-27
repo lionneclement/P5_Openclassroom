@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section> 
+  <div class="container py-5 mt-5">
+    <h1 class="text-center">Article</h1>
+    {% if alert == "success_add" %}
+      <div class="alert alert-success" role="alert">
+          L'article viens d'être créer.
+      </div>
+    {% endif %}
+    {% if alert == "success_update" %}
+      <div class="alert alert-success" role="alert">
+          La modification à été faite.
+      </div>
+    {% endif %}
+    <form method="post" action="/post/{{url}}" class="needs-validation" novalidate>
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">Titre</label>
+        <input type="text" name="title" class="form-control" id="FormControlInput1" value='{{donnes.title}}' required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">Chapo</label>
+        <input type="text" name="extract" class="form-control" id="FormControlInput2" value='{{donnes.extract}}' required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput3">Contenu</label>
+        <textarea class="form-control" type="text" name="content" id="FormControlInput3" required>{{donnes.content}}</textarea>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput4">Auteur</label>
+        <select class="custom-select" id="FormControlInput4" name="userId" required>
+          {% for user in users %}
+            {% if select == user.id %}
+              <option value={{user.id}} selected>{{user.lastName}}</option>
+            {% else %}
+              <option value={{user.id}}>{{user.lastName}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col text-center mt-4">
+      <button type="submit" class="btn btn-secondary">Confirm identity</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

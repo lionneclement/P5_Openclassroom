@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class='pt-5 mt-5'> 
+  <div class="container">
+    {% if alert == "emailError" %}
+      <div class="alert alert-danger" role="alert">
+        Ce compte n'existe pas.
+      </div>
+    {% endif %}
+    {% if alert == "success" %}
+      <div class="alert alert-success" role="alert">
+        Vous allez recevoir un email.
+      </div>
+    {% endif %}
+    <h1 class="text-center">Mot de passe oublier</h1>
+    <form method="post" action="/password/sendlink" class="needs-validation" novalidate>
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">Email</label>
+        <input class="form-control" type="email" name="email" id="FormControlInput1" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6 text-center mt-4">
+      <button type="submit" class="btn btn-secondary">Confirme</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

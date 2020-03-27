@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class="pb-5"> 
+    <div class='container text-center py-5'>
+      {% if alert == "update" %}
+        <div class="alert alert-success mt-4" role="alert">
+          Le commentaire à étais modifier.
+        </div>
+      {% endif %}
+      {% if alert == "remove" %}
+        <div class="alert alert-success mt-4" role="alert">
+          Le commentaire à étais supprimer.
+        </div>
+      {% endif %}
+      {% if comment is empty %}
+        <div class="alert alert-danger mt-3" role="alert">
+          <h4 class="alert-heading">Aucun commentaire !</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      {% endif %}
+      <div class="row">
+        {% for n in comment %}
+          <div class="col-sm-6 pt-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Message: {{n.message}}</h5>
+                <p class="card-text">Date: {{n.date}}</p>
+                <form method="post" action="/admin/updatecomment/{{n.id}}/{{url}}">
+                  <label for="FormControlInput1">Statut :</label>
+                  <select id="inputState"  name="status" class="form-control" required>
+                    <option value='1' {% if n.status == 1 %}selected{% endif %}>Valide</option>
+                    <option value='0' {% if n.status == 0 %}selected{% endif %}>Invalide</option>
+                  </select>
+                  <input type="hidden" name="id" value="{{n.id}}">
+                  <br>
+                  <button type="submit" class='btn btn-secondary'>Modifier</button>
+                  <a href="/admin/deletecomment/{{n.id}}/{{url}}" class='btn btn-secondary'>Supprimer</a>
+                  <a href="/post/findOne/{{n.postId}}" class="btn btn-secondary">Lien de l'article</a>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>     
+{% endblock %}

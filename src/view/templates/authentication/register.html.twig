@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class='pt-5 mt-5'> 
+  <div class="container">
+    <div class='text-center'>
+      {% if alert == "success" %}
+      <div class="alert alert-success" role="alert">
+        Votre compte viens d'être crée vous pouvez vous connecter.
+      </div
+      {% endif %}
+      {% if alert == "already" %}
+        <div class="alert alert-danger" role="alert">
+          Ce compte exite déjà.
+        </div>
+      {% endif %}
+    </div>
+    <h1 class="text-center">Register</h1>
+    <form method="post" action="/auth/register" class="needs-validation" novalidate>
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">Nom</label>
+        <input type="name" name="lastName" class="form-control" id="FormControlInput1" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">Prénom</label>
+        <input type="name" name="firstName" class="form-control" id="FormControlInput2" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput3">Email</label>
+        <input class="form-control" type="email" name="email" id="FormControlInput3" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput4">Mot de passe</label>
+        <input type="password" name="password" class="form-control" id="FormControlInput4" minlength="13" required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire et doit comporter 13 caractères minimums.
+        </div>
+      </div>
+      
+      <div class="col text-center mt-4">
+      <button type="submit" class="btn btn-secondary">Confirme</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

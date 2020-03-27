@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section class="pb-5"> 
+    <div class='container text-center pt-5'>
+      {% if alert == 'remove' %}
+        <div class="pt-4">
+          <div class="alert alert-success" role="alert">
+            L'article viens d'etre supprimer.
+          </div>
+        </div>
+      {% endif %}
+      {% if post is empty %}
+          <div class="alert alert-danger pt-5 mt-3" role="alert">
+            <h4 class="alert-heading">Nous sommes désolés il n'y a pas encore d'article!</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+        {% endif %}
+      <div class="row">
+        {% for n in post %}
+          <div class="col-sm-6 pt-4">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">{{n.title}}</h5>
+                <p class="card-text">{{n.extract}}</p>
+                <a href="/post/findOne/{{n.id}}" class="btn btn-secondary">Voir plus</a>
+                {% if role >= 2 %}
+                  <a href="/post/updatepost/{{n.id}}" class="btn btn-secondary">Modifier</a>
+                  {% if role == 3 %}
+                  <a href="/post/removepost/{{n.id}}" class="btn btn-secondary">Supprimer</a>
+                  {% endif %}
+                {% endif %}
+              </div>
+              <div class="card-footer text-muted">
+                Dernière modification: {{n.date}}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section> 
+{% endblock %}

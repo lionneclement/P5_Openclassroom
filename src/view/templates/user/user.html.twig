@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class='container text-center pt-5'>
+      {% if alert == "update" %}
+        <div class="alert alert-success mt-4" role="alert">
+          L'utilisateur à étais modifier.
+        </div>
+      {% endif %}
+      {% if alert == "delete" %}
+        <div class="alert alert-danger mt-4" role="alert">
+          L'utilisateur à étais supprimer.
+        </div>
+      {% endif %}
+      {% if user is empty %}
+          <div class="alert alert-danger pt-5 mt-3" role="alert">
+            <h4 class="alert-heading">Aucun utilisateur !</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+        {% endif %}
+      <div class="row">
+        {% for n in user %}
+          <div class="col-sm-6 pt-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Nom: {{n.lastName}}</h5>
+                <p class="card-text">Prenom: {{n.firstName}}</p>
+                <p class="card-text">Email: {{n.email}}</p>
+                <form method="post" action="roles">
+                  <label for="FormControlInput1">Role :</label>
+                  <select id="FormControlInput1"  name="roleId" class="form-control" required>
+                    <option value='1' {% if n.roleId == 1 %}selected{% endif %}>Utilisateur</option>
+                    <option value='2' {% if n.roleId == 2 %}selected{% endif %}>Editeur</option>
+                    <option value='3' {% if n.roleId == 3 %}selected{% endif %}>Admin</option>
+                  </select>
+                  <input type="hidden" name="id" value="{{n.id}}">
+                  <br>
+                  <button type="submit" class='btn btn-secondary'>Modifier</button>
+                  <a href="/admin/deleteuser/{{n.id}}" class="btn btn-secondary">Supprimer</a>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}

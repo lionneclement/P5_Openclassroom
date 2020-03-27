@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<section> 
+  <div class="container py-5 mt-5">
+    <h1 class="text-center">Modifier votre profil</h1>
+    {% if alert == "update" %}
+      <div class="alert alert-success" role="alert">
+        Votre profil à été mis à jour.
+      </div>
+    {% endif %}
+    <form method="post" action="/admin/updateuser" class="needs-validation" novalidate>
+      <div class="row">
+      <div class="col-6">
+        <label for="FormControlInput1">Nom</label>
+        <input type="text" name="lastName" class="form-control" id="FormControlInput1" value='{{user.lastName}}' required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="FormControlInput2">Prenom</label>
+        <input type="text" name="firstName" class="form-control" id="FormControlInput2" value='{{user.firstName}}' required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-12">
+        <label for="FormControlInput3">Email</label>
+        <input type="email" name="email" class="form-control" id="FormControlInput3" value='{{user.email}}' required>
+        <div class="invalid-feedback">
+          Ce champ est obligatoire.
+        </div>
+      </div>
+      <div class="col-6 text-center mt-4">
+        <button type="submit" class="btn btn-secondary">Confirm identity</button>
+      </div>
+      <div class="col-6 text-center mt-4">
+        <a href="/admin/updatepassword" class="btn btn-secondary">Modifier le mot de passe</a>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

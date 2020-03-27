@@ -1,0 +1,12 @@
+.fa-github:before{
+  color: black;
+}
+.footer-copyright a,.footer-copyright a:hover{
+  color:white;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: #6c757d !important;
+}
+.dropdown-item.active, .dropdown-item:active {
+  background-color: #6c757d !important;
+}
