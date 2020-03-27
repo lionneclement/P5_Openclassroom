@@ -28,7 +28,8 @@ Create your first blog in php
 
    Don't forget to change the code to html.
 
-6) In apache change httpd-vhosts.conf from
+6) Move the "Vendor\twbs\bootstrap\dist" folder in the "src\public" folder
+7) In apache change httpd-vhosts.conf from
     ```
     DocumentRoot "${INSTALL_DIR}/www"
     <Directory "${INSTALL_DIR}/www/">
