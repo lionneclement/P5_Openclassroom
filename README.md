@@ -8,8 +8,8 @@ Create your first blog in php
 
 ## Clone
 1) Go to www directory.
-2) Make a clone with `git clone https://github.com/lionneclement/P5_Openclassroom.git`
-3) Init composer with `composer init` 
+2) Make a clone with `git clone https://github.com/lionneclement/P5_Openclassroom.git` and cd P5_Openclassroom
+3) Install composer with `composer install` 
 4) With the p5.sql file create your database in phpmyadmin
 
    By default a user was created with email=admin@gmail.com and password=azertyuiopqsd
@@ -28,7 +28,9 @@ Create your first blog in php
 
    Don't forget to change the code to html.
 
-6) In apache change httpd-vhosts.conf from
+6) Move the "Vendor\twbs\bootstrap\dist" folder in the "src\public" folder
+7) In apache change httpd-vhosts.conf from 
+(Don't forget to restart all services in wamp)
     ```
     DocumentRoot "${INSTALL_DIR}/www"
     <Directory "${INSTALL_DIR}/www/">
@@ -38,4 +40,8 @@ Create your first blog in php
     DocumentRoot "${INSTALL_DIR}/www/P5_Openclassroom/src/public"
     <Directory "${INSTALL_DIR}/www/P5_Openclassroom/src/public/">
     ```
- Normally everything works, if you have a error send me an mail to lionneclement@gmail.com or create a issue
+ Normally everything works, If you have a error with route use
+ ```
+ composer dump-autoload -o
+ ```
+or send me an mail to lionneclement@gmail.com or create a issue
