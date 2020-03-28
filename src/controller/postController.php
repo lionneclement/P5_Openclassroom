@@ -35,23 +35,6 @@ class PostController extends Controller
         parent::__construct();
     }
     /**
-     * Home page
-     * 
-     * @return void
-     */
-    public function home()
-    {
-        if (!empty($this->post)) {
-            if (!empty($this->post['g-recaptcha-response']) && $this->recaptcha($this->post['g-recaptcha-response'])) {
-                mail('nobody@gmail.com', $this->post['firstName'].' '.$this->post['lastName'], $this->post['message'], 'From:'.$this->post['email']);
-                Session::setSession('alert', 'success');
-            } else {
-                Session::setSession('alert', 'reCAPTCHA');
-            }
-        }
-        return $this->twig->render('/templates/home.html.twig');
-    }
-    /**
      * Add post
      * 
      * @return void
